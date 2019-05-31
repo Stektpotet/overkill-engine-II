@@ -1,0 +1,34 @@
+.vs/
+.vscode/
+build/
+enc_temp_folder/
+CMakeSettings.json
+*.DS_Store
+.DS_Store
+
+# 
+# ASSETS WHITELIST
+#
+# * Whitelist assets we want to keep
+
+assets/textures/*
+!assets/textures/.gitkeep
+
+assets/shaders/*
+!assets/shaders/.gitkeep
+
+assets/materials/*
+!assets/materials/.gitkeep
+
+assets/models/*
+!assets/models/.gitkeep
+
+assets/scenes/*
+!assets/scenes/.gitkeep
+
+tool/*
+!tool/discover.py
+!tool/export.py
+!tool/test-discover.cpp
+
+config.yml
