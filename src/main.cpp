@@ -17,6 +17,7 @@
 #include "VertexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "IndexBuffer.hpp"
+#include "Input.hpp"
 #include "Camera.hpp"
 #include "ResourceLoader.h"
 
@@ -36,9 +37,6 @@ glm::vec2 windowSize;
 void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE) { glfwSetWindowShouldClose(window, GLFW_TRUE); }
-}
-void processCursorPosition(GLFWwindow* window, double x, double y)
-{
 }
 void processMouseButtons(GLFWwindow* window, int button, int action, int mods) 
 {
@@ -95,71 +93,94 @@ static const vertex verts[] = {
 	{ { -0.5,  0.5}, {1,0,0,1} },
 };
 
+#ifdef PACKED_VERTICES
+#define VEC3_POS(glm_vec3) packSnorm10x3_2Rev(glm_vec3)
+#define VEC2_UV(glm_vec2) packTexCoords(glm_vec2)
+#else
+#define VEC3_POS(glm_vec3) glm_vec3
+#define VEC2_UV(glm_vec2) glm_vec2
+#endif
+
+
+#ifdef PACKED_VERTICES
 static glm::uint positions[] = {
+#else
+static glm::vec3 positions[] = {
+#endif
 	//positions
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f,  0.5f }),	// 0
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f,  0.5f }),	// 1	F
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f,  0.5f }),	// 2
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f,  0.5f }),	// 3
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 0
+	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 1	F
+	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 2
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 3
+								// 			   
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 4
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 5	L
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 6
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f })),	// 7
 								// 
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f, -0.5f }),	// 4
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f,  0.5f }),	// 5	L
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f,  0.5f }),	// 6
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f, -0.5f }),	// 7
+	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 8
+	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 9	R
+	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 10
+	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 11
 								// 
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f,  0.5f }),	// 8
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f, -0.5f }),	// 9	R
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f, -0.5f }),	// 10
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f,  0.5f }),	// 11
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 12
+	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 13	U
+	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 14
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 15
 								// 
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f, -0.5f }),	// 12
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f, -0.5f }),	// 13	U
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f,  0.5f }),	// 14
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f,  0.5f }),	// 15
+	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 18
+	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 19	B
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f })),	// 16
+	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 17
 								// 
-	packSnorm10x3_2Rev(glm::vec3{  0.5f, -0.5f, -0.5f }),	// 18
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f, -0.5f, -0.5f }),	// 19	B
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f, -0.5f }),	// 16
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f, -0.5f }),	// 17
-								// 
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f,  0.5f }),	// 20
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f,  0.5f }),	// 21	O
-	packSnorm10x3_2Rev(glm::vec3{  0.5f,  0.5f, -0.5f }),	// 22
-	packSnorm10x3_2Rev(glm::vec3{ -0.5f,  0.5f, -0.5f })	// 23
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 20
+	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 21	O
+	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 22
+	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f }))	// 23
 };
 
+#ifdef PACKED_VERTICES
 static glm::uint16 uvs[] = {
+#else
+static glm::vec2 uvs[] = {
+#endif
 	//uvs
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 	
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 
-	packTexCoords(glm::vec2(0, 0)),
-	packTexCoords(glm::vec2(1, 0)),
-	packTexCoords(glm::vec2(1, 1)),
-	packTexCoords(glm::vec2(0, 1)),
+	VEC2_UV((glm::vec2(0, 0))),
+	VEC2_UV((glm::vec2(1, 0))),
+	VEC2_UV((glm::vec2(1, 1))),
+	VEC2_UV((glm::vec2(0, 1))),
 };
+#ifdef PACKED_VERTICES
+#undef PACKED_VERTICES
+#endif
+#undef VEC3_POS
+#undef VEC2_UV
+
 static const GLuint elements[] = {
 #define MakeQuad(x) x, x+1, x+2, x+2, x+3, x,
 	MakeQuad(0)
@@ -214,16 +235,16 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
-	//auto mName = glfwGetMonitorName(glfwGetPrimaryMonitor());
+	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE); // remove the handlebar from the top of the window
+	
 	auto monitor = glfwGetPrimaryMonitor();
 	auto vidMode = glfwGetVideoMode(monitor);
-
-	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-	//
+	
 	GFX_INFO("dimensions: %dx%d", vidMode->width, vidMode->height);
-	//GFX_INFO("Monitors: %d", monitorCount);
 	windowSize = { vidMode->width*0.4f, vidMode->height*0.4f };
 	window = glfwCreateWindow(windowSize.x, windowSize.y, "HelloWorld", nullptr, nullptr);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 #define TASKBAR 30
 	glfwSetWindowPos(window, vidMode->width - windowSize.x, vidMode->height - windowSize.y - TASKBAR);
 #undef TASKBAR
@@ -240,7 +261,7 @@ int main(void)
 	cam = Camera(60, windowSize.x / windowSize.y);
 
 	glfwSetKeyCallback(window, processKeys);
-	glfwSetCursorPosCallback(window, processCursorPosition);
+	glfwSetCursorPosCallback(window, Input::OnCursorHover);
 	glfwSetMouseButtonCallback(window, processMouseButtons);
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	
@@ -274,29 +295,34 @@ int main(void)
 
 	ContinuousVertexLayout layout;
 
-	////unpacked:
-	//// 3 * 4 = 12 | 12 * 24 = 288b
-	//// 2 * 4 = 8  | 8 * 24  = 192b
-	////						= 480 bytes
-	layout.pushAttrib<GL_FLOAT, 3, 24>("position");
-	layout.pushAttrib<GL_FLOAT, 2, 24>("uv");
 
+#ifdef PACKED_VERTICES	
 	//packed:
 	// 1 * 4 = 4 | 4 * 24 = 96b
 	// 1 * 2 = 2 | 2 * 24 = 48b
 	//					  = 144 bytes
-/*
+
 	layout.pushAttribPacked<GL_INT_2_10_10_10_REV, 4, 24>("position");
-	layout.pushAttribPacked<GL_UNSIGNED_BYTE, 2, 24>("uv");		*/
+	layout.pushAttribPacked<GL_UNSIGNED_BYTE, 2, 24>("uv");
+#else
+	//unpacked:
+	// 3 * 4 = 12 | 12 * 24 = 288b
+	// 2 * 4 = 8  | 8 * 24  = 192b
+	//						= 480 bytes
+	layout.pushAttrib<GL_FLOAT, 3, 24>("position");
+	layout.pushAttrib<GL_FLOAT, 2, 24>("uv");
+#endif
+
+
 
 	layout.applyToBuffer(vbo);
 
 	p = createProgram("assets/shaders/vertex.vert", "assets/shaders/fragment.frag");
 	
 
-	Texture2D blockTextureAtlas;
-	//int err = loadTextureAtlas("assets/textures/blocks.png", 16, &blockTextureAtlas);
-	createNoiseTexture(glm::ivec2(512, 512), 3, &blockTextureAtlas);
+	TextureAtlas blockTextureAtlas;
+	int err = loadTextureAtlas("assets/textures/blocks.png", 16, &blockTextureAtlas);
+	//createNoiseTexture(glm::ivec2(512, 512), 3, &blockTextureAtlas);
 	blockTextureAtlas.bind();
 	
 	GFX_GL_CALL(glUniform1i(p.getUniformLocation("blockAtlas"), 0));
@@ -362,12 +388,11 @@ void update(float deltaTime)
 }
 
 
+double lastMouseX = 0, lastMouseY = 0;
 void lateUpdate(float deltaTime)
 {
 	const float moveSpeed = 4.0; //units per second
-	const float mouseSensitivity = 0.01f;
-	double mouseX, mouseY;
-	glfwGetCursorPos(window, &mouseX, &mouseY);
+	const float mouseSensitivity = 0.81f;
 
 	if (glfwGetKey(window, GLFW_KEY_A)) 
 	{
@@ -393,10 +418,17 @@ void lateUpdate(float deltaTime)
 	{
 		cam.transform.position -= cam.transform.up() * moveSpeed * deltaTime;
 	}
-	mouseX = (fmax(fmin(mouseX, windowSize.x), 0) / windowSize.x) - 0.5;
-	mouseY = 0.5 - (fmax(fmin(mouseY, windowSize.y), 0) / windowSize.y);
-	GFX_DEBUG("(%f,%f)", mouseX, mouseY);
+	auto delta = Input::CursorDelta();
 
-	cam.transform.rotation = glm::rotate(cam.transform.rotation, (float)mouseX*mouseSensitivity, cam.transform.up());
-	cam.transform.rotation = glm::rotate(cam.transform.rotation, (float)mouseY*mouseSensitivity, -cam.transform.right());
+	GFX_DEBUG("delta(%f,%f)", delta.x, delta.y);
+	cam.transform.rotation = glm::rotate(cam.transform.rotation, delta.x * mouseSensitivity, cam.transform.up());
+	cam.transform.rotation = glm::rotate(cam.transform.rotation, delta.y * mouseSensitivity, -cam.transform.right());
+
+	/*glm::quat deltaRotation = glm::normalize(
+		glm::vec3(delta.x * mouseSensitivity, delta.y * mouseSensitivity, 1.0f)
+	) * glm::quat {1,0,0,0};
+
+	cam.transform.rotation = cam.transform.rotation * deltaRotation;*/
+
+	
 }
