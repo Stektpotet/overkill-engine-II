@@ -11,12 +11,6 @@ CMakeSettings.json
 #
 # * Whitelist assets we want to keep
 
-assets/textures/*
-!assets/textures/.gitkeep
-
-assets/shaders/*
-!assets/shaders/.gitkeep
-
 assets/materials/*
 !assets/materials/.gitkeep
 
@@ -27,8 +21,5 @@ assets/scenes/*
 !assets/scenes/.gitkeep
 
 tool/*
-!tool/discover.py
-!tool/export.py
-!tool/test-discover.cpp
 
 config.yml
