@@ -2,18 +2,25 @@
 
 float Input::m_cursorX = 0;
 float Input::m_cursorY = 0;
-float Input::m_cursorDeltaX = 0;
-float Input::m_cursorDeltaY = 0;
+float Input::m_lastCursorX = 0;
+float Input::m_lastCursorY = 0;
 
 glm::vec2 Input::CursorDelta()
 {
-	return glm::vec2(m_cursorDeltaX, m_cursorDeltaY);
+	glm::vec2 delta = glm::vec2(
+		(m_cursorX - m_lastCursorX) * 0.01f,
+		(m_cursorY - m_lastCursorY) * 0.01f
+	);
+	m_lastCursorX = m_cursorX;
+	m_lastCursorY = m_cursorY;
+
+	return delta;
 }
 
 void Input::OnCursorHover(GLFWwindow* window, double x, double y)
 {
-	m_cursorDeltaX = float(x) - m_cursorX;
-	m_cursorDeltaY = float(y) - m_cursorY;
-	m_cursorX = float(x);
-	m_cursorY = float(y);
+	m_lastCursorX = m_cursorX;
+	m_lastCursorY = m_cursorY;
+	m_cursorX = static_cast<float>(x);
+	m_cursorY = static_cast<float>(-y);
 }

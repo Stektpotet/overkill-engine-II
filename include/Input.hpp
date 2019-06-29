@@ -7,7 +7,7 @@ class Input
 {
 private:
 	static float m_cursorX, m_cursorY;
-	static float m_cursorDeltaX, m_cursorDeltaY;
+	static float m_lastCursorX, m_lastCursorY;
 
 public:
 	static glm::vec2 CursorDelta();
