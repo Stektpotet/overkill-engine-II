@@ -16,9 +16,9 @@ set(BINDIR ${CMAKE_BINARY_DIR})
 # Find system packages
 find_package(OpenGL REQUIRED)
 if(NOT MSVC)
-    find_package(GLEW REQUIRED)
+	find_package(GLEW REQUIRED)
 endif()
-
+ 
 # Turning off parts of GLFW we do not want to build
 set(GLFW_BUILD_EXAMPLES 0)
 set(GLFW_BUILD_TESTS 0)
@@ -62,11 +62,11 @@ target_include_directories( ${PROJECT}
     PRIVATE ${ROOT}/include
     PRIVATE ${SRCDIR}
     PRIVATE ${LIBDIR}
-    PRIVATE ${LIBDIR}/gfx/include
+    PRIVATE ${LIBDIR}/GFX/include
     PRIVATE ${LIBDIR}/glew/include
     PRIVATE ${LIBDIR}/glm
     PRIVATE ${LIBDIR}/glfw/include
-    PRIVATE ${LIBDIR}/stb
+	PRIVATE ${LIBDIR}/stb
   # PRIVATE ${LIBDIR}/imgui
 )
 

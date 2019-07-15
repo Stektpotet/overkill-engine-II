@@ -9,6 +9,7 @@ Fetched from https://github.com/ZachNo/OpenSimplexCPP
 #pragma once
 #include <cstdint>
 #include <array>
+#include <cmath>	// floor().
 namespace OpenSimplex 
 {
 	class Noise

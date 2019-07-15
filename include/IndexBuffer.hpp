@@ -10,7 +10,7 @@ private:
 	GLuint id;
 public:
 
-	IndexBuffer::IndexBuffer(const GLsizeiptr count, const TIndex* data /*= nullptr*/)
+	IndexBuffer(const GLsizeiptr count, const TIndex* data /*= nullptr*/)
 		: count(count)
 	{
 		glGenBuffers(1, &id);

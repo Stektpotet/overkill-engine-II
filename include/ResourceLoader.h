@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <fstream>
+#include <sstream>		// stringstream used to load file.
 
 #include <gfx.h>
 #include <stb_image.h>
@@ -20,16 +21,27 @@
 /// <returns> true when successful, false when unsuccessful </returns>
 auto fileToString(const char * file, std::string* outString) -> bool
 {
+	/*
 	std::ifstream infile(file);
 
 	if (!infile) {
 		return false;
 	}
 	infile.seekg(0, std::ios::end);
-	outString->resize(infile.tellg());
+	outString->resize(infile.tellg());	// Can't convert char* to const char*.
 	infile.seekg(0, std::ios::beg);
-	infile.read(outString->data(), outString->size());
 	infile.close();
+	return true;
+	*/
+
+	std::ifstream infile(file);
+	if (!infile) {
+		return false;
+	}
+	std::stringstream buffer;
+	buffer << infile.rdbuf();
+	outString->assign(buffer.str());
+
 	return true;
 }
 
@@ -59,7 +71,7 @@ auto createShader(const char* src, GLenum shaderType) -> GLuint
 		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
 
 		str.resize(length); 
-		glGetShaderInfoLog(shaderID, length, nullptr, str.data());
+		glGetShaderInfoLog(shaderID, length, nullptr, (GLchar*)str.data());
 		GFX_WARN("%s shader failed to compile with the error: %s\n", Gfx::GLEnumToString(shaderType), str.c_str());
 		return 0;
 	}
@@ -124,7 +136,7 @@ auto createProgram(const char *vertFile, const char *fragFile) -> ShaderProgram
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 		str.resize(length);
 
-		glGetProgramInfoLog(program, length, nullptr, str.data());
+		glGetProgramInfoLog(program, length, nullptr, (GLchar*)str.data());
 		GFX_ERROR("The program consisting of \"%s\" and  \"%s\" failed to link: %s\n", vertFile, fragFile, str.c_str());
 	}
 	glUseProgram(program);
