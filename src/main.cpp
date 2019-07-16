@@ -14,6 +14,8 @@
 
 #include <gfx.h>
 
+#include "UtilityFunctions.hpp"
+#include "Structs.hpp"
 #include "VertexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "IndexBuffer.hpp"
@@ -21,9 +23,6 @@
 #include "Camera.hpp"
 #include "ResourceLoader.h"
 
-
-void processError(int code, const char* description) 
-{ GFX_ERROR("%s - %s", glewGetErrorString(code), description); }
 
 void render();
 void update(float deltaTime);
@@ -39,49 +38,10 @@ void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods
 	if (key == GLFW_KEY_ESCAPE) { glfwSetWindowShouldClose(window, GLFW_TRUE); }
 }
 void processMouseButtons(GLFWwindow* window, int button, int action, int mods) 
-{
+{ 
 }
 
-glm::uint packSnorm10x3_2Rev(glm::vec3 const& v) {
-	const auto DISCARD_MASK = 1023;
-	const auto MAX = 511;
-
-	float magnitude = glm::length(v);
-	GLuint x =  GLuint(v.x * MAX) & DISCARD_MASK;
-	GLuint y =  GLuint(v.y * MAX) & DISCARD_MASK;
-	GLuint z =  GLuint(v.z * MAX) & DISCARD_MASK;
-
-	return 0 | (z << 20) | (y << 10) | (x << 0);
-}
-glm::uint packSnorm10x3_2Rev(glm::vec3 const& v, bool const& flag0, bool const& flag1) {
-	const auto DISCARD_MASK = 1023;
-	const auto MAX = 511;
-
-	float magnitude = glm::length(v);
-	GLuint x = GLuint(v.x * MAX) & DISCARD_MASK;
-	GLuint y = GLuint(v.y * MAX) & DISCARD_MASK;
-	GLuint z = GLuint(v.z * MAX) & DISCARD_MASK;
-
-	return flag0 << 31 | flag1 << 30 | (z << 20) | (y << 10) | (x << 0);
-}
-
-glm::uint16 packTexCoords(glm::vec2 const& v) {
-	const auto DISCARD_MASK = 511;
-	const auto MAX = 255;
-
-	float magnitude = glm::length(v);
-	GLuint x = GLuint(v.x * MAX) & DISCARD_MASK;
-	GLuint y = GLuint(v.y * MAX) & DISCARD_MASK;
-
-	return (y << 8) | (x << 0);
-}
-
-struct vertex 
-{
-	glm::vec2 pos;
-	glm::vec4 color;
-};
-static const vertex verts[] = {
+static const OK::Struct::Vertex verts[] = {
 	  //position     color
 	{ {  0.9, -0.9}, {1,0,0,1} },
 	{ {  0.9,  0.9}, {0,1,0,1} },
@@ -228,7 +188,7 @@ int main(void)
 	}
 
 	glewExperimental = true; // Needed for core profile
-	glfwSetErrorCallback(processError);
+	glfwSetErrorCallback(OK::Util::processError);
 
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // We want OpenGL 4.6
