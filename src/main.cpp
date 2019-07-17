@@ -20,7 +20,7 @@
 #include "VertexArray.hpp"
 #include "IndexBuffer.hpp"
 #include "Input.hpp"
-#include "Camera.hpp"
+#include "ControllableCamera.hpp"
 #include "ResourceLoader.h"
 
 
@@ -30,7 +30,7 @@ void lateUpdate(float deltaTime);
 
 GLFWwindow* window;
 ShaderProgram p;
-Camera cam;
+OK::ControllableCamera cam;
 glm::vec2 windowSize;
 
 void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -218,7 +218,7 @@ int main(void)
 		GFX_ERROR("GLEW: Failed window creation");
 		return -1;
 	}
-	cam = Camera(60, windowSize.x / windowSize.y);
+	cam = OK::ControllableCamera(60, windowSize.x / windowSize.y);
 
 	glfwSetKeyCallback(window, processKeys);
 	glfwSetCursorPosCallback(window, Input::OnCursorHover);
@@ -347,48 +347,7 @@ void update(float deltaTime)
 
 }
 
-
-double lastMouseX = 0, lastMouseY = 0;
 void lateUpdate(float deltaTime)
 {
-	const float moveSpeed = 4.0; //units per second
-	const float mouseSensitivity = 0.81f;
-
-	if (glfwGetKey(window, GLFW_KEY_A)) 
-	{
-		cam.transform.position -= cam.transform.right() * moveSpeed * deltaTime;
-	} 
-	else if (glfwGetKey(window, GLFW_KEY_D)) 
-	{
-		cam.transform.position += cam.transform.right() * moveSpeed * deltaTime;
-	}
-	if (glfwGetKey(window, GLFW_KEY_W))
-	{
-		cam.transform.position += cam.transform.forward() * moveSpeed * deltaTime;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_S))
-	{
-		cam.transform.position -= cam.transform.forward() * moveSpeed * deltaTime;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q))
-	{
-		cam.transform.position += cam.transform.up() * moveSpeed * deltaTime;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_E))
-	{
-		cam.transform.position -= cam.transform.up() * moveSpeed * deltaTime;
-	}
-	auto delta = Input::CursorDelta();
-
-	GFX_DEBUG("delta(%f,%f)", delta.x, delta.y);
-	cam.transform.rotation = glm::rotate(cam.transform.rotation, delta.x * mouseSensitivity, cam.transform.up());
-	cam.transform.rotation = glm::rotate(cam.transform.rotation, delta.y * mouseSensitivity, -cam.transform.right());
-
-	/*glm::quat deltaRotation = glm::normalize(
-		glm::vec3(delta.x * mouseSensitivity, delta.y * mouseSensitivity, 1.0f)
-	) * glm::quat {1,0,0,0};
-
-	cam.transform.rotation = cam.transform.rotation * deltaRotation;*/
-
-	
+	cam.update(deltaTime);
 }

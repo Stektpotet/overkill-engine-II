@@ -54,6 +54,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
+	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
 #     PRIVATE ${SRCDIR}/uniformBuffer.cpp
 #     PRIVATE ${SRCDIR}/frameBuffer.cpp
 )

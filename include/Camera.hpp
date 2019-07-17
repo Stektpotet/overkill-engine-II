@@ -3,6 +3,9 @@
 
 #include "Transform.hpp"
 
+namespace OK
+{
+
 enum class CameraMode
 {
 	Free,
@@ -36,3 +39,5 @@ public:
 	glm::mat4 viewProjectionMatrix();
 
 };
+
+}
