@@ -2,29 +2,31 @@
 
 namespace OK
 {
+    std::vector<GameObject*>* GameObject::GameObjects = nullptr;
 
-    GameObject::GameObject( std::string name,
+    GameObject::GameObject(const std::string& name,
                             glm::vec3 pos,
                             glm::vec3 scl,
                             glm::quat rot)
     {
+        if (GameObjects == nullptr)
+        {
+            GameObjects = new std::vector<GameObject*>();
+        }
         m_name = name;
         m_trasform.position = pos;
         m_trasform.scale = scl;
         m_trasform.rotation = rot;
-    }
-
-    GameObject::GameObject( std::string name,
-                            Transform trans)
-    {
-        m_name = name;
-        m_trasform = trans;
+        GameObjects->push_back(this);
     }
     
     bool GameObject::hasComponentWithID(int componentID)
     {
         return std::find(m_components.begin(), m_components.end(), componentID) != m_components.end();
     }
+
+    std::string GameObject::getName()
+    { return m_name; }
 
     bool GameObject::addComponent(int componentID)
     {
@@ -42,6 +44,7 @@ namespace OK
 
         //Component::GetByID(componentID)->gameObject == this;
         m_components.push_back(componentID);
+        GFX_DEBUG("Added Component with ID: %d to GameObject with name %s and ID: %d. Now has %d Components.", componentID, m_name.data(), m_ID, m_components.size())
         return true;
     }
 

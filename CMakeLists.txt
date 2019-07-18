@@ -35,7 +35,8 @@ set_target_properties( ${PROJECT}
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     RUNTIME_OUTPUT_DIRECTORY "${BINDIR}"
-    LIBRARY_OUTPUT_DIRECTORY "${BINDIR}/bin"
+	LIBRARY_OUTPUT_DIRECTORY "${BINDIR}/bin"
+	OUTPUT_NAME "OKEII"	# <3
 )
 
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
@@ -55,8 +56,9 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
-	  PRIVATE ${SRCDIR}/Component.cpp
-	  PRIVATE ${SRCDIR}/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/Component.cpp
+	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 
 #     PRIVATE ${SRCDIR}/uniformBuffer.cpp

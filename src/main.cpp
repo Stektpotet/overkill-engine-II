@@ -22,7 +22,9 @@
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "ResourceLoader.h"
-#include "Component.hpp"
+#include "GameObject.hpp"
+#include "components/HelloWorld.hpp"
+
 
 void render();
 void update(float deltaTime);
@@ -32,6 +34,8 @@ GLFWwindow* window;
 ShaderProgram p;
 OK::ControllableCamera cam;
 glm::vec2 windowSize;
+
+OK::GameObject gameObject;
 
 void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -205,7 +209,7 @@ int main(void)
 	windowSize = { vidMode->width*0.4f, vidMode->height*0.4f };
 	window = glfwCreateWindow(windowSize.x, windowSize.y, "HelloWorld", nullptr, nullptr);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 #define TASKBAR 30
 	glfwSetWindowPos(window, vidMode->width - windowSize.x, vidMode->height - windowSize.y - TASKBAR);
 #undef TASKBAR
@@ -262,7 +266,7 @@ int main(void)
 	// 1 * 4 = 4 | 4 * 24 = 96b
 	// 1 * 2 = 2 | 2 * 24 = 48b
 	//					  = 144 bytes
-
+error: expected '(' for function-style cast or type construction
 	layout.pushAttribPacked<GL_INT_2_10_10_10_REV, 4, 24>("position");
 	layout.pushAttribPacked<GL_UNSIGNED_BYTE, 2, 24>("uv");
 #else
@@ -273,8 +277,6 @@ int main(void)
 	layout.pushAttrib<GL_FLOAT, 3, 24>("position");
 	layout.pushAttrib<GL_FLOAT, 2, 24>("uv");
 #endif
-
-
 
 	layout.applyToBuffer(vbo);
 
@@ -301,7 +303,12 @@ int main(void)
 #pragma endregion
 
 
+
 #pragma region GameLoop
+
+	gameObject = OK::GameObject("HelloWorldObject", glm::vec3(0,0,0), glm::vec3(1,1,1), glm::quat(0,0,0,1));
+	gameObject.addComponent(OK::HelloWorld(&gameObject).getID());
+
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
@@ -344,9 +351,10 @@ void render()
 	glfwSwapBuffers(window);
 }
 
+
 void update(float deltaTime)
 {
-
+	OK::Component::Update(deltaTime);
 }
 
 void lateUpdate(float deltaTime)

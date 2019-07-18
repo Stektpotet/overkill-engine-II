@@ -1,9 +1,10 @@
 #include "ControllableCamera.hpp"
 
-extern GLFWwindow* window;
+extern  GLFWwindow* window;
 
 namespace OK
 {
+    
 
 ControllableCamera::ControllableCamera( float fov,
                                         float aspectRatio,
@@ -50,7 +51,7 @@ void ControllableCamera::update(float deltaTime)
     // Rotation:
 	auto delta = Input::CursorDelta();
 
-	GFX_DEBUG("delta(%f,%f)", delta.x, delta.y);
+	//GFX_DEBUG("delta(%f,%f)", delta.x, delta.y);
 	transform.rotation = glm::rotate(transform.rotation, delta.x * m_mouseSensitivity, transform.up());
 	transform.rotation = glm::rotate(transform.rotation, delta.y * m_mouseSensitivity, -transform.right());
 
