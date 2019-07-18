@@ -55,6 +55,10 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
+	  PRIVATE ${SRCDIR}/Component.cpp
+	  PRIVATE ${SRCDIR}/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/GameObject.cpp
+
 #     PRIVATE ${SRCDIR}/uniformBuffer.cpp
 #     PRIVATE ${SRCDIR}/frameBuffer.cpp
 )

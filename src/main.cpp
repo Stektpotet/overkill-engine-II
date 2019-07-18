@@ -22,7 +22,7 @@
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "ResourceLoader.h"
-
+#include "Component.hpp"
 
 void render();
 void update(float deltaTime);
@@ -179,6 +179,7 @@ Blocks - Entities
 
 int main(void)
 {
+
 #pragma region Setup Context
 
 
@@ -298,6 +299,7 @@ int main(void)
 
 
 #pragma endregion
+
 
 #pragma region GameLoop
 	double lastTime = glfwGetTime();
