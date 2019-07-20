@@ -14,13 +14,13 @@ private:
     static std::vector<GameObject*>* GameObjects;
     
     int m_ID;
-    Transform m_trasform;
     std::vector<int> m_components;
     std::string m_name;
 
     inline bool hasComponentWithID(int componentID);
 
 public:
+    Transform m_trasform;
     GameObject(const std::string& name = "GameObject", 
                 glm::vec3 pos = glm::vec3(0,0,0), 
                 glm::vec3 scl = glm::vec3(1,1,1),

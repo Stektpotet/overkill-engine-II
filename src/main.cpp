@@ -21,20 +21,26 @@
 #include "IndexBuffer.hpp"
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
-#include "ResourceLoader.h"
 #include "GameObject.hpp"
+#include "components/SpriteRenderer.hpp"
 #include "components/HelloWorld.hpp"
 
 
 void render();
+void draw();
 void update(float deltaTime);
 void lateUpdate(float deltaTime);
 
 GLFWwindow* window;
-ShaderProgram p;
-OK::ControllableCamera cam;
 glm::vec2 windowSize;
 
+// Cube rendering:
+ShaderProgram shaderProgram;
+VertexArray* vao;
+VertexBuffer* vbo;
+TextureAtlas blockTextureAtlas;
+
+OK::ControllableCamera cam;
 OK::GameObject gameObject;
 
 void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -243,12 +249,11 @@ int main(void)
 
 #pragma region Static Setup
 
-
-	VertexArray vao;
+	vao = new VertexArray();
 
 	IndexBuffer<GLuint> ibo(sizeof(elements), elements);
 	
-	VertexBuffer vbo(
+	vbo = new VertexBuffer(
 		sizeof(positions) + sizeof(uvs),
 		{ 
 			{sizeof(positions),positions}, 
@@ -278,21 +283,20 @@ error: expected '(' for function-style cast or type construction
 	layout.pushAttrib<GL_FLOAT, 2, 24>("uv");
 #endif
 
-	layout.applyToBuffer(vbo);
+	layout.applyToBuffer(*vbo);
 
-	p = createProgram("assets/shaders/vertex.vert", "assets/shaders/fragment.frag");
+	shaderProgram = createProgram("assets/shaders/atlasVertex.vert", "assets/shaders/atlasFragment.frag");
 	
 
-	TextureAtlas blockTextureAtlas;
 	int err = loadTextureAtlas("assets/textures/blocks.png", 16, &blockTextureAtlas);
 	//createNoiseTexture(glm::ivec2(512, 512), 3, &blockTextureAtlas);
 	blockTextureAtlas.bind();
 	
-	GFX_GL_CALL(glUniform1i(p.getUniformLocation("blockAtlas"), 0));
+	GFX_GL_CALL(glUniform1i(shaderProgram.getUniformLocation("blockAtlas"), 0));
 
 	cam.transform.position = { -4, 0, 0 };
 	cam.transform.lookAt({ 0,0,0 });
-	cam.setFoV(30);
+	cam.setFoV(70);
 
 	GFX_GL_CALL(glEnable(GL_CULL_FACE));
 	GFX_GL_CALL(glFrontFace(GL_CCW));
@@ -308,6 +312,9 @@ error: expected '(' for function-style cast or type construction
 
 	gameObject = OK::GameObject("HelloWorldObject", glm::vec3(0,0,0), glm::vec3(1,1,1), glm::quat(0,0,0,1));
 	gameObject.addComponent(OK::HelloWorld(&gameObject).getID());
+	Texture2D texture;
+	loadTexture("assets/textures/sprite.png", &texture);
+	gameObject.addComponent(OK::SpriteRenderer(&gameObject, texture).getID());
 
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -334,6 +341,19 @@ error: expected '(' for function-style cast or type construction
 void render()
 {
 	GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	draw();
+	glfwSwapBuffers(window);
+}
+
+void draw()
+{
+	// Draw Components:
+	//OK::Component::Draw();
+
+	// Draw stone cubes:
+	vao->bind();
+	blockTextureAtlas.bind();
+	shaderProgram.bind();
 
 	Transform blockTransform = {
 		glm::vec3{0,0,0},
@@ -343,14 +363,14 @@ void render()
 	
 	glm::mat4 mvp = cam.viewProjectionMatrix() * blockTransform.modelMatrix();
 	
-	GLuint mvpLocation = glGetUniformLocation(p.ID(), "MVP");
+	GLuint mvpLocation = glGetUniformLocation(shaderProgram.ID(), "MVP");
 	glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
 	
 	GFX_GL_CALL(glDrawElementsInstancedBaseVertex(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr, 4096, 0));
-
-	glfwSwapBuffers(window);
+	vao->unbind();
+	blockTextureAtlas.unbind();
+	shaderProgram.unbind();
 }
-
 
 void update(float deltaTime)
 {

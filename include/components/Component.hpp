@@ -19,6 +19,7 @@ public:
     GameObject* m_gameObject;
     static Component* GetByID(int componentID);     // Returns nullptr if ID doesn't exist.
     static void Update(float deltaTime);
+    static void Draw();
 
     Component(GameObject* gameObject);
     int getID();

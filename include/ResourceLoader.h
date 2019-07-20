@@ -19,7 +19,7 @@
 /// <param name="file">the path of the file to read</param>
 /// <param name="outString">the string to be filled</param>
 /// <returns> true when successful, false when unsuccessful </returns>
-auto fileToString(const char * file, std::string* outString) -> bool
+inline auto fileToString(const char * file, std::string* outString) -> bool
 {
 	/*
 	std::ifstream infile(file);
@@ -52,7 +52,7 @@ auto fileToString(const char * file, std::string* outString) -> bool
 /// <param name="src">the source code</param>
 /// <param name="shaderType">the shaderType</param>
 /// <returns> the id of the created shader object </returns>
-auto createShader(const char* src, GLenum shaderType) -> GLuint
+inline auto createShader(const char* src, GLenum shaderType) -> GLuint
 {
 	// Create an empty shader object
 	GLuint shaderID = glCreateShader(shaderType);
@@ -84,7 +84,7 @@ auto createShader(const char* src, GLenum shaderType) -> GLuint
 /// <param name="vertFile">the path of the vertex shader file</param>
 /// <param name="fragFile">the path of the fragment shader file</param>
 /// <returns> the id of the created shader program </returns>
-auto createProgram(const char *vertFile, const char *fragFile) -> ShaderProgram
+inline auto createProgram(const char *vertFile, const char *fragFile) -> ShaderProgram
 {
 	GLuint program = glCreateProgram();
 	GLuint vertexShader = 0;
@@ -145,7 +145,7 @@ auto createProgram(const char *vertFile, const char *fragFile) -> ShaderProgram
 }
 
 
-auto splitTexture(
+inline auto splitTexture(
 	const uint8_t* fullSrc,
 	const uint16_t channels,
 	const uint16_t width,
@@ -179,7 +179,7 @@ auto splitTexture(
 }
 
 
-auto splitTexture(
+inline auto splitTexture(
 	const uint8_t* fullSrc,
 	const uint16_t channels,
 	const uint16_t size,
@@ -189,7 +189,7 @@ auto splitTexture(
 	return splitTexture(fullSrc, channels, size, size, elementSize, elementSize);
 }
 
-auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
+inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 {
 	GLubyte* raw_pixels;
 
@@ -223,7 +223,7 @@ auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 	return 0;
 }
 
-auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, TextureAtlas* outTexture) -> int
+inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, TextureAtlas* outTexture) -> int
 {
 	GLubyte* raw_pixels;
 
@@ -280,7 +280,7 @@ auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, Texture
 }
 
 
-auto createNoiseTexture(glm::ivec2 dimensions, int channels, Texture2D* outTexture, int64_t seed = 0) -> int
+inline auto createNoiseTexture(glm::ivec2 dimensions, int channels, Texture2D* outTexture, int64_t seed = 0) -> int
 {
 	OpenSimplex::Noise noise(seed);
 	auto raw_pixels = std::vector<uint8_t>(dimensions.x * dimensions.y * channels);

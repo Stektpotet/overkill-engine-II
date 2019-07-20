@@ -12,6 +12,7 @@ public:
 	inline ~VertexArray() { glDeleteVertexArrays(1, &id); }
 
 	inline bool valid() { return id != 0; }
+	inline GLuint ID() const { return id; }
 
 	inline void bind() const { (glBindVertexArray(id)); }
 	static inline void unbind() { (glBindVertexArray(0)); }
