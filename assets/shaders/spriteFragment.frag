@@ -1,9 +1,12 @@
-#version 150
+//https://learnopengl.com/In-Practice/2D-Game/Rendering-Spritess
+#version 330 core
+in vec2 TexCoords;
+out vec4 color;
 
-in vec2 texCoord;
-out vec4 result;
 uniform sampler2D image;
+uniform vec4 spriteColor;
 
-void main() {
-	result = texture(image, texCoord);
-}
+void main()
+{    
+    color = spriteColor * texture(image, TexCoords);
+}  

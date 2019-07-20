@@ -1,14 +1,14 @@
-#version 450
+//https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites
+#version 330 core
+layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec2 uv;
+out vec2 TexCoords;
 
-out vec2 texCoord;
-uniform mat4 MVP = mat4(1);
+uniform mat4 model;
+uniform mat4 projection;
 
-void main() {
-
-	texCoord = uv;
-	vec3 offset = vec3(0, floor(3 * sin(gl_InstanceID*3.14*0.001)*0.25), gl_InstanceID);
-	gl_Position = MVP * vec4(position + offset, 1);
+void main()
+{
+    TexCoords = vertex.zw;
+    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }

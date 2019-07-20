@@ -211,7 +211,7 @@ inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 		width,
 		height,
 		0,
-		GL_RGB,
+		GL_RGBA,
 		GL_UNSIGNED_BYTE,
 		raw_pixels)
 	);

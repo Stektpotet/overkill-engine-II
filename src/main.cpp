@@ -16,9 +16,6 @@
 
 #include "UtilityFunctions.hpp"
 #include "Structs.hpp"
-#include "VertexBuffer.hpp"
-#include "VertexArray.hpp"
-#include "IndexBuffer.hpp"
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "GameObject.hpp"
@@ -34,12 +31,6 @@ void lateUpdate(float deltaTime);
 GLFWwindow* window;
 glm::vec2 windowSize;
 
-// Cube rendering:
-ShaderProgram shaderProgram;
-VertexArray* vao;
-VertexBuffer* vbo;
-TextureAtlas blockTextureAtlas;
-
 OK::ControllableCamera cam;
 OK::GameObject gameObject;
 
@@ -51,141 +42,6 @@ void processMouseButtons(GLFWwindow* window, int button, int action, int mods)
 { 
 }
 
-static const OK::Struct::Vertex verts[] = {
-	  //position     color
-	{ {  0.9, -0.9}, {1,0,0,1} },
-	{ {  0.9,  0.9}, {0,1,0,1} },
-	{ { -0.9, -0.9}, {0,0,1,1} },
-	{ { -0.9,  0.9}, {0,0,0,1} },
-	{ {  0.5, -0.5}, {0,0,0,1} },
-	{ {  0.5,  0.5}, {0,0,1,1} },
-	{ { -0.5, -0.5}, {0,1,0,1} },
-	{ { -0.5,  0.5}, {1,0,0,1} },
-};
-
-#ifdef PACKED_VERTICES
-#define VEC3_POS(glm_vec3) packSnorm10x3_2Rev(glm_vec3)
-#define VEC2_UV(glm_vec2) packTexCoords(glm_vec2)
-#else
-#define VEC3_POS(glm_vec3) glm_vec3
-#define VEC2_UV(glm_vec2) glm_vec2
-#endif
-
-
-#ifdef PACKED_VERTICES
-static glm::uint positions[] = {
-#else
-static glm::vec3 positions[] = {
-#endif
-	//positions
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 0
-	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 1	F
-	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 2
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 3
-								// 			   
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 4
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 5	L
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 6
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f })),	// 7
-								// 
-	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 8
-	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 9	R
-	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 10
-	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 11
-								// 
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 12
-	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 13	U
-	VEC3_POS((glm::vec3{  0.5f, -0.5f,  0.5f })),	// 14
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f,  0.5f })),	// 15
-								// 
-	VEC3_POS((glm::vec3{  0.5f, -0.5f, -0.5f })),	// 18
-	VEC3_POS((glm::vec3{ -0.5f, -0.5f, -0.5f })),	// 19	B
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f })),	// 16
-	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 17
-								// 
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f,  0.5f })),	// 20
-	VEC3_POS((glm::vec3{  0.5f,  0.5f,  0.5f })),	// 21	O
-	VEC3_POS((glm::vec3{  0.5f,  0.5f, -0.5f })),	// 22
-	VEC3_POS((glm::vec3{ -0.5f,  0.5f, -0.5f }))	// 23
-};
-
-#ifdef PACKED_VERTICES
-static glm::uint16 uvs[] = {
-#else
-static glm::vec2 uvs[] = {
-#endif
-	//uvs
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-	
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-
-	VEC2_UV((glm::vec2(0, 0))),
-	VEC2_UV((glm::vec2(1, 0))),
-	VEC2_UV((glm::vec2(1, 1))),
-	VEC2_UV((glm::vec2(0, 1))),
-};
-#ifdef PACKED_VERTICES
-#undef PACKED_VERTICES
-#endif
-#undef VEC3_POS
-#undef VEC2_UV
-
-static const GLuint elements[] = {
-#define MakeQuad(x) x, x+1, x+2, x+2, x+3, x,
-	MakeQuad(0)
-	MakeQuad(4)
-	MakeQuad(8)
-	MakeQuad(12)
-	MakeQuad(16)
-	MakeQuad(20)
-#undef MakeQuad
-	//0, 1, 2,
-	//2, 3, 0,
-	//
-	//4, 5, 6,
-	//6, 7, 4,
-	//
-	//1, 6, 7,
-	//7, 2, 1,
-	//
-	//8, 9, 1,
-	//1, 0, 8,
-	//
-	//10, 11, 9,
-	//9,  8,  10,
-	//
-	//12, 13, 11,
-	//11, 10, 12
-};
-/*
-VBO, VAO
-  ^ render batching
-Mesh
-
-Blocks - Entities
-
-*/
 
 int main(void)
 {
@@ -236,7 +92,6 @@ int main(void)
 	glfwSetMouseButtonCallback(window, processMouseButtons);
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	
-
 	GFX_GL_CALL(glEnable(GL_MULTISAMPLE));
 
 	GFX_INFO("Vendor: %s", glGetString(GL_VENDOR));
@@ -249,51 +104,6 @@ int main(void)
 
 #pragma region Static Setup
 
-	vao = new VertexArray();
-
-	IndexBuffer<GLuint> ibo(sizeof(elements), elements);
-	
-	vbo = new VertexBuffer(
-		sizeof(positions) + sizeof(uvs),
-		{ 
-			{sizeof(positions),positions}, 
-			{sizeof(uvs), uvs}
-		}
-	);
-
-	//VertexBuffer vbo2 = VertexBuffer(sizeof(verts), verts);
-
-	ContinuousVertexLayout layout;
-
-
-#ifdef PACKED_VERTICES	
-	//packed:
-	// 1 * 4 = 4 | 4 * 24 = 96b
-	// 1 * 2 = 2 | 2 * 24 = 48b
-	//					  = 144 bytes
-error: expected '(' for function-style cast or type construction
-	layout.pushAttribPacked<GL_INT_2_10_10_10_REV, 4, 24>("position");
-	layout.pushAttribPacked<GL_UNSIGNED_BYTE, 2, 24>("uv");
-#else
-	//unpacked:
-	// 3 * 4 = 12 | 12 * 24 = 288b
-	// 2 * 4 = 8  | 8 * 24  = 192b
-	//						= 480 bytes
-	layout.pushAttrib<GL_FLOAT, 3, 24>("position");
-	layout.pushAttrib<GL_FLOAT, 2, 24>("uv");
-#endif
-
-	layout.applyToBuffer(*vbo);
-
-	shaderProgram = createProgram("assets/shaders/atlasVertex.vert", "assets/shaders/atlasFragment.frag");
-	
-
-	int err = loadTextureAtlas("assets/textures/blocks.png", 16, &blockTextureAtlas);
-	//createNoiseTexture(glm::ivec2(512, 512), 3, &blockTextureAtlas);
-	blockTextureAtlas.bind();
-	
-	GFX_GL_CALL(glUniform1i(shaderProgram.getUniformLocation("blockAtlas"), 0));
-
 	cam.transform.position = { -4, 0, 0 };
 	cam.transform.lookAt({ 0,0,0 });
 	cam.setFoV(70);
@@ -303,6 +113,11 @@ error: expected '(' for function-style cast or type construction
 	GFX_GL_CALL(glCullFace(GL_BACK));
 	GFX_GL_CALL(glEnable(GL_DEPTH_TEST));
 
+	// Transparent sprites:
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0);
 
 #pragma endregion
 
@@ -314,8 +129,15 @@ error: expected '(' for function-style cast or type construction
 	gameObject.addComponent(OK::HelloWorld(&gameObject).getID());
 	Texture2D texture;
 	loadTexture("assets/textures/sprite.png", &texture);
-	gameObject.addComponent(OK::SpriteRenderer(&gameObject, texture).getID());
-
+	
+	OK::SpriteRenderer sp = OK::SpriteRenderer(	&gameObject, 	
+												texture, 
+												glm::vec2(0,0),
+												glm::vec2(300,300),
+												glm::vec4(1,1,1,0.1f),
+												0);
+	gameObject.addComponent(sp.getID());
+	
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
@@ -348,28 +170,7 @@ void render()
 void draw()
 {
 	// Draw Components:
-	//OK::Component::Draw();
-
-	// Draw stone cubes:
-	vao->bind();
-	blockTextureAtlas.bind();
-	shaderProgram.bind();
-
-	Transform blockTransform = {
-		glm::vec3{0,0,0},
-		glm::vec3{1,1,1},
-		glm::quatLookAt(glm::normalize(glm::vec3{1,1,1}), glm::vec3{0,1,0})
-	};
-	
-	glm::mat4 mvp = cam.viewProjectionMatrix() * blockTransform.modelMatrix();
-	
-	GLuint mvpLocation = glGetUniformLocation(shaderProgram.ID(), "MVP");
-	glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
-	
-	GFX_GL_CALL(glDrawElementsInstancedBaseVertex(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr, 4096, 0));
-	vao->unbind();
-	blockTextureAtlas.unbind();
-	shaderProgram.unbind();
+	OK::Component::Draw();
 }
 
 void update(float deltaTime)

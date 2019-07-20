@@ -1,5 +1,7 @@
 #include "components/SpriteRenderer.hpp"
 
+extern glm::vec2 windowSize;
+
 namespace OK
 {
     SpriteRenderer::SpriteRenderer( GameObject* gameObject,
@@ -14,7 +16,7 @@ namespace OK
         m_offset = offset;
         m_size = size;
         m_color = color;
-        m_rotation = rotation;
+        m_rotation = glm::radians<float>(rotation);
         
         prepare();
     }
@@ -25,27 +27,41 @@ namespace OK
         // Configure VAO and VBO
         GLfloat vertices[] = { 
             // Pos      // UV
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f, 
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 
         
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 0.0f
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 0.0f,
+            1.0f, 0.0f, 1.0f, 1.0f
         };
-        
-        m_VBO = new VertexBuffer(sizeof(vertices), vertices);
+
+
+        // Setup shader and uniforms:
         m_shader = createProgram("assets/shaders/spriteVertex.vert", "assets/shaders/spriteFragment.frag");
 
-        GFX_GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, m_VBO->ID()));
+        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 
+        static_cast<GLfloat>(windowSize.y), 0.0f, -1.0f, 1.0f);
+
+	    GFX_GL_CALL(glUniform1i(glGetUniformLocation(m_shader.ID(), "image"), 0));
+        GFX_GL_CALL(glUniformMatrix4fv(glGetUniformLocation(m_shader.ID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection)));
+
+
+        // Setup buffers:
+        m_VAO = new VertexArray();
+        //VertexBuffer VBO(sizeof(vertices), vertices);
+        
+        GLuint VBO;
+        GFX_GL_CALL(glGenBuffers(1, &VBO));
+        GFX_GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
         GFX_GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW));
 
-        GFX_GL_CALL(glBindVertexArray(m_VAO.ID()));
         GFX_GL_CALL(glEnableVertexAttribArray(0));
         GFX_GL_CALL(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0));
+        
+        // Unbind
         GFX_GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0)); 
         GFX_GL_CALL(glBindVertexArray(0));
-        
     }
 
 
@@ -54,7 +70,7 @@ namespace OK
 
     void SpriteRenderer::draw()
     {
-        glm::mat4 mvp = m_gameObject->m_trasform.modelMatrix();
+        glm::mat4 mvp = glm::mat4(1);// m_gameObject->m_trasform.modelMatrix();
 
         mvp = glm::translate(mvp, glm::vec3(m_offset.x, m_offset.y, 0.0f)); 
         
@@ -65,26 +81,24 @@ namespace OK
 
         mvp = glm::scale(mvp, glm::vec3(m_size, 1.0f)); 
 
-
         m_shader.bind();
-        m_VAO.bind();
         m_texture.bind();
 
-	    GFX_GL_CALL(glUniform1i(m_shader.getUniformLocation("image"), 0));
-        // set texture uniform
-	    GLuint mvpLocation = glGetUniformLocation(m_shader.ID(), "MVP");
-	    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
-        
-        GFX_GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+        // Set "update every frame" uniforms:
+        GFX_GL_CALL(glUniformMatrix4fv(glGetUniformLocation(m_shader.ID(), "model"), 1, GL_FALSE, glm::value_ptr(mvp)));
+        GFX_GL_CALL(glUniform4f(glGetUniformLocation(m_shader.ID(), "spriteColor"), m_color.x, m_color.y, m_color.z, m_color.w));
 
-        m_VAO.unbind();
+        m_VAO->bind();
+        GFX_GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+        m_VAO->unbind();
+
         m_texture.unbind();
         m_shader.unbind();
     }
 
     SpriteRenderer::~SpriteRenderer()
     {
-        delete m_VBO;
+        //delete m_VBO;
     }
 
 }
