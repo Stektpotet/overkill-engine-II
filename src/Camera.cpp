@@ -1,5 +1,8 @@
 #include "Camera.hpp"
 
+namespace OK
+{
+
 Camera::Camera(
 	float fov,			// = 60.0f
 	float aspectRatio,  // = 4.0f/3.0f
@@ -24,4 +27,6 @@ glm::mat4 Camera::viewProjectionMatrix()
 	return 
 		glm::perspective(fieldOfViewVertical, aspectRatio, nearClip, farClip) * 
 		glm::translate(glm::mat4_cast(transform.rotation), -transform.position);
+}
+
 }

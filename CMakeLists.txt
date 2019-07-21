@@ -16,9 +16,9 @@ set(BINDIR ${CMAKE_BINARY_DIR})
 # Find system packages
 find_package(OpenGL REQUIRED)
 if(NOT MSVC)
-    find_package(GLEW REQUIRED)
+	find_package(GLEW REQUIRED)
 endif()
-
+ 
 # Turning off parts of GLFW we do not want to build
 set(GLFW_BUILD_EXAMPLES 0)
 set(GLFW_BUILD_TESTS 0)
@@ -35,7 +35,8 @@ set_target_properties( ${PROJECT}
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     RUNTIME_OUTPUT_DIRECTORY "${BINDIR}"
-    LIBRARY_OUTPUT_DIRECTORY "${BINDIR}/bin"
+	LIBRARY_OUTPUT_DIRECTORY "${BINDIR}/bin"
+	OUTPUT_NAME "OKEII"	# <3
 )
 
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
@@ -53,6 +54,13 @@ target_sources(${PROJECT}
       PRIVATE ${SRCDIR}/Camera.cpp
 	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/Input.cpp
+	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
+	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
+	  PRIVATE ${SRCDIR}/components/Component.cpp
+	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
+	  PRIVATE ${SRCDIR}/GameObject.cpp
+
 #     PRIVATE ${SRCDIR}/uniformBuffer.cpp
 #     PRIVATE ${SRCDIR}/frameBuffer.cpp
 )
@@ -62,11 +70,11 @@ target_include_directories( ${PROJECT}
     PRIVATE ${ROOT}/include
     PRIVATE ${SRCDIR}
     PRIVATE ${LIBDIR}
-    PRIVATE ${LIBDIR}/gfx/include
+    PRIVATE ${LIBDIR}/GFX/include
     PRIVATE ${LIBDIR}/glew/include
     PRIVATE ${LIBDIR}/glm
     PRIVATE ${LIBDIR}/glfw/include
-    PRIVATE ${LIBDIR}/stb
+	PRIVATE ${LIBDIR}/stb
   # PRIVATE ${LIBDIR}/imgui
 )
 

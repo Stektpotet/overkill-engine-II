@@ -18,7 +18,7 @@ ShaderProgram::ShaderProgram(GLuint ID) : id(ID)
 	{
 		GLint ignored;
 		GLenum type;
-		glGetActiveAttrib(id, i, maxNameLength, nullptr, &ignored, &type, name.data());
+		glGetActiveAttrib(id, i, maxNameLength, nullptr, &ignored, &type, (GLchar*)name.data());
 
 		addAttributeLocation(name.data());
 		GFX_DEBUG("[ATTRIBUTE] %s: \"%s\" cached aside in the active shader program!", Gfx::GLEnumToString(type), name.data());
@@ -35,7 +35,7 @@ ShaderProgram::ShaderProgram(GLuint ID) : id(ID)
 	{
 		GLint ignored;
 		GLenum type;
-		glGetActiveUniform(id, i, maxNameLength, nullptr, &ignored, &type, name.data());
+		glGetActiveUniform(id, i, maxNameLength, nullptr, &ignored, &type, (GLchar*)name.data());
 
 		addUniformLocation(name.data());
 		GFX_DEBUG("[UNIFORM] %s: \"%s\" cached aside in the active shader program!", Gfx::GLEnumToString(type), name.data());
@@ -66,8 +66,8 @@ ShaderProgram::destroy()
 
 void
 ShaderProgram::addUniformLocation( const char* name )
-{
-	uniforms.try_emplace(name, glGetUniformLocation(id, name));
+{	// Compiler says there is no try_emplace back for unorderer maps. According to stack overflow, it wouldn't make sense to have one (https://stackoverflow.com/questions/53772218/why-is-try-emplace-not-implemented-for-stdmultimap).
+	uniforms.emplace(name, glGetUniformLocation(id, name));
 }
 
 GLint 
@@ -85,7 +85,7 @@ ShaderProgram::getUniformLocation( const char* name ) const
 void
 ShaderProgram::addAttributeLocation( const char* name )
 {
-	attributes.try_emplace(name, glGetAttribLocation(id, name));
+	attributes.emplace(name, glGetAttribLocation(id, name));
 }
 
 GLint 

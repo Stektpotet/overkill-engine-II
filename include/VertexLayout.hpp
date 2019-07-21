@@ -82,7 +82,7 @@ public:
 	void pushAttrib(const char* name)
 	{
 		GFX_ASSERT((1 <= componentCount && componentCount <= 4) || componentCount == GL_BGRA, "pushing attribute with illegal count: %d (accepted values: 1-4, GL_BGRA)", componentCount);
-		m_attributes.push_back(constexpr Attribute(name, byteSize, componentCount, type, normalized) );
+		m_attributes.push_back(Attribute(name, byteSize, componentCount, type, normalized) );
 		m_stride += addStride(byteSize);
 	}
 
