@@ -3,7 +3,9 @@
 #include <vector>
 #include <algorithm>        // Find() in vector.
 #include "Transform.hpp"
+#include "components/Component.hpp"
 #include <gfx.h>
+#include <memory>
 
 namespace OK
 {
@@ -27,10 +29,20 @@ public:
                 glm::quat rot = glm::quat(0,0,0,1));
 
     std::string getName();
-    bool addComponent(int componentID);         // Takes in the ID of an existing component and attempts to add it.
-                                                // Can fail it it already has the component or the component already has a GameObject reference.
+    
+    ///<summary>
+    /// Adds a Component of the specified type to the GameObject. 
+    /// Allows for in-place construction by taking TComponent's constructor arguments.
+    /// Can fail if it already has the component or the component already has a GameObject reference.
+    /// </summary>
+    template<typename TComponent, typename... Args>
+    std::shared_ptr<TComponent> addComponent(Args&&... ctorArgs);
+
+    template<typename TComponent>
+    std::shared_ptr<TComponent> getComponent();
+
     bool removeComponent(int componentID);      // Removes the component so it is no longer assiciated with this GameObject.
                                                 // NB! Does not destroy the component.
 };
-
+#include "GameObject.tpp" //Template implementations
 }

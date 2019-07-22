@@ -28,26 +28,6 @@ namespace OK
     std::string GameObject::getName()
     { return m_name; }
 
-    bool GameObject::addComponent(int componentID)
-    {
-        if (hasComponentWithID(componentID))
-        {
-            GFX_WARN("Cannot add a duplicate Component to a GameObject(%s)", m_name.data());
-            return false;
-        }
-
-        // if (Component::GetByID(componentID)->gameObject != nullptr)
-        // {
-        //     GFX_WARN("Cannot add an already in-use Component to a GameObject(%s). Only one GameObject per Component.", m_name.data());
-        //     return false;
-        // }
-
-        //Component::GetByID(componentID)->gameObject == this;
-        m_components.push_back(componentID);
-        GFX_DEBUG("Added Component with ID: %d to GameObject with name %s and ID: %d. Now has %d Components.", componentID, m_name.data(), m_ID, m_components.size())
-        return true;
-    }
-
     bool GameObject::removeComponent(int componentID)
     {
         if (!hasComponentWithID(componentID))

@@ -3,17 +3,17 @@
 namespace OK
 {
 
-    std::vector<Component*>* Component::Components = nullptr;
+    std::vector<std::shared_ptr<Component>>* Component::Components = nullptr;
 
 
 // Static functions:
-    Component* Component::GetByID(int componentID)
+    std::shared_ptr<Component> Component::GetByID(int componentID)
     {
         if (Components == nullptr)
         {
             return nullptr;
         }
-        auto iterator = std::find_if(Components->begin(), Components->end(), [componentID](Component * c){return c->m_ID == componentID;});
+        auto iterator = std::find_if(Components->begin(), Components->end(), [componentID](std::shared_ptr<Component> c){return c->m_ID == componentID;});
         int index = std::distance(Components->begin(), iterator);
         return Components->at(index);
     }
@@ -49,12 +49,11 @@ namespace OK
     {
         if (Components == nullptr)
         {
-            Components = new std::vector<Component*>();
+            Components = new std::vector<std::shared_ptr<Component>>();
         }
         m_ID = Components->size();
         m_gameObject = gameObject; 
-        Components->push_back(this);
-        GFX_DEBUG("Constructed Component with ID: %d with parent GameObject: %s", m_ID, gameObject->getName().data());
+        GFX_DEBUG("Constructed Component {%s} with ID: %d with parent GameObject: %s", typeid(this).name(), m_ID, gameObject->getName().data());
     }
 
     int Component::getID()

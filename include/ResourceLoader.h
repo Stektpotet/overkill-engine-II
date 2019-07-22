@@ -189,6 +189,22 @@ inline auto splitTexture(
 	return splitTexture(fullSrc, channels, size, size, elementSize, elementSize);
 }
 
+
+inline auto getFormatFromChannelCount(int channels) -> GLenum 
+{
+    switch (channels)
+    {
+    case STBI_grey:         return GL_RED;
+    case STBI_grey_alpha:   return GL_RG;
+    case STBI_rgb:          return GL_RGB;
+    case STBI_rgb_alpha:    return GL_RGBA;
+    case STBI_default:
+    default:
+        GFX_ERROR("wtf how?");
+        return GL_NONE;
+    }
+}
+
 inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 {
 	GLubyte* raw_pixels;
@@ -203,7 +219,6 @@ inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 		return 1;
 	}
 
-
 	*outTexture = Texture2D(width, height, channels);
 	GFX_GL_CALL(glTexImage2D(GL_TEXTURE_2D,
 		0,
@@ -211,7 +226,7 @@ inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
 		width,
 		height,
 		0,
-		GL_RGBA,
+        getFormatFromChannelCount(channels),
 		GL_UNSIGNED_BYTE,
 		raw_pixels)
 	);
@@ -237,19 +252,22 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
 		GFX_WARN("failed to load \"%s\"\n", texturefile);
 		return 1;
 	}
+
+    auto cpuTexelFormat = getFormatFromChannelCount(channels);
+
 	//GFX_ASSERT(dimension <= 16, "Unsupported dimension of atlas: %dx%d=%d, (max supported is 16x16=256)", dimension, dimension, dimension * dimension);
 	*outTexture = TextureAtlas(width / dimension, height / dimension, dimension * dimension, channels);
 	GFX_GL_CALL(
 		glTexImage3D(GL_TEXTURE_2D_ARRAY,
-			0,							// mipmap level
-			GL_RGBA8,					// gpu texel format
-			outTexture->getWidth(),		// width
-			outTexture->getHeight(),	// height
-			outTexture->getDepth(),		// depth
-			0,							// border
-			GL_RGB,						// cpu pixel format
-			GL_UNSIGNED_BYTE,			// cpu pixel coord type
-			nullptr						// pixel data
+			0,							    // mipmap level
+			GL_RGBA8,					    // gpu texel format
+			outTexture->getWidth(),		    // width
+			outTexture->getHeight(),	    // height
+			outTexture->getDepth(),		    // depth
+			0,							    // border
+            cpuTexelFormat,                 // cpu pixel format
+			GL_UNSIGNED_BYTE,			    // cpu pixel coord type
+			nullptr					        // pixel data
 		)					
 	);
 
@@ -266,7 +284,7 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
 				atlasData[i].width,
 				atlasData[i].height,
 				1,
-				GL_RGB,
+                cpuTexelFormat,
 				GL_UNSIGNED_BYTE,
 				atlasData[i].pixels.data()
 			)
@@ -303,7 +321,7 @@ inline auto createNoiseTexture(glm::ivec2 dimensions, int channels, Texture2D* o
 		dimensions.x,
 		dimensions.y,
 		0,
-		GL_RGB,
+		getFormatFromChannelCount(channels),
 		GL_UNSIGNED_BYTE,
 		raw_pixels.data())
 	);

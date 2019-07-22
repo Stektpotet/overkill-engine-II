@@ -126,18 +126,15 @@ int main(void)
 #pragma region GameLoop
 
 	gameObject = OK::GameObject("HelloWorldObject", glm::vec3(0,0,0), glm::vec3(1,1,1), glm::quat(0,0,0,1));
-	gameObject.addComponent(OK::HelloWorld(&gameObject).getID());
+	gameObject.addComponent<OK::HelloWorld>();
 	Texture2D texture;
 	loadTexture("assets/textures/sprite.png", &texture);
-	
-	OK::SpriteRenderer sp = OK::SpriteRenderer(	&gameObject, 	
-												texture, 
-												glm::vec2(0,0),
-												glm::vec2(300,300),
-												glm::vec4(1,1,1,0.1f),
-												0);
-	gameObject.addComponent(sp.getID());
-	
+    auto helloWorld = gameObject.getComponent<OK::HelloWorld>();
+    
+    gameObject.removeComponent(helloWorld->getID());
+
+	auto sp = gameObject.addComponent<OK::SpriteRenderer>(texture);
+    //gameObject.addComponent(sp->getID());
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();

@@ -5,19 +5,9 @@ extern glm::vec2 windowSize;
 namespace OK
 {
     SpriteRenderer::SpriteRenderer( GameObject* gameObject,
-                                    Texture2D texture,
-                                    glm::vec2 offset,
-                                    glm::vec2 size,
-                                    glm::vec4 color,
-                                    float rotation
-                                ) : Component(gameObject)
+                                    Texture2D texture
+    ) : Component(gameObject), m_texture{texture}
     {
-        m_texture = texture;
-        m_offset = offset;
-        m_size = size;
-        m_color = color;
-        m_rotation = glm::radians<float>(rotation);
-        
         prepare();
     }
     
