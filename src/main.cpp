@@ -125,15 +125,15 @@ int main(void)
 
 #pragma region GameLoop
 
-	gameObject = OK::GameObject("HelloWorldObject", glm::vec3(0,0,0), glm::vec3(1,1,1), glm::quat(0,0,0,1));
+	gameObject = OK::GameObject("HelloWorldObject");
 	gameObject.addComponent<OK::HelloWorld>();
 	Texture2D texture;
 	loadTexture("assets/textures/sprite.png", &texture);
     auto helloWorld = gameObject.getComponent<OK::HelloWorld>();
-    
-    gameObject.removeComponent(helloWorld->getID());
 
+    //gameObject.removeComponent(helloWorld.lock()->getID());
 	auto sp = gameObject.addComponent<OK::SpriteRenderer>(texture);
+    //sp.lock()->m_texture = texture;
     //gameObject.addComponent(sp->getID());
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -143,7 +143,6 @@ int main(void)
 		glfwPollEvents();		// process input
 
 		update(deltaTime);		// update
-
 		render();				// batch -> render to g-buffer -> render to framebuffer
 
 		lateUpdate(deltaTime);	// lateupdate
@@ -167,12 +166,12 @@ void render()
 void draw()
 {
 	// Draw Components:
-	OK::Component::Draw();
+	//OK::Component::Draw();
 }
 
 void update(float deltaTime)
 {
-	OK::Component::Update(deltaTime);
+	//OK::Component::Update(deltaTime);
 }
 
 void lateUpdate(float deltaTime)

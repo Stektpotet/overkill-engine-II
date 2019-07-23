@@ -2,8 +2,7 @@
 
 namespace OK
 {
-
-HelloWorld::HelloWorld(GameObject* gameObject) : Component(gameObject)
+HelloWorld::HelloWorld(GameObject * gameObject, int id) : Component(gameObject, id)
 {}
 
 void HelloWorld::update(float deltaTime)
@@ -32,7 +31,5 @@ void HelloWorld::update(float deltaTime)
 
     GFX_INFO("%s", text.data());
 }
-
-void HelloWorld::draw(){}
 
 } // namespace OK

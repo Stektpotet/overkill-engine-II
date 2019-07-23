@@ -12,17 +12,17 @@ class Component
 {
     friend class GameObject;
 private:
-    static std::vector<std::shared_ptr<Component>>* Components;
+    //static std::vector<std::shared_ptr<Component>>* Components;
     int m_ID;
 protected:
-    Component(GameObject* gameObject);
+    Component(GameObject* gameObject, int id);
     virtual void update(float deltaTime)=0;     // Has to be pure virtual.
-    virtual void draw()=0; 
+    //virtual void draw()=0; 
 public:
     GameObject* m_gameObject;
-    static std::shared_ptr<Component> GetByID(int componentID);     // Returns nullptr if ID doesn't exist.
-    static void Update(float deltaTime);
-    static void Draw();
+    //static std::shared_ptr<Component> GetByID(int componentID);     // Returns nullptr if ID doesn't exist.
+    //static void Update(float deltaTime);
+    //static void Draw();
 
     int getID();
     bool operator== (const int& otherID);

@@ -9,26 +9,26 @@
 
 namespace OK
 {
-
+class Component;
 class GameObject
 {
 private:
-    static std::vector<GameObject*>* GameObjects;
+    static std::vector<GameObject*>* GameObjects; //TODO: Move to scene layer or whateverthefuck we'll call them
     
     int m_ID;
-    std::vector<int> m_components;
+    //std::vector<int> m_components;
     std::string m_name;
+    std::vector<std::shared_ptr<Component>> m_components;
 
-    inline bool hasComponentWithID(int componentID);
 
 public:
-    Transform m_trasform;
+    Transform m_transform;
     GameObject(const std::string& name = "GameObject", 
-                glm::vec3 pos = glm::vec3(0,0,0), 
-                glm::vec3 scl = glm::vec3(1,1,1),
-                glm::quat rot = glm::quat(0,0,0,1));
+               glm::vec3 pos = glm::vec3{ 0, 0, 0 },
+               glm::vec3 scl = glm::vec3{ 1, 1, 1 },
+               glm::quat rot = glm::quat{ 0, 0, 0, 1 });
 
-    std::string getName();
+    inline const std::string& getName() { return m_name; }
     
     ///<summary>
     /// Adds a Component of the specified type to the GameObject. 
@@ -41,7 +41,7 @@ public:
     template<typename TComponent>
     std::shared_ptr<TComponent> getComponent();
 
-    bool removeComponent(int componentID);      // Removes the component so it is no longer assiciated with this GameObject.
+    //bool removeComponent(int componentID);      // Removes the component so it is no longer assiciated with this GameObject.
                                                 // NB! Does not destroy the component.
 };
 #include "GameObject.tpp" //Template implementations

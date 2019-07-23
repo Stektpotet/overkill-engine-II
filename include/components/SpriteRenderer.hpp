@@ -29,11 +29,15 @@ protected:
     virtual void draw();
 public:
 
-    SpriteRenderer(GameObject* gameObject,
-                   Texture2D texture);
-    float m_rotation = 0;                       // Rotation in degrees.
-    glm::vec2 m_offset  = glm::vec2(0, 0);      // X-Y offset from transform's position.
-    glm::vec2 m_size    = glm::vec2(1, 1);
+    SpriteRenderer(
+        GameObject* gameObject,
+        int id, 
+        Texture2D texture
+    );
+
+    float m_rotation = 0;                           // Rotation in degrees.
+    glm::vec2 m_offset  = glm::vec2(0, 0);          // X-Y offset from transform's position.
+    glm::vec2 m_size    = glm::vec2(1, 1);          
     glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
     Texture2D m_texture;
 

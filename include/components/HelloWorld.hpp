@@ -15,9 +15,9 @@ private:
     float m_timeLeft = c_timeBetweenMoves;
     bool m_reverse = false;
 public:
-    HelloWorld(GameObject* gameObject);
+    HelloWorld(GameObject* gameObject, int id);
     void update(float deltatTime);
-    void draw();
+    //void draw();
 };
 
 } // namespace OK

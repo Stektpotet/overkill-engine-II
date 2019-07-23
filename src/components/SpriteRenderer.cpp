@@ -4,9 +4,11 @@ extern glm::vec2 windowSize;
 
 namespace OK
 {
-    SpriteRenderer::SpriteRenderer( GameObject* gameObject,
-                                    Texture2D texture
-    ) : Component(gameObject), m_texture{texture}
+    SpriteRenderer::SpriteRenderer( 
+        GameObject* gameObject, 
+        int id,
+        Texture2D texture
+    ) : Component(gameObject, id), m_texture{texture}
     {
         prepare();
     }
