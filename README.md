@@ -17,9 +17,12 @@ OK engine.
     ```bash
     sudo apt-get install cmake libx11-dev xorg-dev libglu1-mesa-dev freeglut3-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
     ```
-1. Install clang++:
+1. Install g++-7:
     ```bash
-    sudo apt-get install clang++6.0
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo apt update
+    sudo apt install g++-7 -y
     ```
 1. Install glew globally as the repo only has the windows binaries. 
     ```bash
@@ -31,7 +34,7 @@ OK engine.
     git clone [REPO LINK] 
     cd overkill-engine-II 
     mkdir build && cd build
-    cmake .. -DCMAKE_CXX_COMPILER=clang++-6.0
+    cmake .. -DCMAKE_CXX_COMPILER=g++-7
     make
     ./overkill-engine-II
     ``` 
