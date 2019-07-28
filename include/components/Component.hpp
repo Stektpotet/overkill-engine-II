@@ -7,7 +7,7 @@
 
 namespace OK
 {
-    
+class GameObject;
 class Component 
 {
     //struct Hash
