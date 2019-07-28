@@ -39,15 +39,21 @@ struct Attribute
 	{}
 };
 
+
 class VertexLayout 
 {	
-	
+public:
+    using LayoutInitializerList =
+        std::initializer_list<std::pair<const char*, std::tuple<GLenum, GLuint, GLint>>>;
+
 private:
 	std::vector<Attribute> m_attributes;
 	GLuint m_stride = 0;
 	inline virtual GLuint addStride(GLint byteSize) const = 0;
 public:
-	VertexLayout() : m_attributes(), m_stride(0) {}
+    VertexLayout() : m_attributes{}, m_stride{0} {}
+    
+    VertexLayout(LayoutInitializerList initializer) : m_attributes{}, m_stride{ 0 } {}
 
 	void applyToBuffer(const VertexBuffer& buffer) 
 	{
@@ -70,6 +76,10 @@ public:
 			i++;
 		}
 	}
+    //NOTE: For some reason, Gfx::GLTypeSize is not reccognized every time, 
+    //      making the template very tedious to write out. A new way to write 
+    //      layouts is on the way!
+    //      (see VertexLayout(LayoutInitializerList initializer))
 
 	template<
 		GLenum		 type,
@@ -77,12 +87,12 @@ public:
 		GLint		 count = 1,
 		GLboolean	 normalized = GL_FALSE,
 		bool		 packed = false,
-		GLint		 byteSize = Gfx::GLTypeSize(type) * (packed ? 1 : componentCount) * count
+		GLint		 byteSize = (Gfx::GLTypeSize(type) * (packed ? 1 : componentCount) * count)
 	>
 	void pushAttrib(const char* name)
 	{
 		GFX_ASSERT((1 <= componentCount && componentCount <= 4) || componentCount == GL_BGRA, "pushing attribute with illegal count: %d (accepted values: 1-4, GL_BGRA)", componentCount);
-		m_attributes.push_back(Attribute(name, byteSize, componentCount, type, normalized) );
+		m_attributes.emplace_back(name, byteSize, componentCount, type, normalized);
 		m_stride += addStride(byteSize);
 	}
 
@@ -100,12 +110,18 @@ public:
 
 class ContinuousVertexLayout final : public VertexLayout
 {
+public: 
+    ContinuousVertexLayout() = default;
+    ContinuousVertexLayout(LayoutInitializerList initializer) : VertexLayout(initializer) {}
 private:
 	inline GLuint addStride(GLint byteSize) const final {return 0;}
 };
 
 class InterleavingVertexLayout final : public VertexLayout
 {
+public:
+    InterleavingVertexLayout() = default;
+    InterleavingVertexLayout(LayoutInitializerList initializer) : VertexLayout(initializer) {}
 private:
 	inline GLuint addStride(GLint byteSize) const final { return byteSize; }
 };

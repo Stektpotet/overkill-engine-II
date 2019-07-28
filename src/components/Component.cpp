@@ -4,30 +4,8 @@ namespace OK
 {
 
 // Static functions:
-    //std::shared_ptr<Component> Component::GetByID(int componentID)
-    //{
-    //    if (Components == nullptr)
-    //    {
-    //        return nullptr;
-    //    }
-    //    auto iterator = std::find_if(Components->begin(), Components->end(), [componentID](std::shared_ptr<Component> c){return c->m_ID == componentID;});
-    //    int index = std::distance(Components->begin(), iterator);
-    //    return Components->at(index);
-    //}
 
-    //void Component::Update(float deltaTime)
-    //{
-    //    if (Components == nullptr)
-    //    {
-    //        return;
-    //    }
-    //    //GFX_DEBUG("Updating all %d components->..", Components->size());
-    //    for (int i = 0; i < Components->size(); i++)
-    //    {
-    //        Components->at(i)->update(deltaTime);
-    //    }
-    //}
-    
+
 
 // Non-static funcions:
     Component::Component(GameObject* gameObject, int id)

@@ -1,10 +1,11 @@
 #version 150
 
-in vec3 texCoord;
+in vec2 texCoord;
 out vec4 result;
+
+uniform int atlasIndex;
 uniform sampler2DArray blockAtlas;
-//uniform sampler2D blockAtlas;
 
 void main() {
-	result = texture(blockAtlas, texCoord);
+	result = texture(blockAtlas, vec3(texCoord, atlasIndex));
 }

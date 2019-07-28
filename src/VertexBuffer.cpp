@@ -31,3 +31,13 @@ VertexBuffer::update(const GLintptr start, const GLsizeiptr size, const void * d
 	bind();
 	glBufferSubData(GL_ARRAY_BUFFER, start, size, data);
 }
+
+//TODO: move the restore pattern into a BufferUtility static class :thinking:
+VertexBuffer::VertexBuffer(GLuint id) : id{id}
+{}
+auto
+VertexBuffer::restore(GLuint id) -> VertexBuffer
+{
+    GFX_ASSERT(id, "Trying to restore a vertex buffer wich was null");
+    return VertexBuffer(id);
+}

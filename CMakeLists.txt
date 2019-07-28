@@ -38,13 +38,14 @@ set_target_properties( ${PROJECT}
 	LIBRARY_OUTPUT_DIRECTORY "${BINDIR}/bin"
 	OUTPUT_NAME "OKEII"	# <3
 )
+target_compile_features(${PROJECT} PUBLIC cxx_std_17)
 
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
 target_sources(${PROJECT}
 	  PRIVATE ${LIBDIR}/stb/stb_image_impl.cpp
 	  PRIVATE ${INCDIR}/noise/OpenSimplex.cpp
 	  
-#     PRIVATE ${LIBDIR}/gfx/src/gfx.cpp
+      PRIVATE ${LIBDIR}/gfx/src/gfx.cpp
 
       PRIVATE ${SRCDIR}/ShaderProgram.cpp
       PRIVATE ${SRCDIR}/VertexBuffer.cpp

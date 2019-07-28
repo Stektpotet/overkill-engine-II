@@ -10,19 +10,28 @@ namespace OK
     
 class Component 
 {
+    //struct Hash
+    //{
+    //    std::size_t operator()(Component const& c) const noexcept
+    //    {
+    //        std::size_t h1 = std::hash<int>{}(c.m_ID);
+    //        std::size_t h2 = std::hash<int>{}(c.m_gameObject->getID());
+    //        std::size_t h3 = std::hash<std::string>{}(c.m_gameObject->getName());
+    //        //TODO: https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x
+    //        return (h1 ^ (h2 << 1)) ^ (h3 << 1); // or use boost::hash_combine (see Discussion)
+    //    }
+    //};
+
+
     friend class GameObject;
 private:
-    //static std::vector<std::shared_ptr<Component>>* Components;
     int m_ID;
 protected:
     Component(GameObject* gameObject, int id);
     virtual void update(float deltaTime)=0;     // Has to be pure virtual.
-    //virtual void draw()=0; 
+    inline virtual void draw() {}
 public:
     GameObject* m_gameObject;
-    //static std::shared_ptr<Component> GetByID(int componentID);     // Returns nullptr if ID doesn't exist.
-    //static void Update(float deltaTime);
-    //static void Draw();
 
     int getID();
     bool operator== (const int& otherID);

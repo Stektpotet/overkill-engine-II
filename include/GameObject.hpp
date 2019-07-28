@@ -29,7 +29,10 @@ public:
                glm::quat rot = glm::quat{ 0, 0, 0, 1 });
 
     inline const std::string& getName() { return m_name; }
+    inline const int getID() { return m_ID; }
     
+    void update(float deltaTime);
+
     ///<summary>
     /// Adds a Component of the specified type to the GameObject. 
     /// Allows for in-place construction by taking TComponent's constructor arguments.

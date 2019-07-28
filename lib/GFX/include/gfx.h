@@ -1047,7 +1047,7 @@ namespace Gfx
 {
 	constexpr GLuint GLTypeSize(const GLenum type)
 	{
-#define GFX_MAP_TYPE_SIZE_GENERATOR(Enum, Type) case Enum: return sizeof(Type); break;
+#define GFX_MAP_TYPE_SIZE_GENERATOR(Enum, Type) case Enum: return sizeof(Type);
 		switch (type)
 		{
 			GFX_MAP_TYPE_SIZE_GENERATOR(GL_BOOL, GLboolean);
@@ -1062,7 +1062,7 @@ namespace Gfx
 			GFX_MAP_TYPE_SIZE_GENERATOR(GL_FLOAT, GLfloat);
 			GFX_MAP_TYPE_SIZE_GENERATOR(GL_DOUBLE, GLdouble);
 		default:
-			printf("WARNING!\nGLenum type: %u not supported!!!", type);
+			GFX_WARN("GLenum type: %s not supported!!!", GLEnumToString(type));
 			return 0;
 		}
 #undef GFX_MAP_TYPE_SIZE_GENERATOR

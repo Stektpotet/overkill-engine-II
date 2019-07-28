@@ -18,7 +18,7 @@ class Camera
 private: 
 	float fieldOfViewVertical = glm::radians(45.0f);
 	float aspectRatio=4.0f/3.0f;
-	float nearClip=0.1, farClip=200;
+	float nearClip=0.1f, farClip=200;
 public:
 	Transform transform;
 

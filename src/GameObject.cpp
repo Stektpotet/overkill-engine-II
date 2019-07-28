@@ -19,4 +19,10 @@ namespace OK
         }
         GameObjects->push_back(this);
     }
+
+    void GameObject::update(float deltaTime)
+    {
+        for (auto& c : m_components)
+            c->update(deltaTime);
+    }
 }

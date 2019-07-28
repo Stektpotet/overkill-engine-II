@@ -18,7 +18,7 @@ public:
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(TIndex), data, GL_STATIC_DRAW);
 	}
 
-	inline ~IndexBuffer() { glDeleteBuffers(1, &id); }
+	inline ~IndexBuffer() { GFX_DEBUG("IBO (%d) killed in CPU context", id); }
 
 	inline bool valid() { return id != 0; }
 

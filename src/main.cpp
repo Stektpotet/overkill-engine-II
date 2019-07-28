@@ -1,17 +1,13 @@
-#define GLM_ENABLE_EXPERIMENTAL
-#define GFX_IMPLEMENTATION
-#define GFX_NO_TERMINATION_ON_GL_ERROR
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <time.h>
 
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-//#define DEBUG_GFX
-
+#define DEBUG_GFX
 #include <gfx.h>
 
 #include "UtilityFunctions.hpp"
@@ -58,8 +54,8 @@ int main(void)
 	glfwSetErrorCallback(OK::Util::processError);
 
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // We want OpenGL 4.6
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // We want OpenGL 4.3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
 	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE); // remove the handlebar from the top of the window
@@ -104,7 +100,7 @@ int main(void)
 
 #pragma region Static Setup
 
-	cam.transform.position = { -4, 0, 0 };
+	cam.transform.position = { 0, 0, -0.5 };
 	cam.transform.lookAt({ 0,0,0 });
 	cam.setFoV(70);
 
@@ -113,7 +109,7 @@ int main(void)
 	GFX_GL_CALL(glCullFace(GL_BACK));
 	GFX_GL_CALL(glEnable(GL_DEPTH_TEST));
 
-	// Transparent sprites:
+	 //Transparent sprites:
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_ALPHA_TEST);
@@ -126,14 +122,13 @@ int main(void)
 #pragma region GameLoop
 
 	gameObject = OK::GameObject("HelloWorldObject");
-	gameObject.addComponent<OK::HelloWorld>();
 	Texture2D texture;
 	loadTexture("assets/textures/sprite.png", &texture);
-    auto helloWorld = gameObject.getComponent<OK::HelloWorld>();
-
-    //gameObject.removeComponent(helloWorld.lock()->getID());
 	auto sp = gameObject.addComponent<OK::SpriteRenderer>(texture);
-    //sp.lock()->m_texture = texture;
+    sp->m_size = { 150,150 };
+    sp->m_offset = windowSize * (0.5f - 0.125f);
+    sp->m_pivot = { 0.5f, 0.53f};
+
     //gameObject.addComponent(sp->getID());
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -143,7 +138,8 @@ int main(void)
 		glfwPollEvents();		// process input
 
 		update(deltaTime);		// update
-		render();				// batch -> render to g-buffer -> render to framebuffer
+		
+        render();				// batch -> render to g-buffer -> render to framebuffer
 
 		lateUpdate(deltaTime);	// lateupdate
 
@@ -158,9 +154,9 @@ int main(void)
 
 void render()
 {
-	GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	draw();
 	glfwSwapBuffers(window);
+    GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 void draw()
@@ -171,10 +167,10 @@ void draw()
 
 void update(float deltaTime)
 {
-	//OK::Component::Update(deltaTime);
+    gameObject.update(deltaTime);
 }
 
 void lateUpdate(float deltaTime)
 {
-	cam.update(deltaTime);
+	//cam.update(deltaTime);
 }
