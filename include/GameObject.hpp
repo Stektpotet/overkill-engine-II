@@ -19,8 +19,6 @@ private:
     //std::vector<int> m_components;
     std::string m_name;
     std::vector<std::shared_ptr<Component>> m_components;
-
-
 public:
     Transform m_transform;
     GameObject(const std::string& name = "GameObject", 

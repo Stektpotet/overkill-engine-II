@@ -17,6 +17,7 @@
 #include "GameObject.hpp"
 #include "components/SpriteRenderer.hpp"
 #include "components/HelloWorld.hpp"
+#include "Scene.hpp"
 
 
 void render();
@@ -28,7 +29,6 @@ GLFWwindow* window;
 glm::vec2 windowSize;
 
 OK::ControllableCamera cam;
-OK::GameObject gameObject;
 
 void processKeys(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -95,7 +95,6 @@ int main(void)
 	GFX_INFO("Version: %s", glGetString(GL_VERSION));
 	GFX_INFO("GLSL version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	GFX_INFO("Extensions: %s", glGetString(GL_EXTENSIONS));
-
 #pragma endregion
 
 #pragma region Static Setup
@@ -120,11 +119,12 @@ int main(void)
 
 
 #pragma region GameLoop
-
-	gameObject = OK::GameObject("HelloWorldObject");
+    
+    OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
+    auto gameObject = OK::Scene::currentScene->makeGameObject("HelloWorldObject");
 	Texture2D texture;
 	loadTexture("assets/textures/sprite.png", &texture);
-	auto sp = gameObject.addComponent<OK::SpriteRenderer>(texture);
+	auto sp = gameObject->addComponent<OK::SpriteRenderer>(texture);
     sp->m_size = { 150,150 };
     sp->m_offset = windowSize * (0.5f - 0.125f);
     sp->m_pivot = { 0.5f, 0.53f};
@@ -167,7 +167,7 @@ void draw()
 
 void update(float deltaTime)
 {
-    gameObject.update(deltaTime);
+    OK::Scene::Update(deltaTime);
 }
 
 void lateUpdate(float deltaTime)

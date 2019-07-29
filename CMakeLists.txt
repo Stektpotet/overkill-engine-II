@@ -61,6 +61,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
+	  PRIVATE ${SRCDIR}/Scene.cpp
 
 #     PRIVATE ${SRCDIR}/uniformBuffer.cpp
 #     PRIVATE ${SRCDIR}/frameBuffer.cpp
