@@ -62,7 +62,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/components/Sprite.cpp
 	  PRIVATE ${SRCDIR}/components/SpriteAtlas.cpp
 	  PRIVATE ${SRCDIR}/components/Text.cpp
-	  PRIVATE ${SRCDIR}/components/AnimatedSpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp

@@ -19,10 +19,10 @@ public:
         GameObject* gameObject,
         int id, 
         TextureAtlas atlas,
-        int atlasIndex
+        int atlasIndex = 0
     );
 
-    int m_atlasIndex = -1;       // Minus one when not using an atlas.
+    int m_atlasIndex;
     TextureAtlas m_atlas;
 };
 

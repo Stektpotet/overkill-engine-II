@@ -8,16 +8,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #define DEBUG_GFX
-#include <gfx.h>
 
 #include "UtilityFunctions.hpp"
 #include "Structs.hpp"
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
-#include "GameObject.hpp"
-#include "components/Sprite.hpp"
-#include "components/AnimatedSpriteRenderer.hpp"
+#include "components/AnimatedSprite.hpp"
 #include "components/HelloWorld.hpp"
+#include "components/Text.hpp"
 #include "Scene.hpp"
 
 
@@ -111,9 +109,10 @@ int main(void)
 
 	 //Transparent sprites:
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
+	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_ALPHA_TEST);
+	//glAlphaFunc(GL_GREATER, 0);
 
 #pragma endregion
 
@@ -127,11 +126,17 @@ int main(void)
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
         TextureAtlas texture;
         loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObject->addComponent<OK::AnimatedSpriteRenderer>(texture);
+        auto sp = gameObject->addComponent<OK::AnimatedSprite>(texture);
         sp->m_size = { 150,150 };
         sp->m_offset = windowSize * (0.5f - 0.125f);
         sp->m_pivot = { 0.5f, 0.53f };
     }
+	{
+		auto txt = gameObject->addComponent<OK::Text>("HelloWorld");
+		txt->setSize(50);
+		txt->setRotation(3.14159f);
+	}
+
 
 	OK::GraphicsComponent::PrepareGraphics();
 

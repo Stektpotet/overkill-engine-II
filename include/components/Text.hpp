@@ -1,39 +1,43 @@
 #pragma once
 
-// #include "components/SpriteAtlas.hpp"
+#include "components/SpriteAtlas.hpp"
 
-// namespace OK
-// {
+namespace OK
+{
 
-// class Text : public Component
-// {
-// private:
-//     const std::string c_characterAtlas = "assets/textures/ascii.png";
-//     const __uint16_t c_atlasDivisions = 16;
+class Text : public Component
+{
+private:
+    const std::string c_characterAtlas = "assets/textures/ascii.png";
+    const __uint16_t c_atlasDivisions = 16;
 
-//     std::string m_text;
-//     std::vector<std::shared_ptr<SpriteAtlas>> m_characters;
-//     float m_charSize;
-//     glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
+    std::string m_text;
+    std::vector<std::shared_ptr<SpriteAtlas>> m_characters;
+    float m_charSize = 50;
+    float m_rotation = 0;
+    float m_spacing = 0.5f;
 
-// protected:
-//     void update(float deltaTime) override;
+    glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
 
-// public:
-//     Text(GameObject* gameObject, int id, const std::string text, bool rainbow = false);
+protected:
+    void update(float deltaTime) override;
 
-//     bool m_rainbow;
-//     float m_shake = 0;
-//     float m_spacing = 0;
+public:
+    Text(GameObject* gameObject, int id, const std::string text, bool rainbow = false);
+
+    bool m_rainbow;
+    float m_shake = 0;
     
-//     std::string getText();
-//     int getLenght();
-//     float getSize();
-//     glm::vec4 getColor();
+    std::string getText();
+    int getLenght();
+    float getRotation();
+    float getSize();
+    glm::vec4 getColor();
 
-//     void setText(const std::string);
-//     void setSize(float size);
-//     void setColor(glm::vec4 color);
-// };
+    void setText(const std::string);
+    void setRotation(float size);
+    void setSize(float size);
+    void setColor(glm::vec4 color);
+};
 
-// } // Namespace OK.
+} // Namespace OK.
