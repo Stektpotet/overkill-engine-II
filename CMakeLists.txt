@@ -45,7 +45,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${LIBDIR}/stb/stb_image_impl.cpp
 	  PRIVATE ${INCDIR}/noise/OpenSimplex.cpp
 	  
-      PRIVATE ${LIBDIR}/gfx/src/gfx.cpp
+      PRIVATE ${LIBDIR}/GFX/src/gfx.cpp
 
       PRIVATE ${SRCDIR}/ShaderProgram.cpp
       PRIVATE ${SRCDIR}/VertexBuffer.cpp
@@ -58,7 +58,10 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
 	  PRIVATE ${SRCDIR}/components/Component.cpp
+	  PRIVATE ${SRCDIR}/components/GraphicsComponent.cpp
+	  PRIVATE ${SRCDIR}/components/FlatGraphics.cpp
 	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/Text.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp

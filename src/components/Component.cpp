@@ -27,4 +27,4 @@ namespace OK
     bool Component::operator== (const Component* otherComponent)
     { return m_ID == otherComponent->m_ID; }
 
-}
+} // Namespace OK

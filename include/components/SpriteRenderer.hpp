@@ -1,52 +1,25 @@
 #pragma once
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <gfx.h>
 
-#include "Structs.hpp"
-#include "ResourceLoader.h"
-#include "components/Component.hpp"
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "VertexLayout.hpp"
-#include "IndexBuffer.hpp"
-#include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "components/FlatGraphics.hpp"
 
 namespace OK
 {
 
-class SpriteRenderer : public Component
+class SpriteRenderer : public FlatGraphics
 {
-private:
-    ShaderProgram m_shader;
-    VertexArray m_VAO;     // Pointer because it can not be constucted with the object. GL setup must be ran first.
-
-    glm::mat4 m_projection;
-
-    void prepare();
-    
 protected:
     void update(float deltaTime) override;
     void draw() override;
-public:
 
+public:
     SpriteRenderer(
         GameObject* gameObject,
         int id, 
         Texture2D texture
     );
 
-    float m_rotation = 0;                           // Rotation in degrees.
-    glm::vec2 m_offset  = glm::vec2(0, 0);          // X-Y offset from transform's position.
-    glm::vec2 m_pivot   = glm::vec2(0.5f, 0.5f);
-    glm::vec2 m_size    = glm::vec2(1, 1);
-    glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
     Texture2D m_texture;
 
-    ~SpriteRenderer();  // Delete VAO.
 };
 
-}
+} // Namespace OK

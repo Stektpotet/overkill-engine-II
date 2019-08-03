@@ -129,7 +129,9 @@ int main(void)
     sp->m_offset = windowSize * (0.5f - 0.125f);
     sp->m_pivot = { 0.5f, 0.53f};
 
-    //gameObject.addComponent(sp->getID());
+
+	OK::GraphicsComponent::PrepareGraphics();
+
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
@@ -159,11 +161,6 @@ void render()
     GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-void draw()
-{
-	// Draw Components:
-	//OK::Component::Draw();
-}
 
 void update(float deltaTime)
 {
@@ -173,4 +170,10 @@ void update(float deltaTime)
 void lateUpdate(float deltaTime)
 {
 	//cam.update(deltaTime);
+}
+
+void draw()
+{
+	// Draw Components:	// TODO: have the scene handle this so not all scenes in memory draw all at once.
+	OK::GraphicsComponent::Draw();	
 }
