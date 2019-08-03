@@ -28,7 +28,10 @@ private:
     int m_ID;
 protected:
     Component(GameObject* gameObject, int id);
-    virtual void update(float deltaTime)=0;     // Has to be pure virtual.
+    inline virtual void update(float deltaTime) {}
+    //called instantly upon added to gameObject
+    inline virtual void awake() {}
+
     inline virtual void draw() {}
 public:
     GameObject* m_gameObject;

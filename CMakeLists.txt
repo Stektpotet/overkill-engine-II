@@ -45,7 +45,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${LIBDIR}/stb/stb_image_impl.cpp
 	  PRIVATE ${INCDIR}/noise/OpenSimplex.cpp
 	  
-      PRIVATE ${LIBDIR}/gfx/src/gfx.cpp
+      PRIVATE ${LIBDIR}/GFX/src/gfx.cpp
 
       PRIVATE ${SRCDIR}/ShaderProgram.cpp
       PRIVATE ${SRCDIR}/VertexBuffer.cpp
@@ -53,13 +53,18 @@ target_sources(${PROJECT}
       PRIVATE ${SRCDIR}/IndexBuffer.cpp
       PRIVATE ${SRCDIR}/Transform.cpp
       PRIVATE ${SRCDIR}/Camera.cpp
-	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
 	  PRIVATE ${SRCDIR}/components/Component.cpp
-	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
+	  PRIVATE ${SRCDIR}/components/GraphicsComponent.cpp
+	  PRIVATE ${SRCDIR}/components/FlatGraphics.cpp
+	  PRIVATE ${SRCDIR}/components/Sprite.cpp
+	  PRIVATE ${SRCDIR}/components/SpriteAtlas.cpp
+	  PRIVATE ${SRCDIR}/components/Text.cpp
+	  PRIVATE ${SRCDIR}/components/AnimatedSpriteRenderer.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
+	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 

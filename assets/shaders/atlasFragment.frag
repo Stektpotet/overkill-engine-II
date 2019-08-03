@@ -3,9 +3,10 @@
 in vec2 texCoord;
 out vec4 result;
 
-uniform int atlasIndex;
-uniform sampler2DArray blockAtlas;
+uniform int atlasIndex = 3;
+uniform sampler2DArray image;
+uniform vec4 spriteColor = vec4(1,1,1,1);
 
 void main() {
-	result = texture(blockAtlas, vec3(texCoord, atlasIndex));
+	result = spriteColor * texture(image, vec3(texCoord, atlasIndex));
 }

@@ -15,7 +15,8 @@
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "GameObject.hpp"
-#include "components/SpriteRenderer.hpp"
+#include "components/Sprite.hpp"
+#include "components/AnimatedSpriteRenderer.hpp"
 #include "components/HelloWorld.hpp"
 #include "Scene.hpp"
 
@@ -101,7 +102,7 @@ int main(void)
 
 	cam.transform.position = { 0, 0, -0.5 };
 	cam.transform.lookAt({ 0,0,0 });
-	cam.setFoV(70);
+	cam.setFoV(80);
 
 	GFX_GL_CALL(glEnable(GL_CULL_FACE));
 	GFX_GL_CALL(glFrontFace(GL_CCW));
@@ -122,14 +123,18 @@ int main(void)
     
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
     auto gameObject = OK::Scene::currentScene->makeGameObject("HelloWorldObject");
-	Texture2D texture;
-	loadTexture("assets/textures/sprite.png", &texture);
-	auto sp = gameObject->addComponent<OK::SpriteRenderer>(texture);
-    sp->m_size = { 150,150 };
-    sp->m_offset = windowSize * (0.5f - 0.125f);
-    sp->m_pivot = { 0.5f, 0.53f};
+    
+    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
+        TextureAtlas texture;
+        loadTextureAtlas("assets/textures/loading.png", 4, &texture);
+        auto sp = gameObject->addComponent<OK::AnimatedSpriteRenderer>(texture);
+        sp->m_size = { 150,150 };
+        sp->m_offset = windowSize * (0.5f - 0.125f);
+        sp->m_pivot = { 0.5f, 0.53f };
+    }
 
-    //gameObject.addComponent(sp->getID());
+	OK::GraphicsComponent::PrepareGraphics();
+
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
@@ -159,11 +164,6 @@ void render()
     GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-void draw()
-{
-	// Draw Components:
-	//OK::Component::Draw();
-}
 
 void update(float deltaTime)
 {
@@ -173,4 +173,10 @@ void update(float deltaTime)
 void lateUpdate(float deltaTime)
 {
 	//cam.update(deltaTime);
+}
+
+void draw()
+{
+	// Draw Components:	// TODO: have the scene handle this so not all scenes in memory draw all at once.
+	OK::GraphicsComponent::Draw();	
 }

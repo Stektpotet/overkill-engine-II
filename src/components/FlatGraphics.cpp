@@ -1,22 +1,14 @@
-#include "components/SpriteRenderer.hpp"
+#include "components/FlatGraphics.hpp"
 
-extern glm::vec2 windowSize;
 
 namespace OK
 {
-    SpriteRenderer::SpriteRenderer( 
-        GameObject* gameObject, 
-        int id,
-        Texture2D texture
-    ) : Component(gameObject, id), 
-        m_texture{texture}, 
-        m_VAO()
-    {
-        prepare();
-    }
-    
+
+    FlatGraphics::FlatGraphics(GameObject* gameObject, int id) : GraphicsComponent(gameObject, id), m_VAO()
+    {}
+
     // https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites
-    void SpriteRenderer::prepare()
+    void FlatGraphics::prepareGraphics()
     {
         // Configure VAO and VBO
         GLfloat vertices[] = {
@@ -30,15 +22,6 @@ namespace OK
             0,1,2,
             2,1,3
         };
-
-        // Setup shader and uniforms:
-        m_shader = createProgram("assets/shaders/spriteVertex.vert", "assets/shaders/spriteFragment.frag");
-
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 
-        0.0f, static_cast<GLfloat>(windowSize.y), -1.0f, 1.0f);
-        
-	    GFX_GL_CALL(glUniform1i(m_shader.getUniformLocation("image"), 0));
-        GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection)));
 
         // Setup buffers:
         //TODO unify the interface for VBOs and IBOs, the first argument is confusing (count vs size).
@@ -56,14 +39,7 @@ namespace OK
         layout.applyToBuffer(vbo);
     }
 
-
-    void SpriteRenderer::update(float deltaTime)
-    {
-        m_rotation += deltaTime*2;
-        draw(); //TEMPORARILY, as the GraphicsComponent is not yet in place
-    }
-
-    void SpriteRenderer::draw()
+    void FlatGraphics::draw()
     {
         glm::mat4 mvp = glm::mat4(1);// m_gameObject->m_trasform.modelMatrix();
 
@@ -77,18 +53,16 @@ namespace OK
         mvp = glm::scale(mvp, glm::vec3(m_size, 1.0f));
 
         m_shader.bind();
-        m_texture.bind();
 
         m_VAO.bind();
         // Set "update every frame" uniforms:
         GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(mvp)));
-        GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("spriteColor"), m_color.x, m_color.y, m_color.z, m_color.w));
+        GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("color"), m_color.x, m_color.y, m_color.z, m_color.w));
+        
+        configureShader(m_shader);
+
         GFX_GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
     }
 
-    SpriteRenderer::~SpriteRenderer()
-    {
-        //delete m_VBO;
-    }
 
-}
+} // Namespace OK

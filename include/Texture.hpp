@@ -8,23 +8,36 @@ struct TextureData
 {
 	uint16_t width = 0u;
 	uint16_t height = 0u;
-	std::vector<uint8_t> pixels = {};
+    std::vector<uint8_t> pixels;
 };
 
-
-template <GLenum TextureType>
-class Texture 
+class TextureBase
 {
 protected:
-	GLuint id;
-	uint16_t width, height, channels;
+    GLuint id;
+    uint16_t width, height, channels;
+public:
+    TextureBase() = default;
+    TextureBase(uint16_t width, uint16_t height, uint16_t channels);
 
-public: //TODO: 
+    inline void clean() { GFX_GL_CALL(glDeleteTextures(1, &id)); } 
+
+    inline bool valid() { return id != 0; }
+    inline GLuint getID() { return id; }
+
+    inline uint16_t getWidth() { return width; }
+    inline uint16_t getHeight() { return height; }
+    inline uint16_t getChannels() { return channels; }
+};
+
+template <GLenum TextureType>
+class Texture : public TextureBase
+{
+protected:
+public: //TODO: Allow changing of filter and wrapping
 	Texture() = default;
 	Texture(uint16_t width, uint16_t height, uint16_t channels)
-		:	width(width),
-			height(height),
-			channels(channels)
+		:	TextureBase(width, height, channels)
 	{
 		GFX_GL_CALL(glGenTextures(1, &id));
 		GFX_GL_CALL(glBindTexture(TextureType, id));
@@ -36,19 +49,12 @@ public: //TODO:
 		GFX_GL_CALL(glTexParameteri(TextureType, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	}
 
-	inline bool valid() { return id != 0; }
-
-	inline void clean() { GFX_GL_CALL(glDeleteTextures(1, &id)); }
-
 	inline void bind(GLuint slot = 0) const {
 		GFX_GL_CALL(glActiveTexture(GL_TEXTURE0 + slot));
 		GFX_GL_CALL(glBindTexture(TextureType, id));
 	}
 	inline void unbind() const { GFX_GL_CALL(glBindTexture(TextureType, 0)); }
 
-	inline uint16_t getWidth() { return width; }
-	inline uint16_t getHeight() { return height; }
-	inline uint16_t getChannels() { return channels; }
 
 
 	/// <summary>
@@ -62,7 +68,7 @@ public: //TODO:
 	}
 };
 
-using Texture2D = Texture<GL_TEXTURE_2D>;
+using Texture2D = Texture<GL_TEXTURE_2D>; //declare the type as an implementation
 
 class TextureAtlas final : public Texture<GL_TEXTURE_2D_ARRAY>
 {

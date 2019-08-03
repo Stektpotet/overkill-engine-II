@@ -161,7 +161,7 @@ inline auto splitTexture(
 		{
 			elementWidth,
 			elementHeight,
-			std::vector<uint8_t>(elementWidth * elementHeight * channels)
+			std::vector<uint8_t>(elementWidth * elementHeight * channels, 123)
 		}
 	);
 	for (size_t y = 0; y < height; y++)
@@ -170,7 +170,7 @@ inline auto splitTexture(
 		{
 			int fromIndex = (elemX * elementWidth + width * y) * channels;
 			int toIndex = elementWidth * (y % elementHeight) * channels;
-			int subTexIndex = elemX + (y / elementHeight)*elementsX;
+			int subTexIndex = elemX + (y / elementHeight) * elementsX;
 
 			memcpy(&(subTextures[subTexIndex].pixels[toIndex]), &fullSrc[fromIndex], elementWidth * channels);
 		}
@@ -242,10 +242,10 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
 {
 	GLubyte* raw_pixels;
 
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(false);
 	int width, height, channels;
 	
-	raw_pixels = stbi_load(texturefile, &width, &height, &channels, STBI_rgb);
+	raw_pixels = stbi_load(texturefile, &width, &height, &channels, STBI_default);
 	if (!raw_pixels)
 	{
 		stbi_image_free(raw_pixels);
