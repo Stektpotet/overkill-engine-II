@@ -21,14 +21,15 @@ namespace OK
 class FlatGraphics : public GraphicsComponent
 {
 private:
-    ShaderProgram m_shader;
     VertexArray m_VAO;    
 
-    glm::mat4 m_projection;
-
 protected:
+    glm::mat4 m_projection;
+    ShaderProgram m_shader;
+
     virtual void prepareGraphics();
     void update(float deltaTime) override {}
+    virtual void configureShader(ShaderProgram shader){}
     inline void draw() override;
 
 public:

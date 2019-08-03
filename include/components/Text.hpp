@@ -1,17 +1,18 @@
 #pragma once
 
-//#include "components/SpriteRenderer.hpp"
+// #include "components/SpriteAtlas.hpp"
 
-//namespace OK
-//{
+// namespace OK
+// {
 
-// class Text : Component
+// class Text : public Component
 // {
 // private:
-//     std::string m_text;
-//     const std::string c_characterSheet = "assets/textures/ascii.png";
+//     const std::string c_characterAtlas = "assets/textures/ascii.png";
+//     const __uint16_t c_atlasDivisions = 16;
 
-//     std::vector<std::shared_ptr<SpriteRenderer>> m_characters;
+//     std::string m_text;
+//     std::vector<std::shared_ptr<SpriteAtlas>> m_characters;
 //     float m_charSize;
 //     glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
 
@@ -22,7 +23,8 @@
 //     Text(GameObject* gameObject, int id, const std::string text, bool rainbow = false);
 
 //     bool m_rainbow;
-//     float m_shake;
+//     float m_shake = 0;
+//     float m_spacing = 0;
     
 //     std::string getText();
 //     int getLenght();
@@ -34,4 +36,4 @@
 //     void setColor(glm::vec4 color);
 // };
 
-//} // Namespace OK.
+// } // Namespace OK.

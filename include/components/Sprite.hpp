@@ -5,21 +5,22 @@
 namespace OK
 {
 
-class SpriteRenderer : public FlatGraphics
+class Sprite : public FlatGraphics
 {
 protected:
+
+    void prepareGraphics() override;
     void update(float deltaTime) override;
     void draw() override;
 
 public:
-    SpriteRenderer(
+    Sprite(
         GameObject* gameObject,
         int id, 
         Texture2D texture
     );
 
     Texture2D m_texture;
-
 };
 
 } // Namespace OK

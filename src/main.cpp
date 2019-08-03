@@ -15,7 +15,8 @@
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "GameObject.hpp"
-#include "components/SpriteRenderer.hpp"
+#include "components/Sprite.hpp"
+//#include "components/Text.hpp"
 #include "components/HelloWorld.hpp"
 #include "Scene.hpp"
 
@@ -122,13 +123,15 @@ int main(void)
     
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
     auto gameObject = OK::Scene::currentScene->makeGameObject("HelloWorldObject");
-	Texture2D texture;
-	loadTexture("assets/textures/sprite.png", &texture);
-	auto sp = gameObject->addComponent<OK::SpriteRenderer>(texture);
-    sp->m_size = { 150,150 };
-    sp->m_offset = windowSize * (0.5f - 0.125f);
-    sp->m_pivot = { 0.5f, 0.53f};
-
+	// Texture2D texture;
+	// loadTexture("assets/textures/sprite.png", &texture);
+	// auto sp = gameObject->addComponent<OK::Sprite>(texture);
+    // sp->m_size = { 150,150 };
+    // sp->m_offset = windowSize * (0.5f - 0.125f);
+    // sp->m_pivot = { 0.5f, 0.53f};
+	// auto txt = gameObject->addComponent<OK::Text>("A");
+	// txt->setSize(300);
+	// txt->setColor(glm::vec4(1,1,1,1));
 
 	OK::GraphicsComponent::PrepareGraphics();
 

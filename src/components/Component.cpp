@@ -3,10 +3,6 @@
 namespace OK
 {
 
-// Static functions:
-
-
-
 // Non-static funcions:
     Component::Component(GameObject* gameObject, int id)
     {
@@ -16,7 +12,6 @@ namespace OK
 
     int Component::getID()
     { return m_ID; }
-
 
     bool Component::operator== (const int& otherID)
     { return m_ID == otherID; }

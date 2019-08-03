@@ -8,14 +8,24 @@
 //     m_rainbow = rainbow;
 //     m_text = text;
 
+//     GFX_DEBUG("Building Text for the string '%s'(length %d)", text.data(), text.length());
+
 //     // Load texture:
 //     TextureAtlas blockTextureAtlas;
-// 	int err = loadTextureAtlas(c_characterSheet.data(), 16, &blockTextureAtlas);
+// 	int err = loadTextureAtlas(c_characterAtlas.data(), 16, &blockTextureAtlas);
 
 //     // Construct a sprite for each character:
 //     for (int i = 0; i < text.length(); i++)
 //     {
+//         GFX_DEBUG("Creating sprite for the char '%c' with int decimal value %d.", text[i], text[i]);
+//         m_characters.push_back(std::make_shared<SpriteAtlas>(
+//                                     gameObject,gameObject->getID(),
+//                                     blockTextureAtlas, 
+//                                     text[i]%(c_atlasDivisions * c_atlasDivisions)
+//                                     )
+//                                 );
 
+//         std::static_pointer_cast<SpriteAtlas>(m_characters.back())->m_offset = glm::vec2(i * m_spacing, 0);
 //     }
 // }
 
@@ -41,11 +51,17 @@
 // }
 // void Text::setSize(float size)
 // {
-
+//     for(std::shared_ptr<SpriteAtlas> s : m_characters)
+//     {
+//         s->m_size = {size, size};
+//     }
 // }
 // void Text::setColor(glm::vec4 color)
 // {
-
+//     for(std::shared_ptr<SpriteAtlas> s : m_characters)
+//     {
+//         s->m_color = color;
+//     }
 // }
 
 // // GameLoop functions:

@@ -1,11 +1,10 @@
-#version 330 core
-in vec2 TexCoords;
-out vec4 color;
+#version 150
+in vec2 texCoord;
+out vec4 result;
 
 uniform sampler2D image;
-uniform vec4 spriteColor = vec4(1,1,1,1);
+uniform vec4 color = vec4(1,1,1,1);
 
-void main()
-{    
-    color = spriteColor * texture(image, TexCoords);
+void main() {    
+    result = color * texture(image, texCoord);
 }  

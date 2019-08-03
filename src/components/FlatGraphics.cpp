@@ -1,6 +1,5 @@
 #include "components/FlatGraphics.hpp"
 
-extern glm::vec2 windowSize;
 
 namespace OK
 {
@@ -23,15 +22,6 @@ namespace OK
             0,1,2,
             2,1,3
         };
-
-        // Setup shader and uniforms:
-        m_shader = createProgram("assets/shaders/spriteVertex.vert", "assets/shaders/spriteFragment.frag");
-
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 
-        0.0f, static_cast<GLfloat>(windowSize.y), -1.0f, 1.0f);
-        
-	    GFX_GL_CALL(glUniform1i(m_shader.getUniformLocation("image"), 0));
-        GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection)));
 
         // Setup buffers:
         //TODO unify the interface for VBOs and IBOs, the first argument is confusing (count vs size).
@@ -67,7 +57,10 @@ namespace OK
         m_VAO.bind();
         // Set "update every frame" uniforms:
         GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(mvp)));
-        GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("spriteColor"), m_color.x, m_color.y, m_color.z, m_color.w));
+        GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("color"), m_color.x, m_color.y, m_color.z, m_color.w));
+        
+        configureShader(m_shader);
+
         GFX_GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
     }
 
