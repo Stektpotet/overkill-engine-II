@@ -13,10 +13,10 @@ namespace OK
         // Configure VAO and VBO
         GLfloat vertices[] = {
             // Pos      // UV
-            0.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 1.0f, 1.0f
+            0.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 0.0f
         };
         GLuint indices[] = {
             0,1,2,
@@ -47,7 +47,7 @@ namespace OK
 
         //Move origin to rotate around center
         mvp = glm::translate(mvp, glm::vec3(m_pivot.x * m_size.x, m_pivot.y * m_size.y, 0.0f));
-        mvp = glm::rotate(mvp, m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+        mvp = glm::rotate(mvp, m_rotation / 180, glm::vec3(0.0f, 0.0f, 1.0f));
         mvp = glm::translate(mvp, glm::vec3(-m_pivot.x * m_size.x, -m_pivot.y * m_size.y, 0.0f));
 
         mvp = glm::scale(mvp, glm::vec3(m_size, 1.0f));

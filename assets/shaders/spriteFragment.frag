@@ -3,9 +3,9 @@ in vec2 texCoord;
 out vec4 result;
 
 uniform sampler2D image;
-uniform vec4 spriteColor = vec4(1,1,1,1);
+uniform vec4 color = vec4(1,1,1,1);
 
 void main()
 {    
-    result = spriteColor * texture(image, texCoord);
+    result = color * texture(image, texCoord);
 }  
