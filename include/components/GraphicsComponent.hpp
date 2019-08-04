@@ -3,20 +3,16 @@
 
 namespace OK
 {
+class GameObject;
 
-class GraphicsComponent : public Component
+class GraphicsComponent : public Component, public std::enable_shared_from_this<GraphicsComponent>
 {
-private:
-    static std::vector<std::shared_ptr<GraphicsComponent>>* GraphicsComponents;
-
+    friend class Scene;
 protected:
     virtual void prepareGraphics() {}
-    void update(float deltaTime) override {}     // Has to be pure virtual.
-    inline void draw() override {}
+    void onCreated() override;
 
 public:
-    static void PrepareGraphics();
-    static void Draw();
     
     GraphicsComponent(GameObject* gameObject, int id);
 };

@@ -8,6 +8,7 @@ std::shared_ptr<TComponent> OK::GameObject::addComponent(Args&&... ctorArgs)
     auto component = m_components.emplace_back(
         std::make_shared<TComponent>(this, m_components.size(), std::forward<Args>(ctorArgs)...)
     );
+    component->onCreated();
     component->awake();
 
     return std::static_pointer_cast<TComponent>(component);

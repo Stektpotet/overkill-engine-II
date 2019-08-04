@@ -30,6 +30,7 @@ protected:
     Component(GameObject* gameObject, int id);
     inline virtual void update(float deltaTime) {}
     //called instantly upon added to gameObject
+    inline virtual void onCreated() {}
     inline virtual void awake() {}
 
     inline virtual void draw() {}

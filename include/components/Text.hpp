@@ -9,7 +9,7 @@ class Text : public Component
 {
 private:
     const std::string c_characterAtlas = "assets/textures/ascii.png";
-    const __uint16_t c_atlasDivisions = 16;
+    const uint16_t c_atlasDivisions = 16;
 
     std::string m_text;
     std::vector<std::shared_ptr<SpriteAtlas>> m_characters;

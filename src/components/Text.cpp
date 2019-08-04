@@ -18,13 +18,11 @@ Text::Text(GameObject* gameObject, int id, const std::string text, bool rainbow)
     for (int i = 0; i < text.length(); i++)
     {
         GFX_DEBUG("Creating sprite for the char '%c' with int decimal value %d.", text[i], text[i]);
-        m_characters.push_back(std::make_shared<SpriteAtlas>(
-                                    gameObject,gameObject->getID(),
+        std::shared_ptr<SpriteAtlas> chr = gameObject->addComponent<SpriteAtlas>(
                                     blockTextureAtlas, 
                                     text[i]%(c_atlasDivisions * c_atlasDivisions)
-                                    )
-                                );
-        std::shared_ptr<SpriteAtlas> chr = std::static_pointer_cast<SpriteAtlas>(m_characters.back());
+                                    );
+        m_characters.push_back(chr);    // Store a pointer to each sprite in a member vector so we can change their properties later. 
         chr->m_offset = glm::vec2(i * (m_spacing * m_charSize), 0);
         chr->m_rotation = m_rotation;
     }

@@ -105,21 +105,20 @@ int main(void)
 	GFX_GL_CALL(glEnable(GL_CULL_FACE));
 	GFX_GL_CALL(glFrontFace(GL_CCW));
 	GFX_GL_CALL(glCullFace(GL_BACK));
-	GFX_GL_CALL(glEnable(GL_DEPTH_TEST));
+	//GFX_GL_CALL(glEnable(GL_DEPTH_TEST));
 
 	 //Transparent sprites:
 	glEnable(GL_BLEND);
-	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    //glDepthMask(GL_FALSE);
 	//glEnable(GL_ALPHA_TEST);
-	//glAlphaFunc(GL_GREATER, 0);
+	//glAlphaFunc(GL_GREATER, 0); //Deprecated since OpenGL 4
 
 #pragma endregion
 
 
 
 #pragma region GameLoop
-    
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
     auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
@@ -139,7 +138,7 @@ int main(void)
 	}
 
 
-	OK::GraphicsComponent::PrepareGraphics();
+    OK::Scene::currentScene->prepareGraphics();
 
 	float totalTime = 0;
 
@@ -181,9 +180,6 @@ int main(void)
 
 		update(deltaTime);		// update
 
-
-
-
         render();				// batch -> render to g-buffer -> render to framebuffer
 
 		lateUpdate(deltaTime);	// lateupdate
@@ -195,6 +191,7 @@ int main(void)
 #pragma endregion
 	glfwTerminate();
 	//cleanup
+    delete(OK::Scene::currentScene);
 }
 
 void render()
@@ -217,5 +214,5 @@ void lateUpdate(float deltaTime)
 void draw()
 {
 	// Draw Components:	// TODO: have the scene handle this so not all scenes in memory draw all at once.
-	OK::GraphicsComponent::Draw();	
+    OK::Scene::currentScene->draw();
 }
