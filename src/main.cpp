@@ -131,13 +131,13 @@ int main(void)
         sp->m_pivot = { 0.5f, 0.53f };
     }
 	{
-		auto txt = gameObject->addComponent<OK::Text>("HelloWorld");
+		auto txt = gameObject->addComponent<OK::Text>("Hello World");
 		txt->setSize(50);
 		txt->setRotation(3.14159f);
 	}
 
 
-	OK::GraphicsComponent::PrepareGraphics();
+    OK::Scene::currentScene->prepareGraphics();
 
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
@@ -159,6 +159,7 @@ int main(void)
 #pragma endregion
 	glfwTerminate();
 	//cleanup
+    delete(OK::Scene::currentScene);
 }
 
 void render()
@@ -182,5 +183,5 @@ void lateUpdate(float deltaTime)
 void draw()
 {
 	// Draw Components:	// TODO: have the scene handle this so not all scenes in memory draw all at once.
-	OK::GraphicsComponent::Draw();	
+    OK::Scene::currentScene->draw();
 }
