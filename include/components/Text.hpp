@@ -14,8 +14,8 @@ private:
     std::string m_text;
     std::vector<std::shared_ptr<SpriteAtlas>> m_characters;
     float m_charSize = 50;
-    float m_rotation = 0;
-    float m_spacing = 0.5f;
+    float m_rotation = 0;           // In radians.
+    float m_spacing = 0.7f;          // Multiplier used to space characters. 0 is complete overlap, 1 is edge-to-edge.
 
     glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
 

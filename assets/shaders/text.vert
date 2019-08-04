@@ -11,9 +11,11 @@ uniform mat4 projection = mat4(1);
 
 int character(in int index)
 {
-	int textIndex = index/4; //floor to uint adress
+	int textIndex = index/4; //floor to int adress
 	int byteShift = index - (textIndex*4);
 	return (text[textIndex] >> (8 * byteShift)) & 0xff;
+
+//	return (text[index / 4] >> (8 * (index - (index/4) * 4))) & 0xff;
 }
 
 void main()

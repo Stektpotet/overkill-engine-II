@@ -42,23 +42,23 @@ void TextInstanced::setText(const char * newText)
     //TODO: store currently bound VAO
     //TODO: bind text-VAO
     GFX_GL_CALL(
-        glUniform1uiv(
-            m_shader.getUniformLocation("text"),
+        glUniform1iv(
+            m_shader.getUniformLocation("text[0]"),
             textLength(),
-            (unsigned int*)m_text
+            (int*)m_text
         )
     );
     //TODO: rebind previously bound VAO
 }
 void TextInstanced::draw()
 {
-    glm::mat4 mvp = glm::mat4(1);// m_gameObject->m_trasform.modelMatrix();
+    glm::mat4 mvp = m_gameObject->m_transform.modelMatrix();
 
     mvp = glm::translate(mvp, glm::vec3(m_offset.x, m_offset.y, 0.0f));
 
     //Move origin to rotate around center
     mvp = glm::translate(mvp, glm::vec3(m_pivot.x * m_size.x, m_pivot.y * m_size.y, 0.0f));
-    mvp = glm::rotate(mvp, m_rotation / 180, glm::vec3(0.0f, 0.0f, 1.0f));
+    mvp = glm::rotate(mvp, m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
     mvp = glm::translate(mvp, glm::vec3(-m_pivot.x * m_size.x, -m_pivot.y * m_size.y, 0.0f));
 
     mvp = glm::scale(mvp, glm::vec3(m_size, 1.0f));

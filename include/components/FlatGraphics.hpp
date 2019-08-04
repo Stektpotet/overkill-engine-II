@@ -39,7 +39,7 @@ public:
         int id
     );
 
-    float m_rotation = 0;                           // Rotation in degrees.
+    float m_rotation = 0;                           // Rotation in radians.
     glm::vec2 m_offset  = glm::vec2(0, 0);          // X-Y offset from transform's position.
     glm::vec2 m_pivot   = glm::vec2(0.5f, 0.5f);
     glm::vec2 m_size    = glm::vec2(1, 1);
