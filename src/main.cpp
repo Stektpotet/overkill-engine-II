@@ -16,6 +16,7 @@
 #include "components/AnimatedSprite.hpp"
 #include "components/HelloWorld.hpp"
 #include "components/Text.hpp"
+#include "components/TextInstanced.hpp"
 #include "Scene.hpp"
 
 
@@ -123,7 +124,7 @@ int main(void)
     auto gameObject = OK::Scene::currentScene->makeGameObject("HelloWorldObject");
     
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        TextureAtlas texture;
+        OK::TextureAtlas texture;
         loadTextureAtlas("assets/textures/loading.png", 4, &texture);
         auto sp = gameObject->addComponent<OK::AnimatedSprite>(texture);
         sp->m_size = { 150,150 };
@@ -131,9 +132,8 @@ int main(void)
         sp->m_pivot = { 0.5f, 0.53f };
     }
 	{
-		auto txt = gameObject->addComponent<OK::Text>("Hello World");
-		txt->setSize(50);
-		txt->setRotation(3.14159f);
+		auto txt = gameObject->addComponent<OK::TextInstanced>("I am sowtfare delevoper. yiep yiepyiep!");
+        txt->m_size = { 34, 34 };
 	}
 
 

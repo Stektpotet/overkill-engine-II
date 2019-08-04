@@ -8,7 +8,6 @@ namespace OK
 class SpriteAtlas : public FlatGraphics
 {
 protected:
-
     void prepareGraphics() override;
     void update(float deltaTime) override;
     void configureShader(ShaderProgram shader) override;

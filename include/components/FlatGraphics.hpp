@@ -21,9 +21,9 @@ namespace OK
 class FlatGraphics : public GraphicsComponent
 {
 private:
-    VertexArray m_VAO;    
 
 protected:
+    VertexArray m_VAO;     
     glm::mat4 m_projection;
     ShaderProgram m_shader;
 

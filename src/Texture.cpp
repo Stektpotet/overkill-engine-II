@@ -1,5 +1,6 @@
 #include "Texture.hpp"
-
+namespace OK
+{
 TextureBase::TextureBase(
     uint16_t width, 
     uint16_t height, 
@@ -17,3 +18,4 @@ TextureAtlas::TextureAtlas(
 ) :	Texture(width, height, channels), 
     depth{ depth }
 {}
+}
