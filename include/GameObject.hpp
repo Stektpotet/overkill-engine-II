@@ -24,7 +24,7 @@ public:
     GameObject(const std::string& name = "GameObject", 
                glm::vec3 pos = glm::vec3{ 0, 0, 0 },
                glm::vec3 scl = glm::vec3{ 1, 1, 1 },
-               glm::quat rot = glm::quat{ 0, 0, 0, 1 });
+               glm::quat rot = glm::quat{ 1, 0, 0, 0 });
 
     inline const std::string& getName() { return m_name; }
     inline const int getID() { return m_ID; }
