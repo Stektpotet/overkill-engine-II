@@ -18,8 +18,8 @@ AnimatedSprite::AnimatedSprite(
 
     void AnimatedSprite::update(float deltaTime)
     {
-        m_rotation += deltaTime * 0.25f;
-        m_atlasIndex = int(m_rotation*90)%(m_atlas.getDepth()-1);
+        //m_rotation += deltaTime * 0.25f;
+        //m_atlasIndex = int(m_rotation*90)%(m_atlas.getDepth()-1);
     }
 
     //

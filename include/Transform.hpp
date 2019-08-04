@@ -7,10 +7,11 @@ struct Transform
 {
 	glm::vec3 position =	{ 0.0f, 0.0f, 0.0f };
 	glm::vec3 scale =		{ 1.0f, 1.0f, 1.0f };
-	glm::quat rotation =	{ 1.0f, 0.0f, 0.0f, 0.0f }; //identity
+	glm::quat rotation = 	{ 1.0f, 0.0f, 0.0f, 0.0f }; //identity
 
 	glm::mat4 modelMatrix();
-	void lookAt(glm::vec3 target, glm::vec3 up = { 0.0f, 1.0f, 0.0f });
+	void lookAt(glm::vec3 axis, glm::vec3 up = { 0.0f, 1.0f, 0.0f });
+	void rotateOnAxis(glm::vec3 axis, float radians);
 
 	inline glm::vec3 right()
 	{

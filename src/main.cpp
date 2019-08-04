@@ -98,7 +98,7 @@ int main(void)
 
 #pragma region Static Setup
 
-	cam.transform.position = { 0, 0, -0.5 };
+	cam.transform.position = { 0, 0, -10.5 };
 	cam.transform.lookAt({ 0,0,0 });
 	cam.setFoV(80);
 
@@ -121,34 +121,69 @@ int main(void)
 #pragma region GameLoop
     
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
-    auto gameObject = OK::Scene::currentScene->makeGameObject("HelloWorldObject");
-    
+    auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
         TextureAtlas texture;
         loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObject->addComponent<OK::AnimatedSprite>(texture);
+        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture);
         sp->m_size = { 150,150 };
-        sp->m_offset = windowSize * (0.5f - 0.125f);
+        sp->m_offset = sp->m_size * -0.5f;
         sp->m_pivot = { 0.5f, 0.53f };
     }
+	
+	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
+	gameObjectText->m_transform.position = glm::vec3(300, 300, 0);
 	{
-		auto txt = gameObject->addComponent<OK::Text>("HelloWorld");
+		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
 		txt->setSize(50);
-		txt->setRotation(3.14159f);
 	}
 
 
 	OK::GraphicsComponent::PrepareGraphics();
 
+	float totalTime = 0;
+
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - lastTime;
-
 		glfwPollEvents();		// process input
 
+		totalTime += deltaTime;
+
+
+		// Debug GameObject transformations:
+		{
+			glm::vec3 pos = glm::vec3(
+					windowSize.x/2 + 100 * glm::sin(totalTime),
+					windowSize.y/2 + 100 * glm::cos(totalTime),
+					0);
+			glm::vec3 rot = glm::vec3(0, 0, OK::Util::Deg2Rad * 90 * glm::sin(totalTime));	
+			glm::vec3 scl = glm::vec3(1, glm::abs(glm::sin(totalTime*5)), 1);	
+
+			gameObjectHello->m_transform.position = pos;
+			gameObjectHello->m_transform.rotation = glm::quat(rot);
+			gameObjectHello->m_transform.scale = scl;
+
+			GFX_DEBUG("Pos: %f \t%f \t%f \tRot: %f \t%f \t%f", pos.x, pos.y, pos.z, rot.x * OK::Util::Rad2Deg, rot.y* OK::Util::Rad2Deg, rot.z* OK::Util::Rad2Deg);
+		}
+		{
+			glm::vec3 pos = glm::vec3(
+					windowSize.x/6 + 50 * glm::sin(totalTime * 2),
+					windowSize.y/2 + 80 * glm::cos(totalTime * 2),
+					0);
+			glm::vec3 rot = glm::vec3(0, 0, OK::Util::Deg2Rad * 30 * glm::sin(totalTime));	
+			gameObjectText->m_transform.position = pos;
+			gameObjectText->m_transform.rotation = glm::quat(rot);
+		}
+
+
+
 		update(deltaTime);		// update
-		
+
+
+
+
         render();				// batch -> render to g-buffer -> render to framebuffer
 
 		lateUpdate(deltaTime);	// lateupdate
@@ -168,7 +203,6 @@ void render()
 	glfwSwapBuffers(window);
     GFX_GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
-
 
 void update(float deltaTime)
 {

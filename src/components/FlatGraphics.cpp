@@ -41,7 +41,7 @@ namespace OK
 
     void FlatGraphics::draw()
     {
-        glm::mat4 mvp = glm::mat4(1); // m_gameObject->m_transform.modelMatrix();
+        glm::mat4 mvp = m_gameObject->m_transform.modelMatrix();
 
         mvp = glm::translate(mvp, glm::vec3(m_offset.x, m_offset.y, 0.0f));
 

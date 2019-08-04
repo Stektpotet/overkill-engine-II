@@ -22,7 +22,7 @@ void SpriteAtlas::prepareGraphics()
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 
     0.0f, static_cast<GLfloat>(windowSize.y), -1.0f, 1.0f);
-    
+
     GFX_GL_CALL(glUniform1i(m_shader.getUniformLocation("blockAtlas"), 0));
     GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection)));
     FlatGraphics::prepareGraphics();
