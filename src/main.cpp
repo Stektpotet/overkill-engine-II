@@ -125,12 +125,22 @@ int main(void)
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
         OK::TextureAtlas texture;
         loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture);
-        sp->m_size = { 150,150 };
+        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
+		sp->m_size = { 150,150 };
         sp->m_offset = sp->m_size * -0.5f;
         sp->m_pivot = { 0.5f, 0.53f };
     }
 	
+	auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
+	gameObjectPac->m_transform.position = glm::vec3(500, 32, 0);
+    {
+		OK::TextureAtlas texture;
+        loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
+       	auto sp = gameObjectPac->addComponent<OK::AnimatedSprite>(texture, 0.3f, -1, true, true);
+        sp->m_size = { 64,64 };
+        sp->m_offset = sp->m_size * -0.5f;
+    }
+
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
 	gameObjectText->m_transform.position = glm::vec3(300, 300, 0);
     {
@@ -143,6 +153,7 @@ int main(void)
 		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
 		txt->setSize(50);
 	}
+
 
 
     OK::Scene::currentScene->prepareGraphics();
@@ -165,13 +176,15 @@ int main(void)
 					windowSize.y/2 + 100 * glm::cos(totalTime),
 					0);
 			glm::vec3 rot = glm::vec3(0, 0, OK::Util::Deg2Rad * 90 * glm::sin(totalTime));	
-			glm::vec3 scl = glm::vec3(1, glm::abs(glm::sin(totalTime*5)), 1);	
+			glm::vec3 scl = glm::vec3(	(glm::abs(glm::cos(totalTime*3) * 0.7f)) + 0.3f,
+										(glm::abs(glm::sin(totalTime*3) * 0.7f)) + 0.3f,
+										 1);	
 
 			gameObjectHello->m_transform.position = pos;
 			gameObjectHello->m_transform.rotation = glm::quat(rot);
 			gameObjectHello->m_transform.scale = scl;
 
-			GFX_DEBUG("Pos: %f \t%f \t%f \tRot: %f \t%f \t%f", pos.x, pos.y, pos.z, rot.x * OK::Util::Rad2Deg, rot.y* OK::Util::Rad2Deg, rot.z* OK::Util::Rad2Deg);
+			GFX_DEBUG("Pos: %.2f \t%.2f \t%.2f \tRot: %.2f \t%.2f \t%.2f", pos.x, pos.y, pos.z, rot.x * OK::Util::Rad2Deg, rot.y* OK::Util::Rad2Deg, rot.z* OK::Util::Rad2Deg);
 		}
 		{
 			glm::vec3 pos = glm::vec3(

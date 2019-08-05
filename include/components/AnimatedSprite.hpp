@@ -7,6 +7,13 @@ namespace OK
 
 class AnimatedSprite : public SpriteAtlas
 {
+private:
+    int m_currentFrame;
+    int m_maxFrames;
+    float m_frameDelay;     // Time in between switching frames.
+    float m_wait;           // The time to wait before switching again.
+    bool m_reversed;        // Is the animation playing backwards?
+
 protected:
     void update(float deltaTime) override;
 
@@ -14,8 +21,21 @@ public:
     AnimatedSprite(
         GameObject* gameObject,
         int id, 
-        TextureAtlas texture
+        TextureAtlas texture,
+        float duration = 2,
+        int maxFrames = -1,     // -1 If using all slots in atlas.
+        bool loop = true,
+        bool reverseOnEnd = false,
+        bool playing = true
     );
+
+    bool m_playing;
+    bool m_loop;
+    bool m_reverseOnEnd;    // Rather or not the animation plays backwards once it reaches its end.
+
+    inline void setAnimationDuration(float seconds);
+    inline void setFrameDuration(float seconds);  // Sets the duration so that the time in between each frame is the 'seconds' param.
+    inline void reset(bool playing = true);            // Resets the animation to is first frame, resets any state, and starts playing if 'playing' param true.
 };
 
 }
