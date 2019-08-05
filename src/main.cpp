@@ -18,6 +18,7 @@
 #include "components/Text.hpp"
 #include "components/TextInstanced.hpp"
 #include "Scene.hpp"
+#include "container_view/view.hpp"
 
 
 void render();
@@ -143,7 +144,7 @@ int main(void)
 		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
 		txt->setSize(50);
 	}
-
+    auto a = std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     OK::Scene::currentScene->prepareGraphics();
 
