@@ -630,7 +630,11 @@ namespace Gfx
 			PauseTerminal()
 		{
 #ifdef _WIN32
+#ifdef _MSC_VER //visual studio
+            DebugBreak();
+#else
 			system("pause");
+#endif
 #endif
 		}
 	}

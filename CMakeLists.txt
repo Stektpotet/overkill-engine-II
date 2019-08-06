@@ -47,10 +47,12 @@ target_sources(${PROJECT}
 	  
       PRIVATE ${LIBDIR}/GFX/src/gfx.cpp
 
-      PRIVATE ${SRCDIR}/ShaderProgram.cpp
-      PRIVATE ${SRCDIR}/VertexBuffer.cpp
-      PRIVATE ${SRCDIR}/VertexArray.cpp
-      PRIVATE ${SRCDIR}/IndexBuffer.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/ShaderProgram.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/VertexBuffer.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/VertexArray.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/IndexBuffer.cpp
+	  PRIVATE ${SRCDIR}/graphics_internal/Texture.cpp
+
       PRIVATE ${SRCDIR}/Transform.cpp
       PRIVATE ${SRCDIR}/Camera.cpp
 	  PRIVATE ${SRCDIR}/Input.cpp
@@ -65,7 +67,6 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
 	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
-	  PRIVATE ${SRCDIR}/Texture.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 

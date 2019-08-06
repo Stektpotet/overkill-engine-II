@@ -13,8 +13,6 @@ class Component;
 class GameObject
 {
 private:
-    static std::vector<GameObject*>* GameObjects; //TODO: Move to scene layer or whateverthefuck we'll call them
-    
     int m_ID;
     //std::vector<int> m_components;
     std::string m_name;

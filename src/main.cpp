@@ -117,8 +117,6 @@ int main(void)
 
 #pragma endregion
 
-
-
 #pragma region GameLoop
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
     auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  

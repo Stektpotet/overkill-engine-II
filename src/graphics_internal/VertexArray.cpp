@@ -1,4 +1,4 @@
-#include <VertexArray.hpp>
+#include "graphics_internal/VertexArray.hpp"
 
 VertexArray::VertexArray()
 {

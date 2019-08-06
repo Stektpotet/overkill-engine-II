@@ -8,7 +8,7 @@ namespace OK
 {
 namespace Fail
 {
-constexpr const char * const error_texture = "assets/texture.png";
+constexpr const char * const error_texture = "assets/textures/err.png";
 }
 
 

@@ -9,8 +9,8 @@
 
 #include "noise/OpenSimplex.h"
 
-#include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "graphics_internal/ShaderProgram.hpp"
+#include "graphics_internal/Texture.hpp"
 
 namespace OK
 {
@@ -255,8 +255,8 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
     raw_pixels = stbi_load(texturefile, &width, &height, &channels, STBI_default);
     if (!raw_pixels)
     {
+        GFX_WARN("failed to load \"%s\": %s\n", texturefile, stbi_failure_reason());
         stbi_image_free(raw_pixels);
-        GFX_WARN("failed to load \"%s\"\n", texturefile);
         return 1;
     }
 

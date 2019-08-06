@@ -41,13 +41,8 @@ void TextInstanced::setText(const char * newText)
     m_text = newText;
     //TODO: store currently bound VAO
     //TODO: bind text-VAO
-    GFX_GL_CALL(
-        glUniform1iv(
-            m_shader.getUniformLocation("text[0]"),
-            textLength(),
-            (int*)m_text
-        )
-    );
+    m_shader.bind();
+    GFX_GL_CALL(glUniform1iv(m_shader.getUniformLocation("text[0]"), (textLength() + 3) / 4, (int*)m_text));
     //TODO: rebind previously bound VAO
 }
 void TextInstanced::draw()
