@@ -1,20 +1,30 @@
 # Overkill Engine II
 
 ### About
-OK engine.
+The Overkill Engine II is the second version of a small game engine that is being developed as a hobby project.
+Overkill group:
+- Halvor Smedås  
+- Jone Skaara  
+  
+Overkill as a group (OK), created Overkill Engine I as the larger of two assignments in a Graphics Programming course at NTNU in Gjøvik. We later restarted the project as Overkill Engine II (OKEII), in order to improve on what OKEI was lacking. OKEII is more generallized and easier to expand on, making it more suitable to actually write a game in.
 
 ### Featrues
-- [X] yiap.
-- [X] yap.
-- [ ] yepp!
+- [X] Sprite that can draw images to the screen.
+- [X] SpriteAnimation that go though a sprite sheet(atlas) to "create motion".
+- [X] Text renderer that uses instance rendering to display a string using a single sprite.
+- [X] Transformable GameObjects.
+- [X] Components that are put on GameObjects to give them behaviour.
+- [ ] GameObject transformation hierarchy. A child-GameObject is translated, rotated and scaled by its parent. 
+- [ ] Resource Manager that loads and stores resources like ShaderPrograms and Textures, and hands out references to them.
 
 ### Structure
-Genral structure of the Overkill Engine II.
+General structure of the Overkill Engine II.
 ![](https://github.com/Stektpotet/overkill-engine-II/blob/master/docs/OKEII.png?raw=true)
 
 
 ### Installation
 #### Windows
+TODO:
 
 #### Ubuntu
 1. Install latest grapics drivers. The OKEII uses OpenGL version 4.3.
