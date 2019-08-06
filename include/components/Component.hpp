@@ -43,4 +43,4 @@ public:
     bool operator== (const Component* otherComponent);
 };
 
-}
+} // Namespace OK

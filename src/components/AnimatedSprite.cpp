@@ -79,4 +79,4 @@ AnimatedSprite::AnimatedSprite(
     //
     // Drawing done by GraphicsComponent.
     //
-}
+} // Namespace OK

@@ -37,4 +37,4 @@ public:
     void reset(bool playing = true);            // Resets the animation to is first frame, resets any state, and starts playing if 'playing' param true.
 };
 
-}
+} // Namespace OK

@@ -3,9 +3,18 @@
 namespace OK::Util
 {
 
+    void printTransform(Transform t)
+    {
+        glm::vec3 rot = glm::eulerAngles(t.rotation);
+		GFX_DEBUG("Pos: %.2f \t%.2f \t%.2f \tRot: %.2f \t%.2f \t%.2f", 
+        t.position.x, t.position.y, t.position.z, 
+        rot.x * OK::Util::Rad2Deg, 
+        rot.y* OK::Util::Rad2Deg, 
+        rot.z* OK::Util::Rad2Deg);
+    }
+
     void processError(int code, const char* description) 
     { GFX_ERROR("%s - %s", glewGetErrorString(code), description); }
-
 
     glm::uint packSnorm10x3_2Rev(glm::vec3 const& v) {
         const auto DISCARD_MASK = 1023;

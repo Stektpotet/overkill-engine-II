@@ -17,6 +17,7 @@
 #include "components/HelloWorld.hpp"
 #include "components/Text.hpp"
 #include "components/TextInstanced.hpp"
+#include "components/Rigidbody.hpp"
 #include "Scene.hpp"
 
 
@@ -130,7 +131,7 @@ int main(void)
     }
 	
 	auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
-	gameObjectPac->m_transform.position = glm::vec3(500, 32, 0);
+	gameObjectPac->m_transform.position = glm::vec3(100, windowSize.y-32, 0);
     {
 		OK::TextureAtlas texture;
         loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
@@ -138,6 +139,8 @@ int main(void)
         sp->m_size = { 64,64 };
         sp->m_offset = sp->m_size * -0.5f;
     }
+	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(1, true);
+	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 10);
 
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
 	gameObjectText->m_transform.position = glm::vec3(300, 300, 0);
@@ -181,8 +184,6 @@ int main(void)
 			gameObjectHello->m_transform.position = pos;
 			gameObjectHello->m_transform.rotation = glm::quat(rot);
 			gameObjectHello->m_transform.scale = scl;
-
-			GFX_DEBUG("Pos: %.2f \t%.2f \t%.2f \tRot: %.2f \t%.2f \t%.2f", pos.x, pos.y, pos.z, rot.x * OK::Util::Rad2Deg, rot.y* OK::Util::Rad2Deg, rot.z* OK::Util::Rad2Deg);
 		}
 		{
 			glm::vec3 pos = glm::vec3(
@@ -194,7 +195,10 @@ int main(void)
 			gameObjectText->m_transform.rotation = glm::quat(rot);
 		}
 
-
+		// Pacman elastic bounce on ground.
+		if (pacmanRb->m_gameObject->m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
+			pacmanRb->m_velocity.y *= -1.0f;
+		OK::Util::printTransform(pacmanRb->m_gameObject->m_transform);
 
 		update(deltaTime);		// update
 

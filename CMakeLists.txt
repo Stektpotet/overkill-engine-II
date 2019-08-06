@@ -67,6 +67,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
 	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
+	  PRIVATE ${SRCDIR}/components/Rigidbody.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 
