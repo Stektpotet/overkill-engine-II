@@ -24,7 +24,7 @@ AnimatedSprite::AnimatedSprite(
             
         setAnimationDuration(duration);
         m_currentFrame = 0;
-        m_wait = m_frameDelay;
+        m_wait = m_frameDuration;
         m_reversed = false;
     }
 
@@ -35,15 +35,11 @@ AnimatedSprite::AnimatedSprite(
 
     void AnimatedSprite::update(float deltaTime)
     {
-        m_wait -= deltaTime;
-        if (m_wait <= 0)
-        {
-            m_wait = m_frameDelay;
-            m_currentFrame += (m_reversed)? -1 : 1;
-        }
-        else 
-            return;
+        if (m_playing)      m_wait -= deltaTime;
+        if (m_wait <= 0)    m_wait = m_frameDuration;
+        else                return;
 
+        m_currentFrame += (m_reversed)? -1 : 1;
 
         if (m_currentFrame == m_maxFrames)
         {
@@ -69,15 +65,12 @@ AnimatedSprite::AnimatedSprite(
     }
 
     void AnimatedSprite::setAnimationDuration(float seconds)
-    {   m_frameDelay = seconds / (float)m_maxFrames; }
-
-    void AnimatedSprite::setFrameDuration(float seconds)
-    {   m_frameDelay = seconds; }
+    {   m_frameDuration = seconds / (float)m_maxFrames; }
 
     void AnimatedSprite::reset(bool playing)
     {
         m_currentFrame = 0;
-        m_wait = m_frameDelay;
+        m_wait = m_frameDuration;
         m_reversed = false;
         m_playing = playing;
     }
