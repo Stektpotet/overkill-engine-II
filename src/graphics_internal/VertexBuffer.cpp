@@ -1,4 +1,4 @@
-#include <VertexBuffer.hpp>
+#include "graphics_internal/VertexBuffer.hpp"
 
 VertexBuffer::VertexBuffer(const GLsizeiptr size, const void * data /*= nullptr*/)
 {

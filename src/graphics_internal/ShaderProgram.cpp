@@ -1,4 +1,4 @@
-#include "ShaderProgram.hpp"
+#include "graphics_internal/ShaderProgram.hpp"
 
 ShaderProgram::ShaderProgram(GLuint ID) : id(ID)
 {

@@ -8,12 +8,13 @@
 #include "components/GraphicsComponent.hpp"
 #include "Structs.hpp"
 #include "ResourceLoader.h"
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "VertexLayout.hpp"
-#include "IndexBuffer.hpp"
-#include "ShaderProgram.hpp"
-#include "Texture.hpp"
+
+#include "graphics_internal/VertexArray.hpp"
+#include "graphics_internal/VertexBuffer.hpp"
+#include "graphics_internal/VertexLayout.hpp"
+#include "graphics_internal/IndexBuffer.hpp"
+#include "graphics_internal/ShaderProgram.hpp"
+#include "graphics_internal/Texture.hpp"
 
 namespace OK
 {

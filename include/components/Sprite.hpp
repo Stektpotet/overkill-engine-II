@@ -1,5 +1,4 @@
 #pragma once
-
 #include "components/FlatGraphics.hpp"
 
 namespace OK

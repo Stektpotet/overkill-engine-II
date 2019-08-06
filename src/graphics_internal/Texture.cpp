@@ -1,4 +1,4 @@
-#include "Texture.hpp"
+#include "graphics_internal/Texture.hpp"
 namespace OK
 {
 TextureBase::TextureBase(
