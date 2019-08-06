@@ -9,7 +9,8 @@ OK engine.
 - [ ] yepp!
 
 ### Structure
-![](https://github.com/Stektpotet/overkill-engine-II/tree/master/docs/OKEII.png)
+Genral structure of the Overkill Engine II.
+![](https://github.com/Stektpotet/overkill-engine-II/blob/master/docs/OKEII.png?raw=true)
 
 
 ### Installation
