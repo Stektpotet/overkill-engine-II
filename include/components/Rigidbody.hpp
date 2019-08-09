@@ -12,9 +12,7 @@ class Rigidbody : public Component
 private:
     glm::vec3 m_acceleration;
     glm::vec3 m_angularAcceleration;
-    float m_velocityMagnitude;          // Necessary because of float operations being inaccurate.
-    float m_angularVelocityMagnitude;   // A ball bouncing will stop by itself even if no forces act on it.
-                                        // Newton would not approve. We store the magnitude seperate and set it in update.
+
 protected:
     void update(float deltaTime) override;
 
@@ -22,14 +20,14 @@ public:
     Rigidbody(
         GameObject* gameObject,
         int id, 
-        float mass = 1,
-        bool useGravity = false
+        bool useGravity = false,
+        float mass = 1
     );
 
-    glm::vec3 m_velocity;
-    glm::vec3 m_angularVelocity;
-    bool m_useGravity;
-    float m_gravity;
+    glm::vec3 m_velocity;           // Note: never update velocities directly, 
+    glm::vec3 m_angularVelocity;    // only set velocities to its initial value.
+    bool m_useGravity;              // When doing updates on velocity often, use forces instead
+    float m_gravity;                // to ensure the magnitude of the velocity doesn't shrink.
     float m_mass;
     float m_drag;
     float m_angularDrag;
