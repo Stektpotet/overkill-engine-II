@@ -14,7 +14,6 @@ private:
 
     float m_spacing = 0.5f;
 
-    glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
 
     TextureAtlas m_asciiMap;
 
@@ -28,6 +27,7 @@ public:
 
     inline size_t textLength() { return std::char_traits<char>::length(m_text); }
     void setText(const char* newText);
+    glm::vec4 m_color   = glm::vec4(1, 1, 1, 1);
 };
 
 } // Namespace OK.

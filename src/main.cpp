@@ -20,6 +20,7 @@
 #include "components/Rigidbody.hpp"
 #include "Scene.hpp"
 
+const int c_frameLimit = 60;
 
 void render();
 void draw();
@@ -127,7 +128,6 @@ int main(void)
         auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
 		sp->m_size = { 150,150 };
         sp->m_offset = sp->m_size * -0.5f;
-        sp->m_pivot = { 0.5f, 0.53f };
     }
 	
 	auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
@@ -139,8 +139,8 @@ int main(void)
         sp->m_size = { 64,64 };
         sp->m_offset = sp->m_size * -0.5f;
     }
-	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(1, true);
-	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 10);
+	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(true);
+	// pacmanRb->m_angularVelocity = glm::vec3(0, 0, 10);
 
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
 	gameObjectText->m_transform.position = glm::vec3(300, 300, 0);
@@ -154,22 +154,37 @@ int main(void)
 		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
 		txt->setSize(50);
 	}
-
+	
+	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
+	gameObjectFrameCounter->m_transform.position = glm::vec3(windowSize.x-60,0, 0);
+        auto txtFrameCounter = gameObjectFrameCounter->addComponent<OK::TextInstanced>("00");
+        txtFrameCounter->m_size = { 34, 34 };
+		txtFrameCounter->m_color = {0.1f, 1, 0.1f, 1};
 
 
     OK::Scene::currentScene->prepareGraphics();
 
 	float totalTime = 0;
-
 	double lastTime = glfwGetTime();
+	char* frameCounterString = new char[10];
+
 	while (!glfwWindowShouldClose(window)) {
+		
+		// Time management: 
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - lastTime;
 		glfwPollEvents();		// process input
-
 		totalTime += deltaTime;
 
+		if (deltaTime < (float)1/c_frameLimit)	// 60fps.
+			continue;
 
+		lastTime = currentTime;
+		sprintf(frameCounterString, "%d", (int)(1/deltaTime));
+		txtFrameCounter->setText(frameCounterString);
+		
+
+	
 		// Debug GameObject transformations:
 		{
 			glm::vec3 pos = glm::vec3(
@@ -197,8 +212,9 @@ int main(void)
 
 		// Pacman elastic bounce on ground.
 		if (pacmanRb->m_gameObject->m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
-			pacmanRb->m_velocity.y *= -1.0f;
-		OK::Util::printTransform(pacmanRb->m_gameObject->m_transform);
+			//pacmanRb->m_velocity.y = - pacmanRb->m_velocity.y;
+			pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
+		// OK::Util::printTransform(pacmanRb->m_gameObject->m_transform);
 
 		update(deltaTime);		// update
 
@@ -208,11 +224,11 @@ int main(void)
 
 		  						// pass framebuffer through post processing
 
-		lastTime = currentTime;
 	}
 #pragma endregion
 	glfwTerminate();
 	//cleanup
+	delete frameCounterString;
     delete(OK::Scene::currentScene);
 }
 
