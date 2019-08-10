@@ -161,8 +161,20 @@ int main(void)
         txtFrameCounter->m_size = { 34, 34 };
 		txtFrameCounter->m_color = {0.1f, 1, 0.1f, 1};
 
-
     OK::Scene::currentScene->prepareGraphics();
+	
+	{	// Optional test:
+		OK::Scene::currentScene->getGameObject("FrameCounterObject");			// Should succeed.
+		std::shared_ptr<OK::GameObject> g = OK::Scene::currentScene->getGameObject("FrameCourdxcfgvnterObject");	// Should fail, print a warn.
+		if (g == nullptr)
+		{
+			GFX_DEBUG("The thing i wanted wasn't there :(");
+		}
+		else
+		{
+			GFX_DEBUG("YAY, found the ting!");
+		}
+	}
 
 	float totalTime = 0;
 	double lastTime = glfwGetTime();

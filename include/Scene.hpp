@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <vector>
 #include <memory>
+#include <cstring> // strcomp(), finding GameObjects.
 
 #include "GameObject.hpp"
 #include "components/Component.hpp"
@@ -22,6 +23,8 @@ public:
     Scene(const char* name, std::initializer_list<std::shared_ptr<GameObject>> gameObjects);
 
     std::shared_ptr<GameObject> makeGameObject(const char* name);
+    std::shared_ptr<GameObject> getGameObject(const char* name);
+    std::shared_ptr<GameObject> getGameObject(int ID);
 
     void prepareGraphics();
     void draw();
