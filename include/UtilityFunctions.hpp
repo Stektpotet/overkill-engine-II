@@ -16,7 +16,15 @@ namespace OK::Util
         t = 3*t*t + 2*t*t*t;    // 3x² - 2x³
         return a*t + (1-t)*b;
     }
-
+    inline glm::vec4 lerpColor(glm::vec4 a, glm::vec4 b, float t)
+    {
+        return glm::vec4(
+                         lerp(a.x, b.x, t),
+                         lerp(a.y, b.y, t),
+                         lerp(a.z, b.z, t),
+                         lerp(a.w, b.w, t)
+                        );
+    }
 
     float random(float min, float max);
     void printTransform(Transform t);
