@@ -7,6 +7,17 @@
 
 namespace OK::Util
 {
+    inline float lerp(float a, float b, float t)  // No std::lerp until c++20 :(
+    {
+        return a*t + (1-t)*b;
+    }
+    inline float slerp(float a, float b, float t)
+    {
+        t = 3*t*t + 2*t*t*t;    // 3x² - 2x³
+        return a*t + (1-t)*b;
+    }
+
+
     float random(float min, float max);
     void printTransform(Transform t);
     void processError(int code, const char* description);
