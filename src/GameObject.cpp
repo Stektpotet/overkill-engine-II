@@ -12,10 +12,10 @@ namespace OK
         m_components{}
     {
     }
-
+    
     void GameObject::update(float deltaTime)
     {
         for (auto& c : m_components)
             c->update(deltaTime);
     }
-}
+} // Namespace OK.

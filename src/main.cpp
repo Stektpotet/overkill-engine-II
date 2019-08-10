@@ -121,17 +121,9 @@ int main(void)
 
 #pragma region GameLoop
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
-    auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
-    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        OK::TextureAtlas texture;
-        loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
-		sp->m_size = { 150,150 };
-        sp->m_offset = sp->m_size * -0.5f;
-    }
-	
+   
 	auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
-	gameObjectPac->m_transform.position = glm::vec3(100, windowSize.y-32, 0);
+	gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
     {
 		OK::TextureAtlas texture;
         loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
@@ -140,20 +132,30 @@ int main(void)
         sp->m_offset = sp->m_size * -0.5f;
     }
 	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(true);
-	// pacmanRb->m_angularVelocity = glm::vec3(0, 0, 10);
+	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 1);
+
+ 	auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
+    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
+        OK::TextureAtlas texture;
+        loadTextureAtlas("assets/textures/loading.png", 4, &texture);
+        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
+		sp->m_size = { 150,150 };
+        sp->m_offset = sp->m_size * -0.5f;
+    }
 
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
-	gameObjectText->m_transform.position = glm::vec3(300, 300, 0);
+	gameObjectText->m_transform.position = glm::vec3(0, 0, 0);
     {
         auto txt = gameObjectText->addComponent<OK::TextInstanced>("I am sowtfare delevoper. yiep yiepyiep!");
         txt->m_size = { 34, 34 };
         txt->m_pivot = { 340, 0 };
-        txt->m_offset = { -136, -136 };
+        txt->m_offset = { -346, -80 };
     }
 	{
 		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
 		txt->setSize(50);
 	}
+	gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
 	
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
 	gameObjectFrameCounter->m_transform.position = glm::vec3(windowSize.x-60,0, 0);
@@ -188,7 +190,7 @@ int main(void)
 		glfwPollEvents();		// process input
 		totalTime += deltaTime;
 
-		if (deltaTime < (float)1/c_frameLimit)	// 60fps.
+		if (deltaTime < (float)1/c_frameLimit)		// TODO: make smarter, so if the last frame took long, don't wait the full frame time.
 			continue;
 
 		lastTime = currentTime;
@@ -200,34 +202,23 @@ int main(void)
 		// Debug GameObject transformations:
 		{
 			glm::vec3 pos = glm::vec3(
-					windowSize.x/2 + 100 * glm::sin(totalTime),
-					windowSize.y/2 + 100 * glm::cos(totalTime),
+					windowSize.x/2 + 100 * glm::sin(totalTime * 0.05f * deltaTime),
+					windowSize.y/2 + 100 * glm::cos(totalTime * 0.05f * deltaTime),
 					0);
-			glm::vec3 rot = glm::vec3(0, 0, glm::radians(90.0f) * glm::sin(totalTime));	
-			glm::vec3 scl = glm::vec3(	(glm::abs(glm::cos(totalTime*3) * 0.7f)) + 0.3f,
-										(glm::abs(glm::sin(totalTime*3) * 0.7f)) + 0.3f,
-										 1);	
-
 			gameObjectHello->m_transform.position = pos;
-			gameObjectHello->m_transform.rotation = glm::quat(rot);
-			gameObjectHello->m_transform.scale = scl;
 		}
 		{
-			glm::vec3 pos = glm::vec3(
-					windowSize.x/6 + 50 * glm::sin(totalTime * 2),
-					windowSize.y/2 + 80 * glm::cos(totalTime * 2),
-					0);
-			glm::vec3 rot = glm::vec3(0, 0, glm::radians(30.0f) * glm::sin(totalTime));	
-			gameObjectText->m_transform.position = pos;
-			gameObjectText->m_transform.rotation = glm::quat(rot);
+			glm::vec3 scl = glm::vec3(
+				glm::abs(glm::sin(totalTime * 0.01f * deltaTime) * 0.8f) + 0.2f,
+				1,
+				1
+			);
+			gameObjectPac->m_transform.scale = scl;
 		}
-
 		// Pacman elastic bounce on ground.
 		if (pacmanRb->m_gameObject->m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
-			//pacmanRb->m_velocity.y = - pacmanRb->m_velocity.y;
 			pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
-		// OK::Util::printTransform(pacmanRb->m_gameObject->m_transform);
-
+			
 		update(deltaTime);		// update
 
         render();				// batch -> render to g-buffer -> render to framebuffer
