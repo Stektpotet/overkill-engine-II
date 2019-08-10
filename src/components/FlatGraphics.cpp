@@ -4,7 +4,7 @@
 namespace OK
 {
 
-    FlatGraphics::FlatGraphics(GameObject* gameObject, int id) : GraphicsComponent(gameObject, id), m_VAO()
+    FlatGraphics::FlatGraphics() : GraphicsComponent(), m_VAO()
     {}
 
     // https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites

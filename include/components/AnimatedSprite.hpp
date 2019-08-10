@@ -18,8 +18,6 @@ protected:
 
 public:
     AnimatedSprite(
-        GameObject* gameObject,
-        int id, 
         TextureAtlas texture,
         float duration = 2,
         int maxFrames = -1,     // -1 If using all slots in atlas.

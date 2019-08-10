@@ -14,7 +14,7 @@ protected:
 
 public:
     
-    GraphicsComponent(GameObject* gameObject, int id);
+    GraphicsComponent();
 };
 
 } // Namespace OK

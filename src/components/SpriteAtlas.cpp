@@ -6,11 +6,9 @@ namespace OK
 {
 
 SpriteAtlas::SpriteAtlas(
-    GameObject* gameObject,
-    int id, 
     TextureAtlas atlas,
     int atlasIndex
-    ) : FlatGraphics(gameObject, id), 
+    ) : FlatGraphics(), 
     m_atlas{atlas}, 
     m_atlasIndex{atlasIndex}
     {}

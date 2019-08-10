@@ -15,7 +15,6 @@
 #include "ControllableCamera.hpp"
 #include "components/AnimatedSprite.hpp"
 #include "components/HelloWorld.hpp"
-#include "components/Text.hpp"
 #include "components/TextInstanced.hpp"
 #include "components/Rigidbody.hpp"
 #include "Scene.hpp"
@@ -151,10 +150,6 @@ int main(void)
         txt->m_pivot = { 340, 0 };
         txt->m_offset = { -346, -80 };
     }
-	{
-		auto txt = gameObjectText->addComponent<OK::Text>("Hello World!!");
-		txt->setSize(50);
-	}
 	gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
 	
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
@@ -180,7 +175,7 @@ int main(void)
 
 	float totalTime = 0;
 	double lastTime = glfwGetTime();
-	char* frameCounterString = new char[10];
+	char frameCounterString[10];
 
 	while (!glfwWindowShouldClose(window)) {
 		
@@ -216,7 +211,7 @@ int main(void)
 			gameObjectPac->m_transform.scale = scl;
 		}
 		// Pacman elastic bounce on ground.
-		if (pacmanRb->m_gameObject->m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
+		if (pacmanRb->gameObject().m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
 			pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
 			
 		update(deltaTime);		// update
@@ -231,7 +226,6 @@ int main(void)
 #pragma endregion
 	glfwTerminate();
 	//cleanup
-	delete frameCounterString;
     delete(OK::Scene::currentScene);
 }
 

@@ -18,8 +18,6 @@ protected:
 
 public:
     Rigidbody(
-        GameObject* gameObject,
-        int id, 
         bool useGravity = false,
         float mass = 1
     );

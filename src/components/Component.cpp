@@ -4,11 +4,9 @@ namespace OK
 {
 
 // Non-static funcions:
-    Component::Component(GameObject* gameObject, int id)
-    {
-        m_gameObject = gameObject;
-        GFX_DEBUG("Constructed Component {%s} with ID: %d with parent GameObject: %s", typeid(this).name(), m_ID, gameObject->getName().data());
-    }
+    //Component::Component()
+    //{
+    //}
 
     int Component::getID()
     { return m_ID; }

@@ -14,8 +14,6 @@ protected:
 
 public:
     Sprite(
-        GameObject* gameObject,
-        int id, 
         Texture2D texture
     );
 

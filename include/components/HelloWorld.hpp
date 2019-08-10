@@ -15,7 +15,7 @@ private:
     float m_timeLeft = c_timeBetweenMoves;
     bool m_reverse = false;
 public:
-    HelloWorld(GameObject* gameObject, int id);
+    HelloWorld();
     void update(float deltatTime);
     //void draw();
 };

@@ -15,8 +15,6 @@ protected:
 
 public:
     SpriteAtlas(
-        GameObject* gameObject,
-        int id, 
         TextureAtlas atlas,
         
         int atlasIndex = 0 

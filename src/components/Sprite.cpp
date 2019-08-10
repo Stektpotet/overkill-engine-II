@@ -5,10 +5,8 @@ extern glm::vec2 windowSize;
 namespace OK
 {
 Sprite::Sprite(
-    GameObject* gameObject,
-    int id, 
     Texture2D texture
-    ) : FlatGraphics(gameObject, id), m_texture{texture}
+    ) : FlatGraphics(), m_texture{texture}
     {}
 
 void Sprite::prepareGraphics()
