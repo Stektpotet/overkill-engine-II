@@ -43,6 +43,7 @@ void processMouseButtons(GLFWwindow* window, int button, int action, int mods)
 
 int main(void)
 {
+std::srand(time(NULL));	
 
 #pragma region Setup Context
 
@@ -196,8 +197,6 @@ int main(void)
 		lastTime = currentTime;
 		sprintf(frameCounterString, "%d", (int)(1/deltaTime));
 		txtFrameCounter->setText(frameCounterString);
-		
-
 	
 		// Debug GameObject transformations:
 		{
@@ -218,7 +217,7 @@ int main(void)
 		// Pacman elastic bounce on ground.
 		if (pacmanRb->m_gameObject->m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
 			pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
-			
+
 		update(deltaTime);		// update
 
         render();				// batch -> render to g-buffer -> render to framebuffer

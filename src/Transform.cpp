@@ -14,6 +14,12 @@ glm::mat4 Transform::modelMatrix()
 	return model * parentModel;
 }
 
+glm::vec3 Transform::getWorldPos()
+{
+	glm::vec4 pos = glm::vec4(position, 0) * modelMatrix();
+	return glm::vec3(pos.x, pos.y, pos.z);
+}
+
 void Transform::lookAt(glm::vec3 target, glm::vec3 up)
 {
 	rotation = glm::lookAt(position, target, up);

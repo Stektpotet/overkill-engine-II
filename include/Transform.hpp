@@ -20,6 +20,8 @@ struct Transform
 	void lookAt(glm::vec3 axis, glm::vec3 up = { 0.0f, 1.0f, 0.0f });
 	void rotateOnAxis(glm::vec3 axis, float radians);
 
+	glm::vec3 getWorldPos();
+
 	inline glm::vec3 right()
 	{
 		return glm::vec3{ 1,0,0 } * rotation;
