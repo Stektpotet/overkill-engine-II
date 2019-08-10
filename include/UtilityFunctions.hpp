@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 #include "Transform.hpp"
 #include <glm/glm.hpp>
 #include <gfx.h>
@@ -6,6 +7,7 @@
 
 namespace OK::Util
 {
+    float random(float min, float max);
     void printTransform(Transform t);
     void processError(int code, const char* description);
     glm::uint packSnorm10x3_2Rev(glm::vec3 const& v);

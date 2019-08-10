@@ -3,6 +3,18 @@
 namespace OK::Util
 {
 
+    float random(float min, float max)
+    {   
+        GFX_DEBUG("Generatign random number between %.2f and %.2f:", min, max);
+        int accuracy = 1000000;
+        min *= accuracy;
+        max *= accuracy;
+        float result = ((std::rand() + (int)min) % (int)max) / (float)accuracy;
+        GFX_DEBUG("Generated: %.4f ", result);
+        return result;
+
+    }
+
     void printTransform(Transform t)
     {
         glm::vec3 rot = glm::eulerAngles(t.rotation);
