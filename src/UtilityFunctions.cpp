@@ -8,9 +8,9 @@ namespace OK::Util
         glm::vec3 rot = glm::eulerAngles(t.rotation);
 		GFX_DEBUG("Pos: %.2f \t%.2f \t%.2f \tRot: %.2f \t%.2f \t%.2f", 
         t.position.x, t.position.y, t.position.z, 
-        rot.x * OK::Util::Rad2Deg, 
-        rot.y* OK::Util::Rad2Deg, 
-        rot.z* OK::Util::Rad2Deg);
+        glm::degrees(rot.x), 
+        glm::degrees(rot.y), 
+        glm::degrees(rot.z));
     }
 
     void processError(int code, const char* description) 

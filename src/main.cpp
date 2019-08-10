@@ -203,7 +203,7 @@ int main(void)
 					windowSize.x/2 + 100 * glm::sin(totalTime),
 					windowSize.y/2 + 100 * glm::cos(totalTime),
 					0);
-			glm::vec3 rot = glm::vec3(0, 0, OK::Util::Deg2Rad * 90 * glm::sin(totalTime));	
+			glm::vec3 rot = glm::vec3(0, 0, glm::radians(90.0f) * glm::sin(totalTime));	
 			glm::vec3 scl = glm::vec3(	(glm::abs(glm::cos(totalTime*3) * 0.7f)) + 0.3f,
 										(glm::abs(glm::sin(totalTime*3) * 0.7f)) + 0.3f,
 										 1);	
@@ -217,7 +217,7 @@ int main(void)
 					windowSize.x/6 + 50 * glm::sin(totalTime * 2),
 					windowSize.y/2 + 80 * glm::cos(totalTime * 2),
 					0);
-			glm::vec3 rot = glm::vec3(0, 0, OK::Util::Deg2Rad * 30 * glm::sin(totalTime));	
+			glm::vec3 rot = glm::vec3(0, 0, glm::radians(30.0f) * glm::sin(totalTime));	
 			gameObjectText->m_transform.position = pos;
 			gameObjectText->m_transform.rotation = glm::quat(rot);
 		}
