@@ -36,8 +36,6 @@ protected:
 public:
 
     FlatGraphics(
-        GameObject* gameObject,
-        int id
     );
 
     float m_rotation = 0;                           // Rotation in radians.

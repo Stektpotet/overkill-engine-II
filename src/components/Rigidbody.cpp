@@ -3,11 +3,9 @@
 namespace OK
 {
     Rigidbody::Rigidbody(
-        GameObject* gameObject,
-        int id, 
         bool useGravity, 
         float mass) :
-        Component (gameObject, id),
+        Component (),
         m_useGravity{useGravity}
         {
             m_velocity = glm::vec3(0);

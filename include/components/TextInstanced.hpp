@@ -22,7 +22,7 @@ protected:
     void prepareGraphics() override;
 
 public:
-    TextInstanced(GameObject* gameObject, int id, const char* text, const char* fontAtlas = "assets/textures/ascii.png");
+    TextInstanced(const char* text, const char* fontAtlas = "assets/textures/ascii.png");
 
 
     inline size_t textLength() { return std::char_traits<char>::length(m_text); }

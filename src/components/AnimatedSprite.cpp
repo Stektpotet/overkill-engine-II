@@ -5,15 +5,13 @@ extern glm::vec2 windowSize;
 namespace OK
 {
 AnimatedSprite::AnimatedSprite(
-    GameObject* gameObject,
-    int id,
     TextureAtlas texture,
     float duration,
     int maxFrames,
     bool loop,
     bool reverseOnEnd,
     bool playing
-    ) : SpriteAtlas(gameObject, id, texture),
+    ) : SpriteAtlas(texture),
     m_maxFrames{maxFrames},
     m_loop{loop},
     m_reverseOnEnd(reverseOnEnd),

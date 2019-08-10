@@ -4,10 +4,7 @@
 namespace OK
 {
 
-    GraphicsComponent::GraphicsComponent(
-        GameObject* gameObject, int id
-    ) : Component(gameObject, id)
-    { }
+    GraphicsComponent::GraphicsComponent() : Component(){ }
 
     void GraphicsComponent::onCreated()
     {

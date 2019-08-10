@@ -5,11 +5,9 @@ extern glm::vec2 windowSize;
 namespace OK
 {
 TextInstanced::TextInstanced(
-    GameObject* gameObject, 
-    int id, 
     const char* text, 
     const char* fontAtlas
-) : FlatGraphics(gameObject, id), 
+) : FlatGraphics(), 
     m_text{ text },
     c_fontAtlas{ fontAtlas }
 {

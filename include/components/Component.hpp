@@ -27,16 +27,16 @@ class Component
 private:
     int m_ID;
 protected:
-    Component(GameObject* gameObject, int id);
+    //Component();
     inline virtual void update(float deltaTime) {}
     //called instantly upon added to gameObject
     inline virtual void onCreated() {}
     inline virtual void awake() {}
 
     inline virtual void draw() {}
-public:
     GameObject* m_gameObject;
-
+public:
+    inline GameObject& gameObject() { return *m_gameObject; }
     int getID();
     bool operator== (const int& otherID);
     bool operator== (const Component& otherComponent);

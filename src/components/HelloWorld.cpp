@@ -2,7 +2,7 @@
 
 namespace OK
 {
-HelloWorld::HelloWorld(GameObject * gameObject, int id) : Component(gameObject, id)
+HelloWorld::HelloWorld() : Component()
 {}
 
 void HelloWorld::update(float deltaTime)

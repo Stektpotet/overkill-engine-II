@@ -31,7 +31,7 @@ std::shared_ptr<GameObject> Scene::getGameObject(const char* name)
         return nullptr;
     }
     GFX_DEBUG("Searched for GameObject with name '%s', found.", name);
-    return *iterator.base();
+    return (*iterator);
 }
 
 std::shared_ptr<GameObject> Scene::getGameObject(int ID)
@@ -49,7 +49,7 @@ std::shared_ptr<GameObject> Scene::getGameObject(int ID)
     }
 
     GFX_DEBUG("Searched for GameObject with ID '%d', found.", ID);
-    return *iterator.base();
+    return (*iterator);
 }
 
 
