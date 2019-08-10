@@ -1,4 +1,4 @@
-#include "components/Rigidbody.hpp"
+#include "components/core/Rigidbody.hpp"
 
 namespace OK
 {

@@ -1,10 +1,10 @@
-#include "components/FlatGraphics.hpp"
+#include "components/core/FlatGraphics.hpp"
 
 
 namespace OK
 {
 
-    FlatGraphics::FlatGraphics() : GraphicsComponent(), m_VAO()
+    FlatGraphics::FlatGraphics() : GraphicsComponent()
     {}
 
     // https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites
@@ -26,8 +26,8 @@ namespace OK
         // Setup buffers:
         //TODO unify the interface for VBOs and IBOs, the first argument is confusing (count vs size).
 
-        m_VAO.bind();
-        GFX_ASSERT(m_VAO.valid(), "invalid VAO!");
+        m_vertexArray.bind();
+        GFX_ASSERT(m_vertexArray.valid(), "invalid VAO!");
         IndexBuffer<GLuint> ibo(sizeof(indices)/sizeof(indices[0]), indices);
         GFX_ASSERT(ibo.valid(), "invalid IBO!");
         VertexBuffer vbo(sizeof(vertices), vertices); 
@@ -54,7 +54,7 @@ namespace OK
 
         m_shader.bind();
 
-        m_VAO.bind();
+        m_vertexArray.bind();
         // Set "update every frame" uniforms:
         GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(mvp)));
         GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("color"), m_color.x, m_color.y, m_color.z, m_color.w));

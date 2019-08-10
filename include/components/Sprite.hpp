@@ -1,5 +1,5 @@
 #pragma once
-#include "components/FlatGraphics.hpp"
+#include "components/core/FlatGraphics.hpp"
 
 namespace OK
 {

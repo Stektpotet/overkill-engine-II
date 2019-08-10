@@ -82,7 +82,59 @@ inline auto createShader(const char* src, GLenum shaderType) -> GLuint
     }
     return shaderID;
 }
+/// <summary>
+/// creates a new shader program and its shaders based on the source code given
+/// </summary>
+/// <param name="vert">the vertex shader</param>
+/// <param name="frag">the fragment shader</param>
+/// <returns> the id of the created shader program </returns>
+inline auto createProgramRaw(const char *vert, const char *frag) -> ShaderProgram
+{
+    GLuint program = glCreateProgram();
+    GLuint vertexShader = 0;
+    GLuint fragmentShader = 0;
 
+    // Load and compile the vertex and fragment shaders
+    if (vertexShader = createShader(vert, GL_VERTEX_SHADER); !vertexShader) {
+        GFX_ERROR("Program creation failed because the vertex shader was invalid:\n\n%s", vert);
+    }
+
+    if (fragmentShader = createShader(frag, GL_FRAGMENT_SHADER); !fragmentShader) {
+        GFX_ERROR("Program creation failed because the fragment shader was invalid:\n\n%s", frag);
+    }
+
+    // Create a program object and attach the two shaders we have compiled, the program object contains
+    // both vertex and fragment shaders as well as information about uniforms and attributes common to both.
+
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+
+
+    // Now that the fragment and vertex shader has been attached, 
+    // we no longer need these two separate objects and should delete them to free the memory.
+    // The attachment to the shader program will keep them alive, as long as we keep the shaderProgram.
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Link the different shaders that are bound to this program, this creates a final shader that 
+    // we can use to render geometry with.
+    glLinkProgram(program);
+
+    GLint linkOK;
+    glGetProgramiv(program, GL_LINK_STATUS, &linkOK);
+
+    // Verify that the program linked
+    if (!linkOK) {
+        std::string str;
+        int length;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+        str.resize(length);
+        glGetProgramInfoLog(program, length, nullptr, (GLchar*)str.data());
+        GFX_ERROR("The program failed to link: %s\n", str.c_str());
+    }
+    glUseProgram(program);
+    return ShaderProgram(program);
+}
 /// <summary>
 /// creates a new shader program and its shaders based on the source files given
 /// </summary>
@@ -245,8 +297,18 @@ inline auto loadTexture(const char* texturefile, Texture2D* outTexture) -> int
     return 0;
 }
 
-inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, TextureAtlas* outTexture) -> int
+namespace Fail 
 {
+constexpr const char* const ERROR_TEXTURE = 
+    "\x00\x00\x00\xff\x00\xff\x00\x00\x00\xff\x00\xff"
+    "\xff\x00\xff\x00\x00\x00\xff\x00\xff\x00\x00\x00"
+    "\x00\x00\x00\xff\x00\xff\x00\x00\x00\xff\x00\xff"
+    "\xff\x00\xff\x00\x00\x00\xff\x00\xff\x00\x00\x00";
+}
+
+inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,  uint16_t divisions_height, Texture2DArray* outTexture) -> int
+{
+    int err = 0;
     GLubyte* raw_pixels;
 
     stbi_set_flip_vertically_on_load(false);
@@ -255,15 +317,23 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
     raw_pixels = stbi_load(texturefile, &width, &height, &channels, STBI_default);
     if (!raw_pixels)
     {
-        GFX_WARN("failed to load \"%s\": %s\n", texturefile, stbi_failure_reason());
+        GFX_WARN("failed to load \"%s\": %s, loaded error texture instead.", texturefile, stbi_failure_reason());
         stbi_image_free(raw_pixels);
-        return 1;
+        raw_pixels = (GLubyte*)malloc(8 * 48); //need to malloc as it's later freed by stbi, which uses free()
+        memcpy(raw_pixels, Fail::ERROR_TEXTURE, 48); 
+        width = height = 4;
+        channels = 3;
+        err = 1;
+        divisions_width = 1;
+        divisions_height = 1;
     }
+
+    int elementWidth = width / divisions_width,
+        elementHeight = height / divisions_height;
 
     auto cpuTexelFormat = getFormatFromChannelCount(channels);
 
-    //GFX_ASSERT(dimension <= 16, "Unsupported dimension of atlas: %dx%d=%d, (max supported is 16x16=256)", dimension, dimension, dimension * dimension);
-    *outTexture = TextureAtlas(width / dimension, height / dimension, dimension * dimension, channels);
+    *outTexture = Texture2DArray(elementWidth, elementHeight, divisions_width * divisions_height, channels);
     GFX_GL_CALL(
         glTexImage3D(GL_TEXTURE_2D_ARRAY,
         0,							    // mipmap level
@@ -278,9 +348,14 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
     )
     );
 
-    //GFX_DEBUG("%s", raw_pixels);
-    //fwrite(raw_pixels, sizeof(char), width*height*channels, stdout);
-    auto atlasData = splitTexture(raw_pixels, channels, width, height, width / dimension, height / dimension);
+    auto atlasData = splitTexture(
+        raw_pixels,     //full atlas
+        channels,       //number of channels
+        width,          //full atlas width
+        height,         //full atlas height
+        elementWidth,   //element width
+        elementHeight   //element height
+    );
     for (size_t i = 0; i < atlasData.size(); i++)
     {
         // (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
@@ -301,9 +376,13 @@ inline auto loadTextureAtlas(const char* texturefile, const uint16_t dimension, 
     GFX_GL_CALL(glBindTexture(GL_TEXTURE_2D_ARRAY, 0)); //unbind 
     stbi_image_free(raw_pixels);
 
-    return 0;
+    return err;
 }
 
+inline auto loadTextureAtlas(const char* texturefile, uint16_t divisions, Texture2DArray* outTexture) -> int
+{
+    return loadTextureAtlas(texturefile, divisions, divisions, outTexture);
+}
 
 inline auto createNoiseTexture(glm::ivec2 dimensions, int channels, Texture2D* outTexture, int64_t seed = 0) -> int
 {

@@ -6,8 +6,8 @@
 #include <cstring> // strcomp(), finding GameObjects.
 
 #include "GameObject.hpp"
-#include "components/Component.hpp"
-#include "components/GraphicsComponent.hpp"
+#include "components/core/Component.hpp"
+#include "components/core/GraphicsComponent.hpp"
 
 namespace OK
 {

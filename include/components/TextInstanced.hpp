@@ -15,7 +15,7 @@ private:
     float m_spacing = 0.5f;
 
 
-    TextureAtlas m_asciiMap;
+    Texture2DArray m_asciiMap;
 
 protected:
     void draw() override;

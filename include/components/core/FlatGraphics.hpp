@@ -5,16 +5,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "components/GraphicsComponent.hpp"
+#include "components/core/GraphicsComponent.hpp"
 #include "Structs.hpp"
 #include "ResourceLoader.h"
 
-#include "graphics_internal/VertexArray.hpp"
-#include "graphics_internal/VertexBuffer.hpp"
-#include "graphics_internal/VertexLayout.hpp"
-#include "graphics_internal/IndexBuffer.hpp"
-#include "graphics_internal/ShaderProgram.hpp"
-#include "graphics_internal/Texture.hpp"
 
 namespace OK
 {
@@ -24,7 +18,6 @@ class FlatGraphics : public GraphicsComponent
 private:
 
 protected:
-    VertexArray m_VAO;     
     glm::mat4 m_projection;
     ShaderProgram m_shader;
 

@@ -33,7 +33,6 @@ protected:
     inline virtual void onCreated() {}
     inline virtual void awake() {}
 
-    inline virtual void draw() {}
     GameObject* m_gameObject;
 public:
     inline GameObject& gameObject() { return *m_gameObject; }

@@ -6,7 +6,7 @@ namespace OK
 {
 
 SpriteAtlas::SpriteAtlas(
-    TextureAtlas atlas,
+    Texture2DArray atlas,
     int atlasIndex
     ) : FlatGraphics(), 
     m_atlas{atlas}, 

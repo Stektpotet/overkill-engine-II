@@ -11,10 +11,7 @@ TextInstanced::TextInstanced(
     m_text{ text },
     c_fontAtlas{ fontAtlas }
 {
-    if (int err = loadTextureAtlas(c_fontAtlas, 16, &m_asciiMap); err)
-    {
-        loadTextureAtlas(OK::Fail::error_texture, 2, &m_asciiMap); //recovery
-    }
+    loadTextureAtlas(c_fontAtlas, 16, &m_asciiMap);
 }
 
 void TextInstanced::prepareGraphics()
@@ -59,7 +56,7 @@ void TextInstanced::draw()
     m_shader.bind();
 
     m_asciiMap.bind();
-    m_VAO.bind();
+    m_vertexArray.bind();
     // Set "update every frame" uniforms:
     GFX_GL_CALL(glUniformMatrix4fv(m_shader.getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(mvp)));
     GFX_GL_CALL(glUniform4f(m_shader.getUniformLocation("color"), m_color.x, m_color.y, m_color.z, m_color.w));

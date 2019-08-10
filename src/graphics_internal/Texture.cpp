@@ -10,7 +10,7 @@ TextureBase::TextureBase(
     channels{channels}
 {}
 
-TextureAtlas::TextureAtlas(
+Texture2DArray::Texture2DArray(
     uint16_t width, 
     uint16_t height, 
     uint16_t depth, 

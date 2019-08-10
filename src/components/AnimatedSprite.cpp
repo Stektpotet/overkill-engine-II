@@ -5,7 +5,7 @@ extern glm::vec2 windowSize;
 namespace OK
 {
 AnimatedSprite::AnimatedSprite(
-    TextureAtlas texture,
+    Texture2DArray texture,
     float duration,
     int maxFrames,
     bool loop,

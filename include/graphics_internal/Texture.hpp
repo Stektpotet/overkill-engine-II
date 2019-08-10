@@ -6,11 +6,7 @@
 
 namespace OK
 {
-namespace Fail
-{
-constexpr const char * const error_texture = "assets/textures/err.png";
-}
-
+//TODO: Cleanup, don't inline everything
 
 struct TextureData
 {
@@ -66,13 +62,19 @@ public:
     inline uint16_t getWidth() { return width; }
     inline uint16_t getHeight() { return height; }
     inline uint16_t getChannels() { return channels; }
+
+
+    virtual void bind(GLuint slot = 0) const = 0;
+    virtual void unbind() const =0;
+    virtual void setSamplingOptions(TextureSamplingOptions options) = 0;
+    virtual TextureData fetchRaw() const = 0;
 };
 
 template <GLenum TextureType>
 class Texture : public TextureBase
 {
 protected:
-public: //TODO: Allow changing of filter and wrapping
+public: 
     Texture() = default;
     Texture(uint16_t width, uint16_t height, uint16_t channels, TextureSamplingOptions options = TextureSamplingOptions())
         : TextureBase(width, height, channels)
@@ -87,13 +89,15 @@ public: //TODO: Allow changing of filter and wrapping
         GFX_GL_CALL(glTexParameteri(TextureType, GL_TEXTURE_WRAP_T, options.tWrap));
     }
 
-    inline void bind(GLuint slot = 0) const {
+    inline void bind(GLuint slot = 0) const override {
         GFX_GL_CALL(glActiveTexture(GL_TEXTURE0 + slot));
         GFX_GL_CALL(glBindTexture(TextureType, id));
     }
-    inline void unbind() const { GFX_GL_CALL(glBindTexture(TextureType, 0)); }
+    inline void unbind() const override { 
+        GFX_GL_CALL(glBindTexture(TextureType, 0)); 
+    }
 
-    inline void setSamplingOptions(TextureSamplingOptions options)
+    inline void setSamplingOptions(TextureSamplingOptions options) override
     {
         GFX_GL_CALL(glBindTexture(TextureType, id));
 
@@ -110,24 +114,31 @@ public: //TODO: Allow changing of filter and wrapping
     /// <summary>
     /// fetch the uploaded texture from the GPU-memory as raw pixels.
     /// </summary>
-    TextureData fetchRaw()
+    inline TextureData fetchRaw() const override
     {
         TextureData data = { width, height, std::vector<uint8_t>(width*height*channels) };
-        GFX_GL_CALL(glGetTextureImage(id, 0, GL_RGBA, GL_UNSIGNED_BYTE, width*height, &(data.pixels)[0]));
+        GFX_GL_CALL(glGetTextureImage(TextureType, 0, GL_RGBA, GL_UNSIGNED_BYTE, width*height, &(data.pixels)[0]));
         return data;
     }
 };
 
 using Texture2D = Texture<GL_TEXTURE_2D>; //declare the type as an implementation
 
-class TextureAtlas final : public Texture<GL_TEXTURE_2D_ARRAY>
+class Texture2DArray final : public Texture<GL_TEXTURE_2D_ARRAY>
 {
 private:
     uint16_t depth/*, sliceDimension*/;
 public:
-    TextureAtlas() = default;
-    TextureAtlas(uint16_t width, uint16_t height, uint16_t depth, uint16_t channels);
+    Texture2DArray() = default;
+    Texture2DArray(uint16_t width, uint16_t height, uint16_t depth, uint16_t channels);
     inline uint16_t getDepth() { return depth; }
+
+    inline TextureData fetchRaw(int elementX, int elementY) const
+    {
+        TextureData data = { width, height, std::vector<uint8_t>(width*height*channels) };
+        GFX_GL_CALL(glGetTextureImage(id, 0, GL_RGBA, GL_UNSIGNED_BYTE, width*height, &(data.pixels)[0]));
+        return data;
+    }
 };
 
 }

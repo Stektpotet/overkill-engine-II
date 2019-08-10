@@ -1,11 +1,12 @@
 #pragma once
 
-#include "components/FlatGraphics.hpp"
+#include "components/core/FlatGraphics.hpp"
 
 namespace OK
 {
 
-class SpriteAtlas : public FlatGraphics
+class [[deprecated("Generalized and abstracted away differences in sprites, use Sprite instead")]] 
+SpriteAtlas : public FlatGraphics
 {
 protected:
     void prepareGraphics() override;
@@ -15,8 +16,7 @@ protected:
 
 public:
     SpriteAtlas(
-        TextureAtlas atlas,
-        
+        Texture2DArray atlas,
         int atlasIndex = 0 
     );
 
@@ -26,7 +26,7 @@ public:
     //      rather than ONE sprite from the atlas at a time
     int m_atlasIndex;
     
-    TextureAtlas m_atlas;
+    Texture2DArray m_atlas;
 };
 
 } // Namespace OK

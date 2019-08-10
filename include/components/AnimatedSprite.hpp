@@ -18,7 +18,7 @@ protected:
 
 public:
     AnimatedSprite(
-        TextureAtlas texture,
+        Texture2DArray texture,
         float duration = 2,
         int maxFrames = -1,     // -1 If using all slots in atlas.
         bool loop = true,

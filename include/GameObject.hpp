@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>        // Find() in vector.
 #include "Transform.hpp"
-#include "components/Component.hpp"
+#include "components/core/Component.hpp"
 #include <gfx.h>
 #include <memory>
 

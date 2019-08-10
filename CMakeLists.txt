@@ -58,15 +58,18 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
-	  PRIVATE ${SRCDIR}/components/Component.cpp
-	  PRIVATE ${SRCDIR}/components/GraphicsComponent.cpp
-	  PRIVATE ${SRCDIR}/components/FlatGraphics.cpp
+	  PRIVATE ${SRCDIR}/components/core/Component.cpp
+	  PRIVATE ${SRCDIR}/components/core/GraphicsComponent.cpp
+	  PRIVATE ${SRCDIR}/components/core/FlatGraphics.cpp
+
+	  PRIVATE ${SRCDIR}/components/core/Rigidbody.cpp
+
 	  PRIVATE ${SRCDIR}/components/Sprite.cpp
+	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
 	  PRIVATE ${SRCDIR}/components/SpriteAtlas.cpp
 	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
 	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
-	  PRIVATE ${SRCDIR}/components/Rigidbody.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 

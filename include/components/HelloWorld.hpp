@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "components/Component.hpp"
+#include "components/core/Component.hpp"
 #include <gfx.h>
 
 namespace OK
