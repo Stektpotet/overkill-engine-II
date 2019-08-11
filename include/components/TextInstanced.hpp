@@ -1,11 +1,11 @@
 #pragma once
 
-#include "components/SpriteAtlas.hpp"
+#include "components/core/GraphicsComponent.hpp"
 
 namespace OK
 {
 
-class TextInstanced : public FlatGraphics
+class TextInstanced : public GraphicsComponent
 {
 private:
     const char* c_fontAtlas = "assets/textures/ascii.png";

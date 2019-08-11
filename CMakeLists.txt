@@ -60,13 +60,11 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
 	  PRIVATE ${SRCDIR}/components/core/Component.cpp
 	  PRIVATE ${SRCDIR}/components/core/GraphicsComponent.cpp
-	  PRIVATE ${SRCDIR}/components/core/FlatGraphics.cpp
 
 	  PRIVATE ${SRCDIR}/components/core/Rigidbody.cpp
 
-	  PRIVATE ${SRCDIR}/components/Sprite.cpp
+#	  PRIVATE ${SRCDIR}/model/Sprite.cpp
 	  PRIVATE ${SRCDIR}/components/SpriteRenderer.cpp
-	  PRIVATE ${SRCDIR}/components/SpriteAtlas.cpp
 	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
 	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
