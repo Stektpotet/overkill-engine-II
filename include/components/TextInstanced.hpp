@@ -14,7 +14,6 @@ private:
 
     float m_spacing = 0.5f;
 
-
     Texture2DArray m_asciiMap;
 
 protected:

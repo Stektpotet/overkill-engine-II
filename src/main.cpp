@@ -19,7 +19,7 @@
 #include "components/SpriteRenderer.hpp"
 #include "components/core/Rigidbody.hpp"
 #include "Scene.hpp"
-#include "BaseSprite.hpp"
+#include "model/Sprite.hpp"
 
 const int c_frameLimit = 60;
 
@@ -143,25 +143,25 @@ int main(void)
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
         OK::Texture2DArray texture;
         loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
-		sp->m_size = { 150,150 };
-        sp->m_offset = sp->m_size * -0.5f;
+  //      auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
+		//sp->m_size = { 150,150 };
+  //      sp->m_offset = sp->m_size * -0.5f;
     }
 
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
 	gameObjectText->m_transform.position = glm::vec3(0, 0, 0);
     {
         auto txt = gameObjectText->addComponent<OK::TextInstanced>("I am sowtfare delevoper. yiep yiepyiep!");
-        txt->m_size = { 34, 34 };
-        txt->m_pivot = { 340, 0 };
-        txt->m_offset = { -346, -80 };
+        //txt->m_size = { 34, 34 };
+        //txt->m_pivot = { 340, 0 };
+        //txt->m_offset = { -346, -80 };
     }
 	gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
 	
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
 	gameObjectFrameCounter->m_transform.position = glm::vec3(windowSize.x-60,0, 0);
         auto txtFrameCounter = gameObjectFrameCounter->addComponent<OK::TextInstanced>("00");
-        txtFrameCounter->m_size = { 34, 34 };
+        //txtFrameCounter->m_size = { 34, 34 };
 		txtFrameCounter->m_color = {0.1f, 1, 0.1f, 1};
 
     OK::Scene::currentScene->prepareGraphics();
