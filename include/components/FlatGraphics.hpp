@@ -35,8 +35,7 @@ protected:
 
 public:
 
-    FlatGraphics(
-    );
+    FlatGraphics();
 
     float m_rotation = 0;                           // Rotation in radians.
     glm::vec2 m_offset  = glm::vec2(0, 0);          // X-Y offset from transform's position.

@@ -12,7 +12,7 @@ Sprite::Sprite(
 void Sprite::prepareGraphics()
 {
     // Setup shader and uniforms:
-    m_shader = createProgram("assets/shaders/spriteVertex.vert", "assets/shaders/spriteFragment.frag");
+    m_shader = createProgram("assets/shaders/sprite.vert", "assets/shaders/sprite.frag");
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 
     0.0f, static_cast<GLfloat>(windowSize.y), -1.0f, 1.0f);

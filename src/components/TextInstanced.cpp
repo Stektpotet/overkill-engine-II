@@ -21,7 +21,7 @@ void TextInstanced::prepareGraphics()
 {
     m_asciiMap.setSamplingOptions(TextureSamplingOptions(GL_LINEAR, GL_CLAMP));
     // Setup shader and uniforms:
-    m_shader = createProgram("assets/shaders/text.vert", "assets/shaders/atlasFragment.frag");
+    m_shader = createProgram("assets/shaders/text.vert", "assets/shaders/atlas.frag");
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x),
                                       0.0f, static_cast<GLfloat>(windowSize.y), -1.0f, 1.0f);
