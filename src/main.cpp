@@ -17,6 +17,7 @@
 #include "components/HelloWorld.hpp"
 #include "components/TextInstanced.hpp"
 #include "components/Rigidbody.hpp"
+#include "components/ParticleSystemSprite.hpp"
 #include "Scene.hpp"
 
 const int c_frameLimit = 60;
@@ -151,8 +152,18 @@ std::srand(time(NULL));
         txt->m_pivot = { 340, 0 };
         txt->m_offset = { -346, -80 };
     }
-	gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
+	//gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
 	
+ 	auto gameObjectParticleSystem = OK::Scene::currentScene->makeGameObject("ParticleSystemObject");  
+    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
+        OK::Texture2D texture;
+        loadTexture("assets/textures/squareParticle.png", &texture);
+		OK::ParticleSystemConfiguration config;
+        auto ps = gameObjectParticleSystem->addComponent<OK::ParticleSystemSprite>(texture, 1000, config);
+		ps->m_size = {10,10};
+		gameObjectParticleSystem->m_transform.position = glm::vec3(windowSize.x/2, windowSize.y-150, 0);
+    }
+
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
 	gameObjectFrameCounter->m_transform.position = glm::vec3(windowSize.x-60,0, 0);
         auto txtFrameCounter = gameObjectFrameCounter->addComponent<OK::TextInstanced>("00");
@@ -161,19 +172,6 @@ std::srand(time(NULL));
 
     OK::Scene::currentScene->prepareGraphics();
 	
-	{	// Optional test:
-		OK::Scene::currentScene->getGameObject("FrameCounterObject");			// Should succeed.
-		std::shared_ptr<OK::GameObject> g = OK::Scene::currentScene->getGameObject("FrameCourdxcfgvnterObject");	// Should fail, print a warn.
-		if (g == nullptr)
-		{
-			GFX_DEBUG("The thing i wanted wasn't there :(");
-		}
-		else
-		{
-			GFX_DEBUG("YAY, found the ting!");
-		}
-	}
-
 	float totalTime = 0;
 	double lastTime = glfwGetTime();
 	char frameCounterString[10];

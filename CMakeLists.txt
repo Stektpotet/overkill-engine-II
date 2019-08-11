@@ -68,6 +68,7 @@ target_sources(${PROJECT}
 	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/components/Rigidbody.cpp
 	  PRIVATE ${SRCDIR}/components/ParticleSystem.cpp
+	  PRIVATE ${SRCDIR}/components/ParticleSystemSprite.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 

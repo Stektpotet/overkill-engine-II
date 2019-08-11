@@ -5,14 +5,12 @@ namespace OK::Util
 
     float random(float min, float max)
     {   
-        GFX_DEBUG("Generatign random number between %.2f and %.2f:", min, max);
         int accuracy = 1000000;
-        min *= accuracy;
-        max *= accuracy;
-        float result = ((std::rand() + (int)min) % (int)max) / (float)accuracy;
-        GFX_DEBUG("Generated: %.4f ", result);
+        int newMin = min * accuracy;
+        int newMax = max * accuracy;
+        float result = (std::rand() % (newMax + glm::abs(newMin)) - glm::abs(newMin))  / (float)accuracy;
+        // GFX_DEBUG("Random number(%.2f, %.2f): %.3f", min, max, result);
         return result;
-
     }
 
     void printTransform(Transform t)

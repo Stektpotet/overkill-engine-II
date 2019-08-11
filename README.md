@@ -14,7 +14,8 @@ Overkill as a group (OK), created Overkill Engine I as the larger of two assignm
 - [X] Text renderer that uses instance rendering to display a string using a single sprite.
 - [X] Transformable GameObjects.
 - [X] Components that are put on GameObjects to give them behaviour.
-- [ ] GameObject transformation hierarchy. A child-GameObject is translated, rotated and scaled by its parent. 
+- [X] GameObject transformation hierarchy. A child-GameObject is translated, rotated and scaled by its parent. 
+- [ ] ParticleSystem that uses a data driven structure and instance rendering to draw, lots and lots, of particles.
 - [ ] Resource Manager that loads and stores resources like ShaderPrograms and Textures, and hands out references to them.
 
 ### Structure
