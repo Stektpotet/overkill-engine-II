@@ -5,6 +5,7 @@ namespace OK::Util
 
     float random(float min, float max)
     {   
+        if (min == max) return max;
         int accuracy = 1000000;
         int newMin = min * accuracy;
         int newMax = max * accuracy;

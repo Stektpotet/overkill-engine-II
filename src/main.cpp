@@ -159,9 +159,9 @@ std::srand(time(NULL));
         OK::Texture2D texture;
         loadTexture("assets/textures/squareParticle.png", &texture);
 		OK::ParticleSystemConfiguration config;
-        auto ps = gameObjectParticleSystem->addComponent<OK::ParticleSystemSprite>(texture, 1000, config);
-		ps->m_size = {10,10};
-		gameObjectParticleSystem->m_transform.position = glm::vec3(windowSize.x/2, windowSize.y-150, 0);
+        auto ps = gameObjectParticleSystem->addComponent<OK::ParticleSystemSprite>(texture, 10000, config);
+		// ps->m_size = {50, 50};
+		gameObjectParticleSystem->m_transform.position = glm::vec3(windowSize.x/2, windowSize.y - 150, 0);
     }
 
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
