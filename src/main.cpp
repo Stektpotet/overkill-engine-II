@@ -89,7 +89,7 @@ std::srand(time(NULL));
 	glfwSetKeyCallback(window, processKeys);
 	glfwSetCursorPosCallback(window, Input::OnCursorHover);
 	glfwSetMouseButtonCallback(window, processMouseButtons);
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClearColor(0, 0, 0, 1.0f);
 	
 	GFX_GL_CALL(glEnable(GL_MULTISAMPLE));
 

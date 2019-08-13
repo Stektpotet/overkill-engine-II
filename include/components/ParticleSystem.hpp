@@ -16,7 +16,7 @@ struct ParticleSystemConfiguration
 {   
     EmissionVolume volume = insideCirle;
     bool  worldSpace =      true;   // When false, the particles are transformed with the ParticleSystem's GameObject.
-    float emissionsPerSec = 3100;
+    float emissionsPerSec = 3500;
     float emissionRadius =  0;
     float lifeTime =        3;      // Seconds a particle lives for.
     float startSpeed =      280;
@@ -25,9 +25,9 @@ struct ParticleSystemConfiguration
     float drag =            0.6f;
     float angleDrag =       0.08f;
     float startScale =       5;
-    float endScale =         0.1f;
+    float endScale =         0.3f;
     glm::vec4 startColor =  glm::vec4(1, 0, 0, 1);
-    glm::vec4 endColor =    glm::vec4(0, 0, 1, 0.2f);
+    glm::vec4 endColor =    glm::vec4(0, 0, 1, 0.35f);
 };
 
 const int c_maxAllowedParticles = 10000;
