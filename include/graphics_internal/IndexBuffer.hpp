@@ -10,8 +10,8 @@ private:
 	GLuint id;
 public:
 
-	IndexBuffer(const GLsizeiptr count, const TIndex* data /*= nullptr*/)
-		: count(count)
+	IndexBuffer(const GLsizeiptr count, const TIndex* data = nullptr)
+        : count{ count }
 	{
 		glGenBuffers(1, &id);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
@@ -25,6 +25,10 @@ public:
 	inline void bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id); }
 	static inline void unbind() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 	inline void clear() { glDeleteBuffers(1, &id); }
-
+    inline void update(const GLintptr start, const GLsizeiptr size, const void * data)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, start, size, data);
+    }
 	const GLsizeiptr count;
 };

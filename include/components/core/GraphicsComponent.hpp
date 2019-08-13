@@ -8,25 +8,28 @@
 #include "graphics_internal/ShaderProgram.hpp"
 #include "graphics_internal/Texture.hpp"
 
+#include "../../model/Mesh.hpp"
+
 namespace OK
 {
 class GameObject;
-
+// TODO: Revert changes - put functionality back into a .cpp -file
 class GraphicsComponent : public Component, public std::enable_shared_from_this<GraphicsComponent>
 {
     friend class Scene;
 protected:
     VertexArray m_vertexArray;
 
-
     inline virtual void prepareGraphics() {}
-    virtual glm::mat4 modelViewMatrix();
-    void onCreated() override;
-    inline virtual void draw() {}
+    inline virtual glm::mat4 modelToWorldMatrix(){ return m_gameObject->m_transform.modelMatrix(); }
 
-public:
-    
-    GraphicsComponent();
+    void onCreated() override
+    {
+        Scene::currentScene->m_graphicsComponents.emplace_back(shared_from_this());
+    }
+    GraphicsComponent() : Component(), m_vertexArray(){}
+    virtual void draw() = 0;
+
 };
 
 } // Namespace OK

@@ -1,61 +1,56 @@
 #pragma once
-#include "components/core/GraphicsComponent.hpp"
+#include "components/core/Renderer.hpp"
+#include "model/XSprite.hpp"
 
 namespace OK
 {
-template <typename TSprite>
-class SpriteRenderer : public GraphicsComponent
+template <typename TextureType>
+class SpriteRenderer : public Renderer<Sprite<TextureType>> //TODO: Make InstancedSpriteRenderer
 {
-protected:
-
-    void prepareGraphics() override
+    struct defaults
     {
-        // Setup shader and uniforms:
-        //m_sprite.setShaderProgram(createProgram("assets/shaders/spriteVertex.vert", "assets/shaders/spriteFragment.frag"));
-        m_sprite.prepare();
+        constexpr static const char * const VERT_SHADER =
+            "#version 430\n"
+            "layout (location = 0) in vec2 position; layout (location = 1) in vec2 uv;"
+            "uniform mat4 m2w; uniform mat4 proj;"
+            "out vec2 a;"
+            "void main(){a=uv;gl_Position=proj*m2w*vec4(position,0,1);}";
 
-        // Configure VAO and VBO
-        GLfloat vertices[] = {
-            // Pos      // UV
-            0.0f, 0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 1.0f,
-            0.0f, 1.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 0.0f
-        };
-        GLuint indices[] = {
-            0,1,2,
-            2,1,3
-        };
+        constexpr static const char * const FRAG_SHADER =
+            "#version 430\n"
+            "uniform sampler2D image; uniform vec4 color=vec4(1,1,1,1);"
+            "in vec2 a;out vec4 b;"
+            "void main(){b=color*texture(image,a);}";
+    };
 
-        // Setup buffers:
-        //TODO unify the interface for VBOs and IBOs, the first argument is confusing (count vs size).
+    float m_rotation = 0;
+    glm::vec2 m_offset = glm::vec2(0, 0);          // X-Y offset from transform's position.
+    glm::vec2 m_pivot = glm::vec2(0.5f, 0.5f);
+    glm::vec2 m_size = glm::vec2(1, 1);
+protected:
+    inline void draw() override
+    {
+        glm::mat4 m2w = modelToWorldMatrix();
+
+        m2w = glm::translate(m2w, glm::vec3(m_offset.x, m_offset.y, 0.0f));
+
+        //Move origin to rotate around center
+        m2w = glm::translate(m2w, glm::vec3(m_pivot.x * m_size.x, m_pivot.y * m_size.y, 0.0f));
+        m2w = glm::rotate(m2w, m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+        m2w = glm::translate(m2w, glm::vec3(-m_pivot.x * m_size.x, -m_pivot.y * m_size.y, 0.0f));
+
+        m2w = glm::scale(m2w, glm::vec3(m_size, 1.0f));
 
         m_vertexArray.bind();
-        GFX_ASSERT(m_vertexArray.valid(), "invalid VAO!");
-        IndexBuffer<GLuint> ibo(sizeof(indices) / sizeof(indices[0]), indices);
-        GFX_ASSERT(ibo.valid(), "invalid IBO!");
-        VertexBuffer vbo(sizeof(vertices), vertices);
-        GFX_ASSERT(vbo.valid(), "invalid VAO!");
-
-        InterleavingVertexLayout layout;
-        layout.pushAttrib<GL_FLOAT, 2, 1, GL_FALSE, false, 8>("position");
-        layout.pushAttrib<GL_FLOAT, 2, 1, GL_FALSE, false, 8>("uv");
-        layout.applyToBuffer(vbo);
-    }
-
-    void draw() override
-    {
-        m_sprite.spriteToModelSpace() * m_gameObject->m_transform.modelMatrix();
-        m_sprite.bind();
-        GraphicsComponent::draw();
+        m_material->bind();
     }
 
 public:
+    SpriteRenderer(Sprite<TextureType> sprite) : Renderer<Sprite<TextureType>>{ sprite }
+    { 
+        m_material->apply();
+    }
 
-    SpriteRenderer( TSprite sprite ) : GraphicsComponent(), m_sprite{ sprite }
-    { }
-
-    TSprite m_sprite;
 };
 
 } // Namespace OK

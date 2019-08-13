@@ -1,79 +1,94 @@
 #pragma once
 #include <vector>
-#include <glm.hpp>
+#include <initializer_list>
 
+#include "Vertex.hpp"
+#include "Material.hpp"
 #include "../graphics_internal/IndexBuffer.hpp"
 #include "../graphics_internal/VertexBuffer.hpp"
 #include "../graphics_internal/VertexLayout.hpp"
 
-struct IVertex 
+//TODO: Create a MakeMesh()-call to simply upload mesh to graphics card, and counterpart FetchMesh
+namespace OK
 {
-    virtual InterleavingVertexLayout  getInterleavingLayout() const = 0;
-    virtual ContinuousVertexLayout  getContinuousLayout(int vertices) const = 0;
-};
-
-struct Vertex_Full : public IVertex //inspired by unity's appdata_full
+class Drawable
 {
-    glm::vec4 position;    // The vertex position in model space.
-    glm::vec3 normal;      // The vertex normal in model space.
-    glm::vec4 texcoord;    // The first UV coordinate.
-    glm::vec4 texcoord1;   // The second UV coordinate.
-    glm::vec4 tangent;     // The tangent vector in Model Space (used for normal mapping).
-    glm::vec4 color;       // Per-vertex color
+protected:
+    VertexBuffer m_vertexBuffer;
+    IndexBuffer<GLuint> m_indexBuffer;
+    
+    std::shared_ptr<Material> m_material;
+    
+    Drawable() = default;
+    template<typename VertexType>
+    Drawable(CPUMesh<VertexType> data) :
+        m_vertexBuffer{ data.verticesByteSize(), data.vertices.data() },
+        m_indexBuffer{ data.indexCount(), data.indices.data() }
+    {}
 
-    InterleavingVertexLayout getInterleavingLayout() const override
+public:
+    void bind()
     {
-        return InterleavingVertexLayout{{
-                Attribute{ "position", 32, 4, GL_FLOAT },
-                Attribute{ "normal", 24, 3, GL_FLOAT },
-                Attribute{ "texcoord", 32, 4, GL_FLOAT },
-                Attribute{ "texcoord1", 32, 4, GL_FLOAT },
-                Attribute{ "tangent", 32, 4, GL_FLOAT },
-                Attribute{ "color", 32, 4, GL_FLOAT },
-        }};
+        m_indexBuffer.bind();
+        m_vertexBuffer.bind();
     }
 };
 
-struct Vertex_Base : public IVertex //inspired by unity's appdata_full
-{
-    glm::vec4 position;    // The vertex position in model space.
-    glm::vec3 normal;      // The vertex normal in model space.
-    glm::vec4 texcoord;    // The first UV coordinate.
-};
-
-struct Vertex_Full_Packed : public IVertex //inspired by unity's appdata_full
-{
-    glm::vec4 position;    // The vertex position in model space.
-    GLint normal;      // The vertex normal in model space.
-    GLshort texcoord;    // The first UV coordinate.
-    GLshort texcoord1;   // The second UV coordinate.
-    GLint tangent;     // The tangent vector in Model Space (used for normal mapping).
-    GLint color;       // Per-vertex color
-
-    InterleavingVertexLayout getVertexLayout() const override 
-    {
-
-    }
-};
-
-template<typename Vertex>
+template<typename TVertex>
 class CPUMesh
 {
-    VertexLayout layout
 public:
-    std::vector<Vertex> vertices;
+    std::vector<TVertex> vertices;
+    std::vector<GLuint> indices;
+
+    CPUMesh(std::initializer_list<TVertex> vertices, std::initializer_list<GLuint> indices) : vertices{ vertices }, indices{ indices } {}
+    CPUMesh(std::vector<TVertex> vertices, std::vector<GLuint> indices) : vertices{ vertices }, indices{ indices } {}
+
+    inline GLsizeiptr verticesByteSize() const { return vertices.size() * sizeof(TVertex); }
+    inline GLsizeiptr indexCount() const { return indices.size(); }
 };
 
-class Mesh 
+template<typename TVertex>
+class Mesh : public Drawable
 {
+    CPUMesh<TVertex> m_mesh;
 protected:
-    
-
+    Mesh(CPUMesh<TVertex> data) : Drawable(data), m_mesh{ data }
+    {
+        TVertex::InterleavingLayout().applyToBuffer(m_vertexBuffer);
+    }
 };
 
-class BatchedMesh
+template<typename TVertex>
+class BatchedMesh : public Drawable
 {
+    std::vector<CPUMesh<TVertex>> m_submeshes;
 protected:
+    BatchedMesh(std::vector<CPUMesh<TVertex>> submeshes) :
+        m_submeshes{ submeshes }
+    {
+        GLsizeiptr totalVertexSize = 0;
+        GLsizeiptr totalIndexCount = 0;
+        for (const auto& submesh : m_submeshes)
+        {
+            totalVertexSize += submesh.verticesByteSize();
+            totalIndexCount += submesh.indexCount();
+        }
 
+        m_vertexBuffer = VertexBuffer{ totalVertexSize };
+        m_indexBuffer = IndexBuffer<GLuint>{ totalIndexCount };
+        GLsizeiptr vertexBufferIndex = 0;
+        GLsizeiptr IndexBufferIndex = 0;
+        for (const auto& submesh : m_submeshes)
+        {
+            m_vertexBuffer.update(vertexBufferIndex, submesh.verticesByteSize(), submesh.vertices.data() + vertexBufferIndex);
+            vertexBufferIndex += submesh.verticesByteSize();
 
+            m_indexBuffer.update(IndexBufferIndex, submesh.indexCount() * sizeof(GLuint), submesh.indices.data() + indexBufferIndex);
+            IndexBufferIndex += submesh.indexCount() * sizeof(GLuint);
+        }
+
+        TVertex::InterleavingLayout().applyToBuffer(m_vertexBuffer);
+    }
 };
+}

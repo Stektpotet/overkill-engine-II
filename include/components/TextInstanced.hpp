@@ -5,7 +5,7 @@
 namespace OK
 {
 
-class TextInstanced : public GraphicsComponent
+class TextInstanced : public Renderer
 {
 private:
     const char* c_fontAtlas = "assets/textures/ascii.png";
