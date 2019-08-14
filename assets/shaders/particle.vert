@@ -9,7 +9,6 @@ const int maxParticles = 10000;
 uniform mat4 model = mat4(1);
 uniform mat4 projection = mat4(1);
 
-
 layout(std140, binding=0) buffer Particles
 {
     mat4  model       [maxParticles];
@@ -21,7 +20,6 @@ void main()
 {
     texCoord = uv;
     partColor = particles.color[gl_InstanceID];
-    // partColor = vec4(1, 1, 1, 1);
 
     gl_Position = projection * model * particles.model[gl_InstanceID] * vec4(position,
                                             0, 

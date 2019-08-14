@@ -24,7 +24,6 @@ void Sprite::prepareGraphics()
 
 void Sprite::update(float deltaTime)
 {
-    m_rotation += deltaTime*2;
 }
 
 void Sprite::draw()

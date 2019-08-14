@@ -16,7 +16,7 @@ struct ParticleSystemConfiguration
 {   
     EmissionVolume volume = insideCirle;
     bool  worldSpace =      true;   // When false, the particles are transformed with the ParticleSystem's GameObject.
-    float emissionsPerSec = 3500;
+    float emissionsPerSec = 3200;
     float emissionRadius =  0;
     float lifeTime =        3;      // Seconds a particle lives for.
     float startSpeed =      280;

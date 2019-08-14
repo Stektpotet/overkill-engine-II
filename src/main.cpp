@@ -14,6 +14,7 @@
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
 #include "components/AnimatedSprite.hpp"
+#include "components/Sprite.hpp"
 #include "components/HelloWorld.hpp"
 #include "components/TextInstanced.hpp"
 #include "components/Rigidbody.hpp"
@@ -67,7 +68,7 @@ std::srand(time(NULL));
 	auto vidMode = glfwGetVideoMode(monitor);
 	
 	GFX_INFO("dimensions: %dx%d", vidMode->width, vidMode->height);
-	windowSize = { vidMode->width*0.4f, vidMode->height*0.4f };
+	windowSize = { vidMode->width*0.6f, vidMode->height*0.6f };
 	window = glfwCreateWindow(windowSize.x, windowSize.y, "HelloWorld", nullptr, nullptr);
 
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -123,46 +124,62 @@ std::srand(time(NULL));
 #pragma region GameLoop
     OK::Scene::currentScene = new OK::Scene("HelloWorldScene", { });
    
-	auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
-	gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
-    {
-		OK::TextureAtlas texture;
-        loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
-       	auto sp = gameObjectPac->addComponent<OK::AnimatedSprite>(texture, 0.3f, -1, true, true);
-        sp->m_size = { 64,64 };
-        sp->m_offset = sp->m_size * -0.5f;
-    }
-	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(true);
-	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 1);
+	// auto gameObjectPac = OK::Scene::currentScene->makeGameObject("PacmanObject");
+	// gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
+    // {
+	// 	OK::TextureAtlas texture;
+    //     loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
+    //    	auto sp = gameObjectPac->addComponent<OK::AnimatedSprite>(texture, 0.3f, -1, true, true);
+    //     sp->m_size = { 64,64 };
+    //     sp->m_offset = sp->m_size * -0.5f;
+    // }
+	// auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(true);
+	// pacmanRb->m_angularVelocity = glm::vec3(0, 0, 1);
 
- 	auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
-    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        OK::TextureAtlas texture;
-        loadTextureAtlas("assets/textures/loading.png", 4, &texture);
-        auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
-		sp->m_size = { 150,150 };
-        sp->m_offset = sp->m_size * -0.5f;
-    }
+ 	// auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
+    // { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
+    //     OK::TextureAtlas texture;
+    //     loadTextureAtlas("assets/textures/loading.png", 4, &texture);
+    //     auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
+	// 	sp->m_size = { 150,150 };
+    //     sp->m_offset = sp->m_size * -0.5f;
+    // }
 
-	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
-	gameObjectText->m_transform.position = glm::vec3(0, 0, 0);
-    {
-        auto txt = gameObjectText->addComponent<OK::TextInstanced>("I am sowtfare delevoper. yiep yiepyiep!");
-        txt->m_size = { 34, 34 };
-        txt->m_pivot = { 340, 0 };
-        txt->m_offset = { -346, -80 };
-    }
-	//gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
+	// auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
+	// gameObjectText->m_transform.position = glm::vec3(0, 0, 0);
+    // {
+    //     auto txt = gameObjectText->addComponent<OK::TextInstanced>("I am sowtfare delevoper. yiep yiepyiep!");
+    //     txt->m_size = { 34, 34 };
+    //     txt->m_pivot = { 340, 0 };
+    //     txt->m_offset = { -346, -80 };
+    // }
+	// //gameObjectText->m_transform.m_parent = &gameObjectPac->m_transform;
 	
  	auto gameObjectParticleSystem = OK::Scene::currentScene->makeGameObject("ParticleSystemObject");  
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        OK::Texture2D texture;
+		
+		gameObjectParticleSystem->m_transform.position = glm::vec3(windowSize.x/2, windowSize.y/2, 0);
+        
+		OK::Texture2D texture;
         loadTexture("assets/textures/squareParticle.png", &texture);
 		OK::ParticleSystemConfiguration config;
+		config.worldSpace = false;
+		config.emissionsPerSec = 3000;
+		config.gravity = 0;
+		config.startSpeed = 290;
+		config.startScale = 4.5f;
+		config.drag = 0.9f;
         auto ps = gameObjectParticleSystem->addComponent<OK::ParticleSystemSprite>(texture, 10000, config);
-		// ps->m_size = {50, 50};
-		gameObjectParticleSystem->m_transform.position = glm::vec3(windowSize.x/2, windowSize.y - 150, 0);
-    }
+
+		auto sp = gameObjectParticleSystem->addComponent<OK::Sprite>(texture);
+		sp->m_color = {0, 1, 0, 1};
+		sp->m_size = {20, 20};
+		sp->m_offset = glm::vec2(sp->m_size.x* -0.5f, sp->m_size.y* -0.5f);
+		sp->m_pivot = {0.5f, 0.5f};
+
+		auto rb = gameObjectParticleSystem->addComponent<OK::Rigidbody>();
+		rb->m_angularVelocity = {0, 0, 0.8f};
+	}
 
 	auto gameObjectFrameCounter = OK::Scene::currentScene->makeGameObject("FrameCounterObject");
 	gameObjectFrameCounter->m_transform.position = glm::vec3(windowSize.x-60,0, 0);
@@ -184,32 +201,32 @@ std::srand(time(NULL));
 		glfwPollEvents();		// process input
 		totalTime += deltaTime;
 
-		if (deltaTime < (float)1/c_frameLimit)		// TODO: make smarter, so if the last frame took long, don't wait the full frame time.
-			continue;
+		// if (deltaTime < (float)1/c_frameLimit)		// TODO: make smarter, so if the last frame took long, don't wait the full frame time.
+		// 	continue;
 
 		lastTime = currentTime;
 		sprintf(frameCounterString, "%d", (int)(1/deltaTime));
 		txtFrameCounter->setText(frameCounterString);
 	
 		// Debug GameObject transformations:
-		{
-			glm::vec3 pos = glm::vec3(
-					windowSize.x/2 + 100 * glm::sin(totalTime * 0.05f * deltaTime),
-					windowSize.y/2 + 100 * glm::cos(totalTime * 0.05f * deltaTime),
-					0);
-			gameObjectHello->m_transform.position = pos;
-		}
-		{
-			glm::vec3 scl = glm::vec3(
-				glm::abs(glm::sin(totalTime * 0.01f * deltaTime) * 0.8f) + 0.2f,
-				1,
-				1
-			);
-			gameObjectPac->m_transform.scale = scl;
-		}
-		// Pacman elastic bounce on ground.
-		if (pacmanRb->gameObject().m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
-			pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
+		// {
+		// 	glm::vec3 pos = glm::vec3(
+		// 			windowSize.x/2 + 100 * glm::sin(totalTime * 0.05f * deltaTime),
+		// 			windowSize.y/2 + 100 * glm::cos(totalTime * 0.05f * deltaTime),
+		// 			0);
+		// 	gameObjectHello->m_transform.position = pos;
+		// }
+		// {
+		// 	glm::vec3 scl = glm::vec3(
+		// 		glm::abs(glm::sin(totalTime * 0.01f * deltaTime) * 0.8f) + 0.2f,
+		// 		1,
+		// 		1
+		// 	);
+		// 	gameObjectPac->m_transform.scale = scl;
+		// }
+		// // Pacman elastic bounce on ground.
+		// if (pacmanRb->gameObject().m_transform.position.y < 0 && pacmanRb->m_velocity.y < 0)
+		// 	pacmanRb->addForce(glm::vec3(0, -pacmanRb->m_velocity.y,0), OK::ForceMode::velocityChange);
 
 		update(deltaTime);		// update
 

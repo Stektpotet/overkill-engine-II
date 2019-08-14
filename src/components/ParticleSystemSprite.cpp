@@ -39,17 +39,11 @@ void ParticleSystemSprite::prepareGraphics()
 
 void ParticleSystemSprite::draw()
 {
+    glm::mat4 mvp; 
+    if (m_cfg.worldSpace)   mvp = glm::mat4(1);
+    else                    mvp = m_gameObject->m_transform.modelMatrix();
 
-    glm::mat4 mvp = m_gameObject->m_transform.modelMatrix();
-
-    mvp = glm::translate(mvp, glm::vec3(m_offset.x, m_offset.y, 0.0f));
-
-    // Move origin to rotate around center
-    mvp = glm::translate(mvp, glm::vec3(m_pivot.x * m_size.x, m_pivot.y * m_size.y, 0.0f));
-    mvp = glm::rotate(mvp, m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
-    mvp = glm::translate(mvp, glm::vec3(-m_pivot.x * m_size.x, -m_pivot.y * m_size.y, 0.0f));
-
-    mvp = glm::scale(mvp, glm::vec3(m_size, 1.0f));
+    mvp = glm::translate(mvp, glm::vec3(-m_cfg.startScale, -m_cfg.startScale, 0) * m_cfg.startScale*0.5f);
 
     m_shader.bind();
     m_texture.bind();

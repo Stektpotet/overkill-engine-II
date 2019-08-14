@@ -5,6 +5,7 @@ namespace OK
 ParticleSystem::ParticleSystem( int maxParticles,
                                 ParticleSystemConfiguration config
                             ) : FlatGraphics(),
+        m_cfg{config},
         m_highestIndex{0},
         m_oldestParticle{0},
         m_particlesCount{0},
@@ -22,7 +23,6 @@ ParticleSystem::ParticleSystem( int maxParticles,
     }
 }
 
-
 // Resets and relaunches the particle as a new one.
 void ParticleSystem::launchParticle(int i)
 {
@@ -30,7 +30,8 @@ void ParticleSystem::launchParticle(int i)
     switch (m_cfg.volume)
     {
     case insideCirle:
-        m_data.pos[i] =    glm::vec3(0,0,0);//m_gameObject->m_transform.getWorldPos();
+        if (m_cfg.worldSpace)   m_data.pos[i] = m_gameObject->m_transform.getWorldPos();
+        else                    m_data.pos[i] = glm::vec3(0,0,0);
         m_data.rot[i] =    glm::vec3(0, 0, OK::Util::random(0, glm::radians(360.0f)));
         m_data.scl[i] =    glm::vec3(m_cfg.startScale);
         
@@ -40,6 +41,7 @@ void ParticleSystem::launchParticle(int i)
         break;
     
     default:
+        m_cfg = ParticleSystemConfiguration();
         GFX_ERROR("Invalid ParticleSystem configuration!");
         break;
     }

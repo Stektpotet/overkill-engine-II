@@ -16,7 +16,7 @@ glm::mat4 Transform::modelMatrix()
 
 glm::vec3 Transform::getWorldPos()
 {
-	glm::vec4 pos = glm::vec4(position, 0) * modelMatrix();
+	glm::vec4 pos = modelMatrix()[3];
 	return glm::vec3(pos.x, pos.y, pos.z);
 }
 
