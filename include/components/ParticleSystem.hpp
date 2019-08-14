@@ -8,26 +8,26 @@ namespace OK
 
 enum EmissionVolume
 {
-    insideCirle, onCircleEdge,  // 2D
-    insideShere, onShereEdge    // 3D
+    insideCircle, onCircleEdge,  // 2D
+    insideSphere, onSphereEdge    // 3D
 };
 
 struct ParticleSystemConfiguration
 {   
-    EmissionVolume volume = insideCirle;
-    bool  worldSpace =      true;   // When false, the particles are transformed with the ParticleSystem's GameObject.
+    EmissionVolume volume = insideCircle;
+    bool  worldSpace =      false;   // When false, the particles are transformed with the ParticleSystem's GameObject.
     float emissionsPerSec = 3200;
     float emissionRadius =  0;
     float lifeTime =        3;      // Seconds a particle lives for.
-    float startSpeed =      280;
-    float startAngleSpeed = 180;     // Degrees / second.
-    float gravity =         190;      // Gravity on Y axis in worldspace.
+    float startSpeed =      500;
+    float startAngleSpeed = 0;     // Degrees / second.
+    float gravity =         0;      // Gravity on Y axis in worldspace.
     float drag =            0.6f;
     float angleDrag =       0.08f;
-    float startScale =       5;
-    float endScale =         0.3f;
-    glm::vec4 startColor =  glm::vec4(1, 0, 0, 1);
-    glm::vec4 endColor =    glm::vec4(0, 0, 1, 0.35f);
+    float startScale =      8;
+    float endScale =        4;
+    glm::vec4 startColor =  glm::vec4(0.87f, 0, 0.95f, 1);
+    glm::vec4 endColor =    glm::vec4(0.87f, 0, 0.95f, 1);
 };
 
 const int c_maxAllowedParticles = 10000;

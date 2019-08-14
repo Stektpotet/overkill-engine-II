@@ -14,6 +14,26 @@ namespace OK::Util
         return result;
     }
 
+    glm::vec2 randomInUnitCircle()
+    {
+        return glm::normalize(glm::vec2(random(-1,1), random(-1,1)) * random(0, 1));
+    }
+
+    glm::vec2 randomOnUnitCircle()
+    {
+        return glm::normalize(glm::vec2(random(-1,1), random(-1,1)));
+    }
+
+    glm::vec3 randomInUnitSphere()
+    {
+        return glm::normalize(glm::vec3(random(-1,1), random(-1,1), random(-1,1))) * random(0, 1);
+    }
+
+    glm::vec3 randomOnUnitSphere()
+    {
+        return glm::normalize(glm::vec3(random(-1,1), random(-1,1), random(-1,1)));
+    }
+
     void printTransform(Transform t)
     {
         glm::vec3 rot = glm::eulerAngles(t.rotation);

@@ -68,7 +68,7 @@ std::srand(time(NULL));
 	auto vidMode = glfwGetVideoMode(monitor);
 	
 	GFX_INFO("dimensions: %dx%d", vidMode->width, vidMode->height);
-	windowSize = { vidMode->width*0.6f, vidMode->height*0.6f };
+	windowSize = { vidMode->width*0.4f, vidMode->height*0.4f };
 	window = glfwCreateWindow(windowSize.x, windowSize.y, "HelloWorld", nullptr, nullptr);
 
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -163,12 +163,17 @@ std::srand(time(NULL));
 		OK::Texture2D texture;
         loadTexture("assets/textures/squareParticle.png", &texture);
 		OK::ParticleSystemConfiguration config;
-		config.worldSpace = false;
-		config.emissionsPerSec = 3000;
-		config.gravity = 0;
-		config.startSpeed = 290;
-		config.startScale = 4.5f;
-		config.drag = 0.9f;
+		config.volume = OK::EmissionVolume::onCircleEdge;
+		config.worldSpace = true;
+		config.emissionsPerSec = 3100;
+		config.emissionRadius = 150;
+		config.gravity = 5;
+		config.startSpeed = 64;
+		config.startScale = 4.3f;
+		config.endScale = 1.3f;
+		config.drag = 0.3f;
+		config.startColor =  glm::vec4(1, 0, 0, 1);	
+		config.endColor =    glm::vec4(0, 0.2f, 1, 0.4f);
         auto ps = gameObjectParticleSystem->addComponent<OK::ParticleSystemSprite>(texture, 10000, config);
 
 		auto sp = gameObjectParticleSystem->addComponent<OK::Sprite>(texture);

@@ -27,33 +27,46 @@ ParticleSystem::ParticleSystem( int maxParticles,
 void ParticleSystem::launchParticle(int i)
 {
     glm::vec3 dirrr = glm::vec3(0);
+    if (m_cfg.worldSpace)   m_data.pos[i] = m_gameObject->m_transform.getWorldPos();
+    else                    m_data.pos[i] = glm::vec3(0,0,0);
+
     switch (m_cfg.volume)
     {
-    case insideCirle:
-        if (m_cfg.worldSpace)   m_data.pos[i] = m_gameObject->m_transform.getWorldPos();
-        else                    m_data.pos[i] = glm::vec3(0,0,0);
-        m_data.rot[i] =    glm::vec3(0, 0, OK::Util::random(0, glm::radians(360.0f)));
-        m_data.scl[i] =    glm::vec3(m_cfg.startScale);
-        
-        dirrr = glm::normalize(glm::vec3(OK::Util::random(-1,1), OK::Util::random(-1,1), 0));
-        m_data.vel[i] = dirrr * m_cfg.startSpeed;
-        m_data.angVel[i] = glm::vec3(0,0, OK::Util::random(0, glm::radians(m_cfg.startAngleSpeed)));
+    case insideCircle:
+        m_data.pos[i] += glm::vec3(OK::Util::randomInUnitCircle(),0) * m_cfg.emissionRadius;      
         break;
-    
+
+    case onCircleEdge:
+        m_data.pos[i] += glm::vec3(OK::Util::randomOnUnitCircle(), 0) * m_cfg.emissionRadius;      
+        break;
+
+     case insideSphere:
+        m_data.pos[i] += OK::Util::randomInUnitSphere() * m_cfg.emissionRadius;      
+        break;
+
+    case onSphereEdge:
+        m_data.pos[i] += OK::Util::randomOnUnitSphere() * m_cfg.emissionRadius;      
+        break;
     default:
         m_cfg = ParticleSystemConfiguration();
-        GFX_ERROR("Invalid ParticleSystem configuration!");
-        break;
+        GFX_WARN("Invalid ParticleSystem configuration! Resetting to default.");
+        return;
     }
 
+    m_data.rot[i] =    glm::vec3(0, 0, OK::Util::random(0, glm::radians(360.0f)));
+    m_data.scl[i] =    glm::vec3(m_cfg.startScale);
+    dirrr = glm::normalize(glm::vec3(OK::Util::random(-1,1), OK::Util::random(-1,1), 0));
+    m_data.vel[i] = dirrr * m_cfg.startSpeed;
+    m_data.angVel[i] = glm::vec3(0,0, OK::Util::random(0, glm::radians(m_cfg.startAngleSpeed)));
     m_data.color[i] = m_cfg.startColor;
     m_data.life[i] =   m_cfg.lifeTime;
 }
 
 void ParticleSystem::update(float deltaTime)
 {
+    m_playbackSpeed = glm::abs(m_playbackSpeed); // Can not play backwards! Though that would be cool :thinking_face:
     deltaTime *= m_playbackSpeed;
-
+    
     // Launch more particles?
     if (m_emitting)
     {

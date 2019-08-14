@@ -27,6 +27,11 @@ namespace OK::Util
     }
 
     float random(float min, float max);
+    glm::vec2 randomInUnitCircle();
+    glm::vec2 randomOnUnitCircle();
+    glm::vec3 randomInUnitSphere();
+    glm::vec3 randomOnUnitSphere();
+
     void printTransform(Transform t);
     void processError(int code, const char* description);
     glm::uint packSnorm10x3_2Rev(glm::vec3 const& v);
