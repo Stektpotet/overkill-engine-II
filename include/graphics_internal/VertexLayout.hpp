@@ -1,10 +1,3 @@
-//int attribute 0.  -> must match layout in shader
-//GLint size
-//GLenum type
-//GLboolean normalized?
-//stride
-//array buffer offset
-//(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer
 #pragma once
 #include <GL/glew.h>
 #include <vector>
@@ -25,7 +18,7 @@ struct Attribute
 		const GLint size,
 		const GLint componentCount,
 		const GLenum type,
-		const GLboolean normalized)
+		const GLboolean normalized = GL_FALSE)
 		:	
         name{ name },
         size{ size },
@@ -112,6 +105,7 @@ class ContinuousVertexLayout final : public VertexLayout
 {
 public: 
     ContinuousVertexLayout() : VertexLayout{} {}
+    ContinuousVertexLayout(std::initializer_list<Attribute> initializer) : VertexLayout{ initializer } {}
 private:
     inline void addStride(GLint byteSize) final { return; }
 };

@@ -22,7 +22,7 @@ protected:
 public:
     Renderer(DrawableType drawable) : GraphicsComponent(), m_drawable{ &drawable }
 	{ 
-		drawable.bind(); 
+		drawable.bind(); //bind during creation to allow rendertargets to also bind into the correct state of the context
 	}
 };
 

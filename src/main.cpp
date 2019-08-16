@@ -10,10 +10,10 @@
 #define DEBUG_GFX
 
 #include "UtilityFunctions.hpp"
+#include "ResourceLoader.h"
 #include "Structs.hpp"
 #include "Input.hpp"
 #include "ControllableCamera.hpp"
-#include "components/AnimatedSprite.hpp"
 #include "components/HelloWorld.hpp"
 #include "components/TextInstanced.hpp"
 #include "components/SpriteRenderer.hpp"
@@ -127,22 +127,21 @@ int main(void)
 	gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
     {
 
-		OK::Texture2DArray texture;
-        loadTextureAtlas("assets/textures/pacman.png", 2, &texture);
-        
-        auto sprite = OK::AtlasSprite(texture);
-        sprite.m_size = { 64,64 };
-        sprite.m_offset = sprite.m_size * -0.5f;
-        auto sp = gameObjectPac->addComponent<OK::SpriteRenderer<OK::AtlasSprite>>(sprite);
-        sprite.setAtlasIndex(2);
+		OK::Texture2DArray texture = OK::loadTextureAtlas("assets/textures/pacman.png", 2);
+        auto sprite = OK::Sprite<OK::Texture2DArray>(texture);
+
+        auto sp = gameObjectPac->addComponent<OK::SpriteRenderer<OK::Texture2DArray>>(sprite);
+
+        sp->m_size = { 64,64 };
+        sp->m_offset = sp->m_size * -0.5f;
+        //sp->setAtlasIndex(2);
     }
 	auto pacmanRb = gameObjectPac->addComponent<OK::Rigidbody>(true);
 	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 1);
 
  	auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
     { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        OK::Texture2DArray texture;
-        loadTextureAtlas("assets/textures/loading.png", 4, &texture);
+        OK::Texture2DArray texture = OK::loadTextureAtlas("assets/textures/loading.png", 4);
   //      auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
 		//sp->m_size = { 150,150 };
   //      sp->m_offset = sp->m_size * -0.5f;

@@ -11,6 +11,11 @@
 //TODO: Create a MakeMesh()-call to simply upload mesh to graphics card, and counterpart FetchMesh
 namespace OK
 {
+class Drawable;
+template<typename TVertex> class CPUMesh;
+template<typename TVertex> class Mesh;
+template<typename TVertex> class BatchedMesh;
+
 class Drawable
 {
 protected:

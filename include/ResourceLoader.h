@@ -306,11 +306,10 @@ constexpr const char* const ERROR_TEXTURE =
     "\xff\x00\xff\x00\x00\x00\xff\x00\xff\x00\x00\x00";
 }
 
-inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,  uint16_t divisions_height, Texture2DArray* outTexture) -> int
+inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,  uint16_t divisions_height) -> Texture2DArray
 {
-    int err = 0;
     GLubyte* raw_pixels;
-
+    
     stbi_set_flip_vertically_on_load(false);
     int width, height, channels;
 
@@ -323,7 +322,6 @@ inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,
         memcpy(raw_pixels, Fail::ERROR_TEXTURE, 48); 
         width = height = 4;
         channels = 3;
-        err = 1;
         divisions_width = 1;
         divisions_height = 1;
     }
@@ -333,14 +331,14 @@ inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,
 
     auto cpuTexelFormat = getFormatFromChannelCount(channels);
 
-    *outTexture = Texture2DArray(elementWidth, elementHeight, divisions_width * divisions_height, channels);
+    Texture2DArray outTexture = Texture2DArray(elementWidth, elementHeight, divisions_width * divisions_height, channels);
     GFX_GL_CALL(
         glTexImage3D(GL_TEXTURE_2D_ARRAY,
         0,							    // mipmap level
         GL_RGBA8,					    // gpu texel format
-        outTexture->getWidth(),		    // width
-        outTexture->getHeight(),	    // height
-        outTexture->getDepth(),		    // depth
+        outTexture.getWidth(),		    // width
+        outTexture.getHeight(),	    // height
+        outTexture.getDepth(),		    // depth
         0,							    // border
         cpuTexelFormat,                 // cpu pixel format
         GL_UNSIGNED_BYTE,			    // cpu pixel coord type
@@ -376,12 +374,12 @@ inline auto loadTextureAtlas(const char* texturefile,  uint16_t divisions_width,
     GFX_GL_CALL(glBindTexture(GL_TEXTURE_2D_ARRAY, 0)); //unbind 
     stbi_image_free(raw_pixels);
 
-    return err;
+    return outTexture;
 }
 
-inline auto loadTextureAtlas(const char* texturefile, uint16_t divisions, Texture2DArray* outTexture) -> int
+inline auto loadTextureAtlas(const char* texturefile, uint16_t divisions) -> Texture2DArray
 {
-    return loadTextureAtlas(texturefile, divisions, divisions, outTexture);
+    return loadTextureAtlas(texturefile, divisions, divisions);
 }
 
 inline auto createNoiseTexture(glm::ivec2 dimensions, int channels, Texture2D* outTexture, int64_t seed = 0) -> int

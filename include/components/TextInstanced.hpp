@@ -1,27 +1,25 @@
 #pragma once
+#include <glm/glm.hpp>
+#include <string>
 
-#include "components/core/GraphicsComponent.hpp"
+#include "components/SpriteRenderer.hpp"
 
 namespace OK
 {
 
-class TextInstanced : public Renderer
+class TextInstanced : public SpriteRenderer<Texture2DArray>
 {
 private:
-    const char* c_fontAtlas = "assets/textures/ascii.png";
-    const uint16_t c_atlasDivisions = 16;
     const char* m_text;
 
     float m_spacing = 0.5f;
-
-    Texture2DArray m_asciiMap;
 
 protected:
     void draw() override;
     void prepareGraphics() override;
 
 public:
-    TextInstanced(const char* text, const char* fontAtlas = "assets/textures/ascii.png");
+    TextInstanced(const char* text, uint16_t dimensionWidth = 16, uint16_t dimensionHeight = 16, const char* fontAtlas = "assets/textures/ascii.png");
 
 
     inline size_t textLength() { return std::char_traits<char>::length(m_text); }
