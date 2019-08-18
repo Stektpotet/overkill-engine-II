@@ -5,6 +5,7 @@ VertexBuffer::VertexBuffer(const GLsizeiptr size, const void * data /*= nullptr*
 	glGenBuffers(1, &id);
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    GFX_DEBUG("VBO (%d) bound", id);
 }
 
 VertexBuffer::VertexBuffer(const GLsizeiptr size, std::initializer_list<std::pair<const GLsizeiptr,const void*>> data/*= nullptr*/)
@@ -12,7 +13,8 @@ VertexBuffer::VertexBuffer(const GLsizeiptr size, std::initializer_list<std::pai
 	glGenBuffers(1, &id);
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
-	GLsizeiptr lastSize = 0;
+    GFX_DEBUG("VBO (%d) bound", id);
+    GLsizeiptr lastSize = 0;
 	for (const auto& v : data) 
 	{ //TODO: batch on CPU? -if benefitial at all...
 		glBufferSubData(GL_ARRAY_BUFFER, lastSize, v.first, v.second);

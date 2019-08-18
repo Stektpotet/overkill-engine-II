@@ -20,10 +20,14 @@ protected:
     std::shared_ptr<Material> m_material;
 
 public:
-    Renderer(DrawableType drawable) : GraphicsComponent(), m_drawable{ &drawable }
+    Renderer(DrawableType drawable) : m_drawable{ &drawable }, GraphicsComponent()
 	{ 
 		drawable.bind(); //bind during creation to allow rendertargets to also bind into the correct state of the context
+        GFX_DEBUG("Bound drawable")
 	}
+    
+    Renderer() : GraphicsComponent{}
+    {}
 };
 
 } // Namespace OK

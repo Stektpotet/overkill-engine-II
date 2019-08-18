@@ -50,8 +50,10 @@ public:
     glm::vec2 m_size = glm::vec2(1, 1);
     glm::vec4 m_color = glm::vec4(1, 1, 1, 1);
 
-    SpriteRenderer(TextureType texture) : Renderer<Sprite<TextureType>>{ Sprite{ texture } }
+    SpriteRenderer(TextureType texture) : Renderer<Sprite<TextureType>>{}
     {
+        m_material = std::make_shared<Material>(createProgramRaw(defaults::VERT_SHADER, defaults::FRAG_SHADER));
+        m_drawable = &Sprite{ texture };
         m_material->apply();
     }
 

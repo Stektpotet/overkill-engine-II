@@ -24,9 +24,21 @@ public:
 	inline bool valid() { return id != 0; }
 
 
-	inline void bind() const { glBindBuffer(GL_ARRAY_BUFFER, id); }
-	static inline void unbind() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
-	inline void clear() { glDeleteBuffers(1, &id); }
+	inline void bind() const 
+    { 
+        glBindBuffer(GL_ARRAY_BUFFER, id);
+        GFX_DEBUG("VBO (%d) bound", id);
+    }
+	static inline void unbind() 
+    { 
+        GFX_DEBUG("VBO unbound");
+        glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    }
+	inline void clear() 
+    { 
+        GFX_DEBUG("VBO (%d) deleting...", id);
+        glDeleteBuffers(1, &id);
+    }
 
 	void update(const GLintptr start, const GLsizeiptr size, const void * data);
 

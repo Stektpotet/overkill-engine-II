@@ -48,10 +48,10 @@ target_sources(${PROJECT}
 
       PRIVATE ${SRCDIR}/graphics_internal/ShaderProgram.cpp
       PRIVATE ${SRCDIR}/graphics_internal/VertexBuffer.cpp
-      PRIVATE ${SRCDIR}/graphics_internal/VertexLayout.cpp
       PRIVATE ${SRCDIR}/graphics_internal/VertexArray.cpp
       PRIVATE ${SRCDIR}/graphics_internal/IndexBuffer.cpp
 	  PRIVATE ${SRCDIR}/graphics_internal/Texture.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/VertexLayout.cpp
 
 	  PRIVATE ${SRCDIR}/components/core/Component.cpp
 	  PRIVATE ${SRCDIR}/components/core/GraphicsComponent.cpp

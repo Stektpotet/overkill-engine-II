@@ -18,6 +18,8 @@ struct Uniform
 //CPU-bound configuration of shader's uniforms
 struct Material //TODO: make it a class and restrict access
 {
+    Material(ShaderProgram program);
+
     ShaderProgram m_shader;
     std::vector<Uniform<TextureBase*>> uniformMaps;
     std::vector<Uniform<float>> uniformValues;

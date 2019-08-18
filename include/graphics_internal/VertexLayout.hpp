@@ -35,7 +35,7 @@ private:
 	std::vector<Attribute> m_attributes;
 protected:
 	GLuint m_stride = 0;
-	inline virtual void addStride(GLuint byteSize) = 0;
+    virtual void addStride(GLuint byteSize) = 0;
 
     VertexLayout();
     VertexLayout(std::initializer_list<Attribute> attributes);

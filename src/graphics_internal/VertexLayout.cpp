@@ -1,14 +1,34 @@
 #include "graphics_internal/VertexLayout.hpp"
 
-//TODO: put all the things in here
+ContinuousVertexLayout::ContinuousVertexLayout(
+    std::initializer_list<Attribute> attributes
+) : VertexLayout{ attributes }
+{
+}
+void ContinuousVertexLayout::addStride(GLuint byteSize)
+{
+    /*Do nothing;*/
+}
 
-VertexLayout::VertexLayout() : m_attributes{}, m_stride{ 0 } {}
-VertexLayout::VertexLayout(std::initializer_list<Attribute> attributes) : m_attributes{ attributes }, m_stride{ 0 }
+
+InterleavingVertexLayout::InterleavingVertexLayout(
+    std::initializer_list<Attribute> attributes
+) : VertexLayout{ attributes }
 {
     for (const auto& attr : attributes)
     {
         addStride(attr.size);
     }
+}
+
+void InterleavingVertexLayout::addStride(GLuint byteSize)
+{
+    m_stride += byteSize;
+}
+
+VertexLayout::VertexLayout() : m_attributes{}, m_stride{ 0 } {}
+VertexLayout::VertexLayout(std::initializer_list<Attribute> attributes) : m_attributes{ attributes }, m_stride{ 0 }
+{
 }
 void VertexLayout::applyToBuffer(const VertexBuffer& buffer)
 {
@@ -30,24 +50,4 @@ void VertexLayout::applyToBuffer(const VertexBuffer& buffer)
         offset += attrib.size;
         i++;
     }
-}
-
-
-ContinuousVertexLayout::ContinuousVertexLayout(
-    std::initializer_list<Attribute> initializer
-) : VertexLayout{ initializer }
-{
-}
-inline void ContinuousVertexLayout::addStride(GLuint byteSize){/*Do nothing*/}
-
-
-InterleavingVertexLayout::InterleavingVertexLayout(
-    std::initializer_list<Attribute> initializer
-) : VertexLayout{ initializer } 
-{
-}
-
-inline void InterleavingVertexLayout::addStride(GLuint byteSize)
-{
-    m_stride += byteSize;
 }

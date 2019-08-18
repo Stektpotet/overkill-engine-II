@@ -14,9 +14,18 @@ public:
 	inline bool valid() { return id != 0; }
 	inline GLuint ID() const { return id; }
 
-	inline void bind() const { (glBindVertexArray(id)); }
-	static inline void unbind() { (glBindVertexArray(0)); }
+	inline void bind() const 
+    { 
+        GFX_DEBUG("VAO (%d) bound", id);
+        GFX_GL_CALL(glBindVertexArray(id)); 
+    }
+	static inline void unbind() 
+    { 
+        GFX_DEBUG("VAO unbound");
+        GFX_GL_CALL(glBindVertexArray(0)); 
+    }
 	inline void clear() {
+        GFX_DEBUG("VAO (%d) deleting...", id);
         glDeleteVertexArrays(1, &id);
     }
 

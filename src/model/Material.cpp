@@ -4,7 +4,10 @@
 
 namespace OK
 {
-
+Material::Material(ShaderProgram program)
+{
+    m_shader = program;
+}
 void Material::bind()
 {
     //TODO: verify statefulness of shaders, my suspicion is that their state

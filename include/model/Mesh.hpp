@@ -58,7 +58,7 @@ class Mesh : public Drawable
 {
     CPUMesh<TVertex> m_mesh;
 protected:
-    Mesh(CPUMesh<TVertex> data) : Drawable(data), m_mesh{ data }
+    Mesh(CPUMesh<TVertex> data) : m_mesh{ data }, Drawable{ data }
     {
         TVertex::InterleavingLayout().applyToBuffer(m_vertexBuffer);
     }

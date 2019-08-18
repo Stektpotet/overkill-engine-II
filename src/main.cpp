@@ -9,17 +9,17 @@
 #include <glm/gtc/type_ptr.hpp>
 #define DEBUG_GFX
 
-#include "UtilityFunctions.hpp"
-#include "ResourceLoader.h"
-#include "Structs.hpp"
-#include "Input.hpp"
-#include "ControllableCamera.hpp"
-#include "components/HelloWorld.hpp"
-#include "components/TextInstanced.hpp"
-#include "components/SpriteRenderer.hpp"
 #include "components/core/Rigidbody.hpp"
-#include "Scene.hpp"
+#include "components/HelloWorld.hpp"
+#include "components/SpriteRenderer.hpp"
+#include "components/TextInstanced.hpp"
+#include "ControllableCamera.hpp"
+#include "Input.hpp"
 #include "model/Sprite.hpp"
+#include "ResourceLoader.h"
+#include "Scene.hpp"
+#include "Structs.hpp"
+#include "UtilityFunctions.hpp"
 
 const int c_frameLimit = 60;
 
@@ -127,10 +127,10 @@ int main(void)
 	gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
     {
 
-		auto texture = OK::loadTextureAtlas("assets/textures/pacman.png", 2);
-        auto sprite = OK::Sprite<OK::Texture2DArray>(texture);
+		//auto texture = OK::loadTextureAtlas("assets/textures/pacman.png", 2);
+        //auto sprite = OK::Sprite<OK::Texture2DArray>(texture);
 
-        auto sp = gameObjectPac->addComponent<OK::SpriteRenderer<OK::Texture2DArray>>(sprite);
+        auto sp = gameObjectPac->addComponent<OK::SpriteRenderer<OK::Texture2DArray>>(OK::loadTextureAtlas("assets/textures/pacman.png", 2));
 
         sp->m_size = { 64,64 };
         sp->m_offset = sp->m_size * -0.5f;
