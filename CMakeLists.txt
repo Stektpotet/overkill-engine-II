@@ -43,30 +43,29 @@ target_compile_features(${PROJECT} PUBLIC cxx_std_17)
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
 target_sources(${PROJECT}
 	  PRIVATE ${LIBDIR}/stb/stb_image_impl.cpp
-	  PRIVATE ${INCDIR}/noise/OpenSimplex.cpp
 	  
       PRIVATE ${LIBDIR}/GFX/src/gfx.cpp
 
       PRIVATE ${SRCDIR}/graphics_internal/ShaderProgram.cpp
       PRIVATE ${SRCDIR}/graphics_internal/VertexBuffer.cpp
+      PRIVATE ${SRCDIR}/graphics_internal/VertexLayout.cpp
       PRIVATE ${SRCDIR}/graphics_internal/VertexArray.cpp
       PRIVATE ${SRCDIR}/graphics_internal/IndexBuffer.cpp
 	  PRIVATE ${SRCDIR}/graphics_internal/Texture.cpp
+
+	  PRIVATE ${SRCDIR}/components/core/Component.cpp
+	  PRIVATE ${SRCDIR}/components/core/GraphicsComponent.cpp
+	  PRIVATE ${SRCDIR}/components/core/Rigidbody.cpp
+	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
+	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
+
+	  PRIVATE ${SRCDIR}/model/Material.cpp
 
       PRIVATE ${SRCDIR}/Transform.cpp
       PRIVATE ${SRCDIR}/Camera.cpp
 	  PRIVATE ${SRCDIR}/Input.cpp
 	  PRIVATE ${SRCDIR}/UtilityFunctions.cpp
 	  PRIVATE ${SRCDIR}/ControllableCamera.cpp
-	  PRIVATE ${SRCDIR}/components/core/Component.cpp
-	  PRIVATE ${SRCDIR}/components/core/GraphicsComponent.cpp
-
-	  PRIVATE ${SRCDIR}/components/core/Rigidbody.cpp
-
-#	  PRIVATE ${SRCDIR}/model/Sprite.cpp
-	  PRIVATE ${SRCDIR}/components/TextInstanced.cpp
-#	  PRIVATE ${SRCDIR}/components/AnimatedSprite.cpp
-	  PRIVATE ${SRCDIR}/components/HelloWorld.cpp
 	  PRIVATE ${SRCDIR}/GameObject.cpp
 	  PRIVATE ${SRCDIR}/Scene.cpp
 

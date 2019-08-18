@@ -21,6 +21,7 @@ struct SpriteVertex
 template <class TTexture>
 class Sprite : public Mesh<SpriteVertex>
 {
+    template<typename T>
     friend class SpriteRenderer;
 protected:
 public:
@@ -38,7 +39,7 @@ public:
                 2,1,3
             }
         }},
-        m_texture{ texture },
+        m_texture{ texture }
     {
     }
 };

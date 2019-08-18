@@ -36,9 +36,9 @@ protected:
         m2w = glm::scale(m2w, glm::vec3(m_size, 1.0f));
 
         m_vertexArray.bind();
-        m_material->bind();
-        m_material->setProperty({ "model", mvp });
-        m_material->setProperty({ "color", m_color});
+        m_material->apply(); //TODO: verify that 'bind' won't persist material properties
+        m_material->setProperty(Uniform<glm::mat4>{ "model", m2w });
+        m_material->setProperty(Uniform<glm::vec4>{ "color", m_color});
     }
 
 public:
@@ -48,6 +48,7 @@ public:
     glm::vec2 m_offset = glm::vec2(0, 0);          // X-Y offset from transform's position.
     glm::vec2 m_pivot = glm::vec2(0.5f, 0.5f);
     glm::vec2 m_size = glm::vec2(1, 1);
+    glm::vec4 m_color = glm::vec4(1, 1, 1, 1);
 
     SpriteRenderer(TextureType texture) : Renderer<Sprite<TextureType>>{ Sprite{ texture } }
     {

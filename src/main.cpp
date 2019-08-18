@@ -127,7 +127,7 @@ int main(void)
 	gameObjectPac->m_transform.position = glm::vec3((windowSize.x/2) -16, windowSize.y-32, 0);
     {
 
-		OK::Texture2DArray texture = OK::loadTextureAtlas("assets/textures/pacman.png", 2);
+		auto texture = OK::loadTextureAtlas("assets/textures/pacman.png", 2);
         auto sprite = OK::Sprite<OK::Texture2DArray>(texture);
 
         auto sp = gameObjectPac->addComponent<OK::SpriteRenderer<OK::Texture2DArray>>(sprite);
@@ -140,12 +140,12 @@ int main(void)
 	pacmanRb->m_angularVelocity = glm::vec3(0, 0, 1);
 
  	auto gameObjectHello = OK::Scene::currentScene->makeGameObject("HelloWorldObject");  
-    { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
-        OK::Texture2DArray texture = OK::loadTextureAtlas("assets/textures/loading.png", 4);
+  //  { //TODO: implement animatedSpriteRenderer into the graphicscomponent pipeline
+  //      OK::Texture2DArray texture = OK::loadTextureAtlas("assets/textures/loading.png", 4);
   //      auto sp = gameObjectHello->addComponent<OK::AnimatedSprite>(texture, 1, 15);
 		//sp->m_size = { 150,150 };
   //      sp->m_offset = sp->m_size * -0.5f;
-    }
+  //  }
 
 	auto gameObjectText = OK::Scene::currentScene->makeGameObject("TextObject");
 	gameObjectText->m_transform.position = glm::vec3(0, 0, 0);

@@ -10,7 +10,7 @@ TextInstanced::TextInstanced(
     const uint16_t dimensionWidth,
     const uint16_t dimensionHeight,
     const char* fontAtlas
-) : SpriteRenderer{ loadTextureAtlas(fontAtlas, dimensionWidth, dimensionHeight) },
+) : SpriteRenderer<Texture2DArray>{ loadTextureAtlas(fontAtlas, dimensionWidth, dimensionHeight) },
     m_text{ text }
 {
 }
@@ -29,7 +29,7 @@ void TextInstanced::prepareGraphics()
     );
     m_material->setProperty(Uniform<float>{ "spacing", m_spacing });
     m_material->setProperty(Uniform<glm::mat4>{ "projection", projection});
-    Renderer::prepareGraphics();
+    SpriteRenderer::prepareGraphics();
 }
 
 void TextInstanced::setText(const char * newText)
@@ -44,7 +44,6 @@ void TextInstanced::setText(const char * newText)
 void TextInstanced::draw()
 {
     SpriteRenderer::draw();
-
     GFX_GL_CALL(glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, textLength()));
 }
 
